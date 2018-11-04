@@ -1,3 +1,4 @@
+# TO DO: Replace readme placeholders with actual content
 # PROGRAM_NAME (used as 'executable-name')
 
 This program does XYZ.
