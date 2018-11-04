@@ -28,7 +28,7 @@ class Matching():
         ''' Returns true if 1st string ends with 2nd string. '''
         # 'abc', 'a*'
         end = end.replace('*', '')
-        return string.endswith(start)
+        return string.endswith(end)
 
     @staticmethod
     def _contains(full: str, partial: str):
@@ -54,13 +54,13 @@ class Matching():
         if '*' not in value:
             # 'abc', 'abc'
             return Matching._is_exact
-        elif value.starts_with('*') and value.ends_with('*'):
+        elif value.startswith('*') and value.endswith('*'):
             # 'abc', '*b*'
             return Matching._contains
-        elif value.starts_with('*'):
+        elif value.startswith('*'):
             # 'abc', '*bc'
             return Matching._ends_with
-        elif value.ends_with('*'):
+        elif value.endswith('*'):
             # 'abc', 'a*'
             return Matching._starts_with
         else:
@@ -79,9 +79,8 @@ class Matching():
             match = match.upper() if ignore_case else match
 
             # get and apply the function
-            match_function = Matching._get_match_function(
-                match_string)
-            result = match_function(word, match_string)
+            match_function = Matching._get_match_function(match)
+            result = match_function(word, match)
 
             # if result is a match, return True. No need to evaluate the rest.
             if result:
