@@ -87,6 +87,8 @@ Structural Hierarchy:
       # The class/category that the pattern belongs to, i.e. 'noun-group' or 'prp-phrase'
     - priority : numeric
       # Allows patterns to be ordered or sorted based on
+    - label : string
+      # More descriptive metadata. Non-operative.
 
     <word>
     # An item that matches N words that meet its criteria.
@@ -148,4 +150,6 @@ Structural Hierarchy:
       # The minimum number of items in this group to match
     - max : number
       # The maximum number of items in this group to match.
+    - label : string
+      # Descriptive metadata for the group. Non-operative.
 ```
