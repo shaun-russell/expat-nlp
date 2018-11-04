@@ -45,13 +45,58 @@ Structural Hierarchy:
   <patterngroup>
     <pattern>
       <word />
-      <group>
+      <wordgroup>
         <word />
         <word />
         ...
       <word />
       ...
     ...
+
+  DTD Spec for Validation:
+  <!DOCTYPE root [
+    <!-- Root Element -->
+    <!ELEMENT root (patterngroup)+>
+    <!ATTLIST root version CDATA #REQUIRED>
+
+    <!-- Pattern Group Element -->
+    <!ELEMENT patterngroup (pattern)+>
+    <!ATTLIST patterngroup label CDATA "">
+
+    <!-- Pattern Element -->
+    <!ELEMENT pattern (word | wordgroup)+>
+    <!ATTLIST pattern name ID #REQUIRED>
+    <!ATTLIST pattern description CDATA "">
+    <!ATTLIST pattern class CDATA #REQUIRED>
+    <!ATTLIST pattern priority CDATA "1">
+    <!ATTLIST pattern label CDATA "">
+
+    <!-- Word element -->
+    <!ELEMENT word EMPTY>
+    <!ATTLIST word min CDATA "1">
+    <!ATTLIST word max CDATA "1">
+    <!ATTLIST word contextual CDATA "false">
+    <!ATTLIST word label CDATA "">
+    <!-- Specific Word Matching -->
+    <!ATTLIST word lemma CDATA "">
+    <!ATTLIST word word CDATA "">
+    <!-- Parts of Speech -->
+    <!ATTLIST word pos CDATA "*">
+    <!ATTLIST word expos CDATA "">
+    <!-- Dependencies -->
+    <!ATTLIST word deps CDATA "*">
+    <!ATTLIST word exdeps CDATA "">
+    <!ATTLIST word depnum CDATA "1">
+    <!-- Additional Type -->
+    <!ATTLIST word type CDATA "*">
+    <!ATTLIST word extype CDATA "">
+    <!ATTLIST word typenum CDATA "1">
+
+    <!ELEMENT wordgroup (word)+>
+    <!ATTLIST wordgroup min CDATA "1">
+    <!ATTLIST wordgroup max CDATA "1">
+    <!ATTLIST wordgroup label CDATA "">
+  ]>
 
   Notes:
   - A * own matches anything.
@@ -114,7 +159,6 @@ Structural Hierarchy:
     - depnum : numeric
       # The required number of dependencies. If 2 dependencies are specified,
       # a depnum of 1 would be a logical OR while a depnum of 2 would be a logical AND.
-      # A depnum of 0 is a logical XOR (the default is 1 when not specified).
 
     - type : string
       # The word types or categories that the word belongs to. Multiple values
@@ -144,8 +188,8 @@ Structural Hierarchy:
       # Descriptive metadata for a word. Non-operative.
 
     
-    <group>
-    # The group element is a container to allow sequences of words (or groups)
+    <wordgroup>
+    # The wordgroup element is a container to allow sequences of words (or groups)
     # to be matched.
     - min : number
       # The minimum number of items in this group to match

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE root [
+  <!-- Root Element -->
+  <!ELEMENT root (patterngroup)+>
+  <!ATTLIST root version CDATA #REQUIRED>
+
+  <!-- Pattern Group Element -->
+  <!ELEMENT patterngroup (pattern)+>
+  <!ATTLIST patterngroup label CDATA "">
+
+  <!-- Pattern Element -->
+  <!ELEMENT pattern (word | wordgroup)+>
+  <!ATTLIST pattern name ID #REQUIRED>
+  <!ATTLIST pattern description CDATA "">
+  <!ATTLIST pattern class CDATA #REQUIRED>
+  <!ATTLIST pattern priority CDATA "1">
+  <!ATTLIST pattern label CDATA "">
+
+  <!-- Word element -->
+  <!ELEMENT word EMPTY>
+  <!ATTLIST word min CDATA "1">
+  <!ATTLIST word max CDATA "1">
+  <!ATTLIST word contextual CDATA "false">
+  <!ATTLIST word label CDATA "">
+  <!-- Specific Word Matching -->
+  <!ATTLIST word lemma CDATA "">
+  <!ATTLIST word word CDATA "">
+  <!-- Parts of Speech -->
+  <!ATTLIST word pos CDATA "*">
+  <!ATTLIST word expos CDATA "">
+  <!-- Dependencies -->
+  <!ATTLIST word deps CDATA "*">
+  <!ATTLIST word exdeps CDATA "">
+  <!ATTLIST word depnum CDATA "1">
+  <!-- Additional Type -->
+  <!ATTLIST word type CDATA "*">
+  <!ATTLIST word extype CDATA "">
+  <!ATTLIST word typenum CDATA "1">
+
+  <!ELEMENT wordgroup (word)+>
+  <!ATTLIST wordgroup min CDATA "1">
+  <!ATTLIST wordgroup max CDATA "1">
+  <!ATTLIST wordgroup label CDATA "">
+]>

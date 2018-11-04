@@ -98,6 +98,8 @@ class StringMatching():
 class ListMatching():
     @staticmethod
     def is_match(values: str, attributes: ListAttributes, required=1):
+        # Match the required number of values using the requirements in the
+        # provided ListAttributes object
         match_count = 0
         for value in values.split(','):
             # first check that the value has the required attributes
@@ -119,6 +121,8 @@ class ListMatching():
 
             # didn't fail any of the checks, therefore it passes
             match_count += 1
+
+        # Only return True if enough matches were found.
         if match_count >= required:
             return True
         else:
