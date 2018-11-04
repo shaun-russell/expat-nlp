@@ -1,66 +1,28 @@
-# PROGRAM_NAME (used as 'executable-name')
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  EXPAT Template Description
 
-This program does XYZ.
+  Structural Hierarchy:
+> root
+  > patterngroup
+    > pattern
+      > word
+      > group
+        > word
+        > word
+        > ...
+      > word
+      > ...
+    > ...
 
-This program supports ABC.
-
-Additional features include 123.
-
-## Installation
-Download the files and install locally with pip. Requires Python 3 and the `click` package (this should be installed automatically because it's a required package).
-
-`pip install .`
-
-Once installed, run `NAME -h` or `NAME --help` in the terminal for usage instructions.
-
-## Usage
-This is what the help screen shows.
-```
-TERMINAL USAGE OUTPUT HERE
-```
-
-## Examples
-Using the sample files, an example is:
-
-`EXAMPLE`
-
-This example does _a thing_.
-
-## Notes
-- Does x.
-- Has y.
-- Default w is z.
-
-## To-do
-- List stuff here.
-
-
-## Pattern File Description
-``` xml
-EXPAT Template Description
-
-Structural Hierarchy:
-<root>
-  <patterngroup>
-    <pattern>
-      <word />
-      <group>
-        <word />
-        <word />
-        ...
-      <word />
-      ...
-    ...
 
   Notes:
-  - A * own matches anything.
+  - A * on it's own matches anything.
   - The star can be used to match anything starting with a character, so
     VB* matches VBD, VBG and VBZ. *S would match NNS and NNPS.
   - A missing attribute is like a * in most cases. The assumption is that
     if the attibute was not specified, skip all the associated checks.
-```
 
-``` perl
   Elements and Attributes:
     <root>
     # Root element. Some version in the future may add other elements that
@@ -148,4 +110,32 @@ Structural Hierarchy:
       # The minimum number of items in this group to match
     - max : number
       # The maximum number of items in this group to match.
-```
+  
+-->
+<root version="1.0">
+  <patterngroup label="basic">
+    <pattern name="named pattern" class="examples" description="for example purposes" priority="7"> 
+      <!-- Find a word whose PoS begins with NN but isn't a plural, and is of type TXE or HGH -->
+      <word pos="NN*" expos="*S" type="TXE,HGH"/>
+
+      <!-- Optional preposition -->
+      <word pos="IN" min="0">
+
+      <!-- Find a word that is either (but not both) of the following -->
+      <group min="1" max="1">
+        <!-- Verb or adverb, not TFL type and not an amod dependency -->
+        <word pos="VB*,RB" extype="TFL" exdep="amod"/>
+        
+        <!-- Any part of speech and either nsubj and/or dobj -->
+        <word pos="*" deps="nsubj,dobj" depnum="1"/>
+      </group>
+    </pattern>
+
+    <!-- Find up to 3 adjectives that are preceded by a noun, but the noun
+         is only for contextual purposes. -->
+    <pattern>
+      <word pos='JJ*' max="3"/>
+      <word pos='NN*' contextual='True'/>
+    </pattern>
+  </patterngroup>
+</root>
