@@ -1,7 +1,6 @@
 ''' Tool for FUNCTION and FUNCTION. '''
 
 # Better description of thing.
-import os
 import click
 
 # used to tell Click that -h is shorthand for help
