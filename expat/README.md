@@ -1,5 +1,5 @@
 # TO DO: Replace readme placeholders with actual content
-# PROGRAM_NAME (used as 'executable-name')
+# EXPAT (used as 'expat <command> <etc>')
 
 This program does XYZ.
 
@@ -12,7 +12,7 @@ Download the files and install locally with pip. Requires Python 3 and the `clic
 
 `pip install .`
 
-Once installed, run `NAME -h` or `NAME --help` in the terminal for usage instructions.
+Once installed, run `expat -h` or `expat --help` in the terminal for usage instructions.
 
 ## Usage
 This is what the help screen shows.
@@ -33,7 +33,12 @@ This example does _a thing_.
 - Default w is z.
 
 ## To-do
-- List stuff here.
+[x] XML Spec and DTD done
+[ ] Create classes for the XML elements
+[ ] Read and parse XML file
+[ ] Check that default values are working
+[ ] Connect to Stanford NLP Server
+[ ] Main Processing Loop to parse sentence
 
 
 ## Pattern File Description
