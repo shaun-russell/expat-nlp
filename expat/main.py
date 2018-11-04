@@ -57,6 +57,13 @@ def cli(in_file, out_file,
   # main operation in here
   for line in in_file:
     
+    # TODO
+    # main processing loop (probably in its own file)
+
+
+
+
+
     # periodic progress updates
     word_index += 1
     if verbose and word_index % 10 == 0:

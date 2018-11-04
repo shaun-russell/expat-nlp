@@ -1,11 +1,13 @@
 ''' Functions and classes for matching and comparing strings. '''
 
+from core.structures import ListAttributes
+
 # This class allows the functions to be returned by functions and avoids
 # problems with inconsistent parameters that may arise from using built-in
 # methods of strings.
 
 
-class Matching():
+class StringMatching():
     ''' Independent functions for comparing string values. '''
 
     # ________________________
@@ -53,38 +55,71 @@ class Matching():
         ''' Returns a matching function based on the position of a * in the string. '''
         if '*' not in value:
             # 'abc', 'abc'
-            return Matching._is_exact
+            return StringMatching._is_exact
         elif value.startswith('*') and value.endswith('*'):
             # 'abc', '*b*'
-            return Matching._contains
+            return StringMatching._contains
         elif value.startswith('*'):
             # 'abc', '*bc'
-            return Matching._ends_with
+            return StringMatching._ends_with
         elif value.endswith('*'):
             # 'abc', 'a*'
-            return Matching._starts_with
+            return StringMatching._starts_with
         else:
             # 'abc', 'a*c'
-            return Matching._surrounds
+            return StringMatching._surrounds
 
     @staticmethod
-    def is_match(word: str, match_strings: list, ignore_case=True):
+    def is_match(word: str, match_strings: list, ignore_case=True, required=1):
         ''' Returns True if any of the match_strings apply to the word. '''
         # Cache the uppercase word if ignoring case
         word = word.upper() if ignore_case else word
 
+        match_count = 0
         # try find a match
         for match in match_strings:
             # uppercase everything if ignoring case
             match = match.upper() if ignore_case else match
 
             # get and apply the function
-            match_function = Matching._get_match_function(match)
+            match_function = StringMatching._get_match_function(match)
             result = match_function(word, match)
 
-            # if result is a match, return True. No need to evaluate the rest.
+            # Return True if there is the correct number of matches
             if result:
-                return True
+                match_count += 1
+                if match_count >= required:
+                    return True
 
         # if it gets to this point, no matches have been found.
         return False
+
+
+class ListMatching():
+    @staticmethod
+    def is_match(values: str, attributes: ListAttributes, required=1):
+        match_count = 0
+        for value in values.split(','):
+            # first check that the value has the required attributes
+            matches = True
+            if attributes.has_match_requirements:
+                matches = StringMatching.is_match(value, attributes.to_find,
+                                                required=attributes.required_num)
+            # False if it failed this check
+            if not matches:
+                continue
+            
+            # now check that it doesn't have the excluded
+            if attributes.has_exclusions:
+                matches = not StringMatching.is_match(value, attributes.to_exclude)
+
+            # False if it failed this check
+            if not matches:
+                continue
+
+            # didn't fail any of the checks, therefore it passes
+            match_count += 1
+        if match_count >= required:
+            return True
+        else:
+            return False
