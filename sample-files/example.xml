@@ -119,13 +119,13 @@
       <word pos="NN*" expos="*S" type="TXE,HGH"/>
 
       <!-- Optional preposition -->
-      <word pos="IN" min="0">
+      <word pos="IN" min="0" max="1" label="optional preposition" />
 
       <!-- Find a word that is either (but not both) of the following -->
       <group min="1" max="1">
         <!-- Verb or adverb, not TFL type and not an amod dependency -->
         <word pos="VB*,RB" extype="TFL" exdep="amod"/>
-        
+
         <!-- Any part of speech and either nsubj and/or dobj -->
         <word pos="*" deps="nsubj,dobj" depnum="1"/>
       </group>
@@ -133,9 +133,16 @@
 
     <!-- Find up to 3 adjectives that are preceded by a noun, but the noun
          is only for contextual purposes. -->
-    <pattern>
+    <pattern name="3JJ-NN">
       <word pos='JJ*' max="3"/>
       <word pos='NN*' contextual='True'/>
+    </pattern>
+
+    <!-- Match 'gone' preceded by lemmas of anything starting with 'toast', and 'be' -->
+    <pattern name="be-gone">
+      <word lemma="toast*" />
+      <word lemma="be" />
+      <word word="gone" />
     </pattern>
   </patterngroup>
 </root>
