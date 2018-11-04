@@ -5,7 +5,7 @@
 # methods of strings.
 
 
-class MatchingFunctions():
+class Matching():
     ''' Independent functions for comparing string values. '''
 
     # ________________________
@@ -53,19 +53,19 @@ class MatchingFunctions():
         ''' Returns a matching function based on the position of a * in the string. '''
         if '*' not in value:
             # 'abc', 'abc'
-            return MatchingFunctions._is_exact
+            return Matching._is_exact
         elif value.starts_with('*') and value.ends_with('*'):
             # 'abc', '*b*'
-            return MatchingFunctions._contains
+            return Matching._contains
         elif value.starts_with('*'):
             # 'abc', '*bc'
-            return MatchingFunctions._ends_with
+            return Matching._ends_with
         elif value.ends_with('*'):
             # 'abc', 'a*'
-            return MatchingFunctions._starts_with
+            return Matching._starts_with
         else:
             # 'abc', 'a*c'
-            return MatchingFunctions._surrounds
+            return Matching._surrounds
 
     @staticmethod
     def is_match(word: str, match_strings: list, ignore_case=True):
@@ -79,7 +79,7 @@ class MatchingFunctions():
             match = match.upper() if ignore_case else match
 
             # get and apply the function
-            match_function = MatchingFunctions._get_match_function(
+            match_function = Matching._get_match_function(
                 match_string)
             result = match_function(word, match_string)
 
