@@ -66,7 +66,7 @@ class MatchingFunctions():
       return MatchingFunctions._surrounds
 
   @staticmethod
-  def is_match(word: str, match_strings, ignore_case=True):
+  def is_match(word: str, match_strings: list, ignore_case=True):
     ''' Returns True if any of the match_strings apply to the word. '''
     # Cache the uppercase word if ignoring case
     word = word.upper() if ignore_case else word
@@ -86,17 +86,3 @@ class MatchingFunctions():
 
     # if it gets to this point, no matches have been found.
     return False
-
-
-def is_partial(string: str):
-  return '*' in string
-
-
-def is_string_in_list(value: str, listitems: list):
-  ''' Determines if the list contains a string using stars. '''
-  # star is in value, look for partials
-  if is_partial(value)
-    pass
-  
-  for item in listitems:
-    if is_partial()
