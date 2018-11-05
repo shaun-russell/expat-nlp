@@ -53,7 +53,8 @@ def cli(in_file, out_file,
   eol = '\r\n' if dos_eol else '\n'
 
   word_index = 0
-  
+
+  default_server_url = 'http://localhost:9000'
   # main operation in here
   for line in in_file:
     

@@ -14,6 +14,7 @@ class TestMatching(unittest.TestCase):
     item_at_2 = annotated_sentence.at(2)
     self.assertEqual(item_at_2.pos, 'NNS')
     self.assertEqual(item_at_2.word, 'pears')
+    self.assertEqual(item_at_2.lemma, None)
 
   def test_annotate_outside_range_high(self):
     sentence = 'Apples and pears are like badgers and bears.'

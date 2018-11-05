@@ -127,3 +127,11 @@ class ListMatching():
             return True
         else:
             return False
+
+
+class PatternMatcher():
+    ''' The main class that finds pattern matches in annotated sentences.'''
+    @staticmethod
+    def get_pattern_matches(sentence_tokens):
+        # TODO this.
+        pass
