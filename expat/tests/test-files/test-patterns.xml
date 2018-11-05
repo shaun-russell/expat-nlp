@@ -1,20 +1,8 @@
-''' Tests for the parse.py file. '''
-import unittest
-import core.parse as parse
-import xml.etree.cElementTree as etree
-
-# the file path to a copy of the xml string below
-XML_FILEPATH = 'tests/test-files/test-patterns.xml'
-# Rather than reading a file, just use the string for most tests.
-XML_SAMPLE = '''
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE root [
-  <!-- Root Element -->
-  <!ELEMENT root (patterngroup)+>
-  <!ATTLIST root version CDATA #REQUIRED>
-
+<!DOCTYPE patterngroup [
   <!-- Pattern Group Element -->
   <!ELEMENT patterngroup (pattern)+>
+  <!ATTLIST patterngroup version CDATA #REQUIRED>
   <!ATTLIST patterngroup label CDATA "">
 
   <!-- Pattern Element -->
@@ -46,6 +34,7 @@ XML_SAMPLE = '''
   <!ATTLIST word extype CDATA "">
   <!ATTLIST word typenum CDATA "1">
 
+  <!-- Word Group element -->
   <!ELEMENT wordgroup (word)+>
   <!ATTLIST wordgroup min CDATA "1">
   <!ATTLIST wordgroup max CDATA "1">
@@ -86,51 +75,3 @@ XML_SAMPLE = '''
   </pattern>
 </patterngroup>
 
-'''
-
-# STRING MATCHING
-# write tests for the following
-class TestParsing(unittest.TestCase):
-  def test_parse_loads(self):
-    tree = etree.fromstring(XML_SAMPLE.strip())
-    for child in tree.getchildren():
-      for gchild in child.getchildren():
-        for ggchild in gchild.getchildren():
-          pass
-    # if it passes those loops, then no problems reading tree
-    self.assertEqual(True, True)
-
-  def test_parse_tree_parse1(self):
-    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_tag = xmltree.patterns[0].children[1].pos
-    self.assertEqual(expected_tag, 'IN')
-
-  def test_parse_tree_parse2(self):
-    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_tag = xmltree.patterns[1].name
-    self.assertEqual(expected_tag, 'JJ3-NN')
-
-  def test_parse_tree_parse3(self):
-    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    is_contextual = xmltree.patterns[1].children[1].is_contextual
-    self.assertEqual(is_contextual, True)
-
-  def test_parse_tree_parse4(self):
-    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_tag = xmltree.patterns[2].children[2].word
-    self.assertEqual(expected_tag, 'gone')
-
-  def test_parse_tree_parse5(self):
-    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_value = xmltree.patterns[0].children[2].min
-    self.assertEqual(expected_value, 1)
-
-  def test_parse_tree_parse6(self):
-    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_tag = xmltree.patterns[0].children[0].dependencies
-    self.assertEqual(expected_tag, '*')
-
-  def test_parse_tree_filetest1(self):
-    xmltree = parse.Parser.parse_patterns(XML_FILEPATH, True)
-    expected_tag = xmltree.patterns[0].children[0].dependencies
-    self.assertEqual(expected_tag, '*')
