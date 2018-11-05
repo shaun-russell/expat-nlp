@@ -1,5 +1,7 @@
 ''' Common structures to pass data around. '''
 
+from core.helpers import get_value
+
 # Many of these class descriptions aren't very useful. At some point,
 # write better definitions.
 
@@ -83,3 +85,32 @@ class PatternWord():
     # words and lemmas
     self.word = tree.get('word')
     self.lemma = tree.get('lemma')
+
+
+
+class AnnotatedSentence():
+  # At this stage, this is just a list. However if if needs to be extended,
+  # it's easier to add to an existing class than switch from data structures.
+  ''' Container for annotated words. '''
+  def __init__(self, annotated_words):
+    self.words = annotated_words
+
+  def at(self, index):
+    if index >= len(self.words) or index < 0:
+      return None
+    return self.words[index]
+
+  def repair_indices(self):
+    for i,_ in enumerate(self.words):
+      # using words[i] because sometimes the copy is changed, rather than ref
+      words[i].index = i
+
+class AnnotatedWord():
+  def __init__(self, **kwargs):
+    self.index = get_value('index', kwargs, -1)
+    self.word = get_value('word', kwargs, None)
+    self.lemma = get_value('lemma', kwargs, None)
+    self.pos = get_value('pos', kwargs, None)
+    self.dependencies = get_value('dependencies', kwargs, [])
+    self.types = get_value('type', kwargs, [])
+
