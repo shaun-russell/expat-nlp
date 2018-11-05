@@ -59,13 +59,10 @@ Structural Hierarchy:
     ...
 
   DTD Spec for Validation:
-  <!DOCTYPE root [
-    <!-- Root Element -->
-    <!ELEMENT root (patterngroup)+>
-    <!ATTLIST root version CDATA #REQUIRED>
-
+  <!DOCTYPE patterngroup [
     <!-- Pattern Group Element -->
     <!ELEMENT patterngroup (pattern)+>
+    <!ATTLIST patterngroup version CDATA #REQUIRED>
     <!ATTLIST patterngroup label CDATA "">
 
     <!-- Pattern Element -->
