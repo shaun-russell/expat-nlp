@@ -34,6 +34,7 @@
   <!ATTLIST word extype CDATA "">
   <!ATTLIST word typenum CDATA "1">
 
+  <!-- Word Group element -->
   <!ELEMENT wordgroup (word)+>
   <!ATTLIST wordgroup min CDATA "1">
   <!ATTLIST wordgroup max CDATA "1">

@@ -1,5 +1,7 @@
 ''' Tests for the match.py file. '''
 import unittest
+import core.parse as parse
+import xml.etree.cElementTree as etree
 
 XML_SAMPLE = '''
 <?xml version="1.0" encoding="UTF-8"?>
@@ -48,47 +50,79 @@ XML_SAMPLE = '''
 ]>
 
 <!-- SEE README FOR USAGE AND DOCS -->
-<root version="1.0">
-  <patterngroup label="basic">
-    <pattern name="named-pattern" class="examples" description="for example purposes" priority="7"> 
-      <!-- Find a word whose PoS begins with NN but isn't a plural, and is of type TXE or HGH -->
-      <word pos="NN*" expos="*S" type="TXE,HGH"/>
+<patterngroup label="basic" version="1.0">
+  <pattern name="named-pattern" class="examples" description="for example purposes" priority="7"> 
+    <!-- Find a word whose PoS begins with NN but isn't a plural, and is of type TXE or HGH -->
+    <word pos="NN*" expos="*S" type="TXE,HGH"/>
 
-      <!-- Optional preposition -->
-      <word pos="IN" min="0" max="1" label="optional preposition" />
+    <!-- Optional preposition -->
+    <word pos="IN" min="0" max="1" label="optional preposition" />
 
-      <!-- Find a word that is either (but not both) of the following -->
-      <wordgroup min="1" max="1">
-        <!-- Verb or adverb, not TFL type and not an amod dependency -->
-        <word pos="VB*,RB" extype="TFL" exdeps="amod"/>
+    <!-- Find a word that is either (but not both) of the following -->
+    <wordgroup min="1" max="1">
+      <!-- Verb or adverb, not TFL type and not an amod dependency -->
+      <word pos="VB*,RB" extype="TFL" exdeps="amod"/>
 
-        <!-- Any part of speech and either nsubj and/or dobj -->
-        <word pos="*" deps="nsubj,dobj" depnum="1"/>
-      </wordgroup>
-    </pattern>
+      <!-- Any part of speech and either nsubj and/or dobj -->
+      <word pos="*" deps="nsubj,dobj" depnum="1"/>
+    </wordgroup>
+  </pattern>
 
-    <!-- Find up to 3 adjectives that are preceded by a noun, but the noun
-         is only for contextual purposes. -->
-    <pattern name="JJ3-NN" class="examples">
-      <word pos='JJ*' max="3"/>
-      <word pos='NN*' contextual='True'/>
-    </pattern>
+  <!-- Find up to 3 adjectives that are preceded by a noun, but the noun
+        is only for contextual purposes. -->
+  <pattern name="JJ3-NN" class="examples">
+    <word pos='JJ*' max="3"/>
+    <word pos='NN*' contextual='True'/>
+  </pattern>
 
-    <!-- Match 'gone' preceded by lemmas of anything starting with 'toast', and 'be' -->
-    <pattern name="be-gone" class="word examples">
-      <word lemma="toast*" />
-      <word lemma="be" />
-      <word word="gone" />
-    </pattern>
-  </patterngroup>
-</root>
+  <!-- Match 'gone' preceded by lemmas of anything starting with 'toast', and 'be' -->
+  <pattern name="be-gone" class="word examples">
+    <word lemma="toast*" />
+    <word lemma="be" />
+    <word word="gone" />
+  </pattern>
+</patterngroup>
 
 '''
 
 # STRING MATCHING
 # write tests for the following
 class TestParsing(unittest.TestCase):
-  # 1. Match startswith PASS
   def test_parse_loads(self):
-    self.fail()
+    tree = etree.fromstring(XML_SAMPLE.strip())
+    for child in tree.getchildren():
+      for gchild in child.getchildren():
+        for ggchild in gchild.getchildren():
+          pass
+    # if it passes those loops, then no problems reading tree
     self.assertEqual(True, True)
+
+  def test_parse_tree_parse1(self):
+    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
+    expected_tag = xmltree.patterns[0].children[1].pos
+    self.assertEqual(expected_tag, 'IN')
+
+  def test_parse_tree_parse2(self):
+    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
+    expected_tag = xmltree.patterns[1].name
+    self.assertEqual(expected_tag, 'JJ3-NN')
+
+  def test_parse_tree_parse3(self):
+    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
+    is_contextual = xmltree.patterns[1].children[1].is_contextual
+    self.assertEqual(is_contextual, True)
+
+  def test_parse_tree_parse4(self):
+    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
+    expected_tag = xmltree.patterns[2].children[2].word
+    self.assertEqual(expected_tag, 'gone')
+
+  def test_parse_tree_parse5(self):
+    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
+    expected_value = xmltree.patterns[0].children[2].min
+    self.assertEqual(expected_value, 1)
+
+  def test_parse_tree_parse6(self):
+    xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
+    expected_tag = xmltree.patterns[0].children[0].dependencies
+    self.assertEqual(expected_tag, '*')
