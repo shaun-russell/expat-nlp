@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(
-  name='EXEC_NAME',
+  name='expat-nlp',
   version='1.0',
-  py_modules=['MAIN', 'FILE2'],
-  install_requires=['Click'],
+  py_modules=['main', 'parse', 'match', 'structures'],
+  install_requires=['Click', 'lxml'],
   entry_points='''
     [console_scripts]
-    MAIN=MAIN:cli
+    main=main:cli
   '''
 )
