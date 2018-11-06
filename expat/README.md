@@ -20,6 +20,10 @@ This is what the help screen shows.
 TERMINAL USAGE OUTPUT HERE
 ```
 
+To start the CoreNLP Server, use this script.
+``` sh
+java -mx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000 -annotators tokenize,ssplit,pos,lemma,ner,truecase,parse,depparse ```
+
 ## Examples
 Using the sample files, an example is:
 
@@ -154,9 +158,15 @@ Structural Hierarchy:
     
     - deps : string
       # The dependencies to match. Multiple values are comma-delimited.
-      # Supports * character.
+      # The dependency requires the Governor and Dependent to be specified as a suffix.
+      # The following formats are acceptable:
+      #   - 'conj-d' for the dependent of a conj.
+      #   - 'conj-g' for the governor of a conj.
+      #   - 'conj*' or 'conj-*' for either the dependent or governer of a conj.
     - exdeps : string
       # The dependencies to exclude. Multiple values are comma-delimited.
+      # Supports the same dependency relationship suffixes.
+      # Has the same suffix requirements as 'deps'
       # Supports * character.
     - depnum : numeric
       # The required number of dependencies. If 2 dependencies are specified,

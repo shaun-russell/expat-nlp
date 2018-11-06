@@ -111,6 +111,7 @@ class AnnotatedWord():
     self.word = get_value('word', kwargs, None)
     self.lemma = get_value('lemma', kwargs, None)
     self.pos = get_value('pos', kwargs, None)
-    self.dependencies = get_value('dependencies', kwargs, [])
-    self.types = get_value('type', kwargs, [])
+    self.dependencies = get_value('dependencies', kwargs, '')
+    self.types = get_value('type', kwargs, '')
+    self.ner = get_value('ner', kwargs, 'O') # O is none
 

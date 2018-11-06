@@ -66,6 +66,11 @@ class TestMatching(unittest.TestCase):
     strings = 'A*Fruit Mangoes'.split(',')
     self.assertEqual(False, StringMatching.is_match(word, strings))
 
+  def test_match_surround_pass_cased(self):
+    word = 'Orange Fruit Mangoes'
+    strings = '*FRUIT*'.split(',')
+    self.assertEqual(True, StringMatching.is_match(word, strings))
+
   # 11. Match mixed PASS 1
   def test_match_mixed_pass1(self):
     word = 'Oranges'
@@ -186,8 +191,35 @@ class TestMatching(unittest.TestCase):
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail7(self):
-    # matches the 2 required
+    # match the 3 required
     value = 'PNG,JPG,TIFF'
     attributes = ListAttributes('*G*', '', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes, required=3))
 
+  def test_dependency_matching1(self):
+    # match anything starting with cc-conj
+    deps = 'cc-conj-d'
+    dep_pattern = 'cc-conj*'
+    attributes = ListAttributes(dep_pattern, '', 1)
+    self.assertEqual(True, ListMatching.is_match(deps, attributes, required=1))
+
+  def test_dependency_matching2(self):
+    # Pattern looks for dependent, not governor
+    deps = 'cc-conj-g'
+    dep_pattern = 'cc-conj-d'
+    attributes = ListAttributes(dep_pattern, '', 1)
+    self.assertEqual(False, ListMatching.is_match(deps, attributes, required=1))
+
+  def test_dependency_matching3(self):
+    # require 2 conj dependencies
+    deps = 'cc-conj-d,cc-conj-g'
+    dep_pattern = 'cc-conj*'
+    attributes = ListAttributes(dep_pattern, '', 1)
+    self.assertEqual(True, ListMatching.is_match(deps, attributes, required=2))
+
+  def test_dependency_matching4(self):
+    # match the conj, but exclude because it contains an excluded
+    deps = 'cc-conj-d,cc-conj-g'
+    dep_pattern = 'cc-conj*'
+    attributes = ListAttributes(dep_pattern, 'cc-conj-g', 1)
+    self.assertEqual(False, ListMatching.is_match(deps, attributes, required=1))

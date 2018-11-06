@@ -115,9 +115,10 @@ class ListMatching():
             if attributes.has_exclusions:
                 matches = not StringMatching.is_match(value, attributes.to_exclude)
 
-            # False if it failed this check
+            # If the value we're checking has an excluded value, then rather than
+            # skip it (like we would for a non-match), this disqualifies all values.
             if not matches:
-                continue
+                return False
 
             # didn't fail any of the checks, therefore it passes
             match_count += 1
