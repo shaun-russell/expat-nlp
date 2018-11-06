@@ -1,7 +1,41 @@
 ''' Tests for the match.py file. '''
 import unittest
-from core.match import StringMatching, ListMatching
-from core.structures import ListAttributes
+from core.match import StringMatching, ListMatching,PatternMatcher
+from core.structures import AttributeSet,PatternWord,AnnotatedWord
+import xml.etree.cElementTree as etree
+
+pattern_pfx = '''
+<!DOCTYPE root [
+  <!-- Word element -->
+  <!ELEMENT word EMPTY>
+  <!ATTLIST word min CDATA "1">
+  <!ATTLIST word max CDATA "1">
+  <!ATTLIST word contextual CDATA "false">
+  <!ATTLIST word label CDATA "">
+  <!-- Specific Word Matching -->
+  <!ATTLIST word lemma CDATA "*">
+  <!ATTLIST word word CDATA "*">
+  <!-- Parts of Speech -->
+  <!ATTLIST word pos CDATA "*">
+  <!ATTLIST word expos CDATA "">
+  <!-- Dependencies -->
+  <!ATTLIST word deps CDATA "*">
+  <!ATTLIST word exdeps CDATA "">
+  <!ATTLIST word depnum CDATA "1">
+  <!-- Additional Type -->
+  <!ATTLIST word type CDATA "*">
+  <!ATTLIST word extype CDATA "">
+  <!ATTLIST word typenum CDATA "1">
+  <!ATTLIST word ner CDATA "O">
+
+  <!ELEMENT wordgroup (word)+>
+  <!ATTLIST wordgroup min CDATA "1">
+  <!ATTLIST wordgroup max CDATA "1">
+  <!ATTLIST wordgroup label CDATA "">
+]>
+'''
+
+
 
 # STRING MATCHING
 # write tests for the following
@@ -129,97 +163,177 @@ class TestMatching(unittest.TestCase):
   # ATTRIBUTE LIST MATCHING
   def test_attr_list_pass1(self):
     value = 'DEF'
-    attributes = ListAttributes('ABC,DEF', 'GHI', 1)
+    attributes = AttributeSet('ABC,DEF', 'GHI', 1)
     self.assertEqual(True, ListMatching.is_match(value, attributes))
 
   def test_attr_list_pass2(self):
     value = 'FHI'
-    attributes = ListAttributes('*', 'G*', 1)
+    attributes = AttributeSet('*', 'G*', 1)
     self.assertEqual(True, ListMatching.is_match(value, attributes))
 
   def test_attr_list_pass3(self):
     value = 'AVG'
-    attributes = ListAttributes('A*,*G', 'GHI', 2)
+    attributes = AttributeSet('A*,*G', 'GHI', 2)
     self.assertEqual(True, ListMatching.is_match(value, attributes))
 
   def test_attr_list_pass4(self):
     # matches the 2 required
     value = 'PNG,JPG,TIFF'
-    attributes = ListAttributes('*G*', '', 1)
+    attributes = AttributeSet('*G*', '', 1)
     self.assertEqual(True, ListMatching.is_match(value, attributes, required=2))
 
   def test_attr_list_pass5(self):
     # no restrictions on matching
     value = '123'
-    attributes = ListAttributes('', '', 1)
+    attributes = AttributeSet('', '', 1)
     self.assertEqual(True, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail1(self):
     # exact match exclusion
     value = 'GHI'
-    attributes = ListAttributes('ABC,DEF', 'GHI', 1)
+    attributes = AttributeSet('ABC,DEF', 'GHI', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail2(self):
     # check an exclusion inside
     value = '1234 HI5'
-    attributes = ListAttributes('ABC,DEF', '*HI*', 1)
+    attributes = AttributeSet('ABC,DEF', '*HI*', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail3(self):
     # check that exclusions take precedence over matches
     value = 'AVG'
-    attributes = ListAttributes('A*,*F', '*G', 1)
+    attributes = AttributeSet('A*,*F', '*G', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail4(self):
     # check matching * but having a matching exclusion
     value = 'GBG'
-    attributes = ListAttributes('*', 'G*', 1)
+    attributes = AttributeSet('*', 'G*', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail5(self):
     # check list of exclusions
     value = 'GBG'
-    attributes = ListAttributes('*', 'A*,B*,G*', 1)
+    attributes = AttributeSet('*', 'A*,B*,G*', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail6(self):
     # doesn't match the 3 required
     value = 'PNG,JPG,TIFF'
-    attributes = ListAttributes('*G*', '', 3)
+    attributes = AttributeSet('*G*', '', 3)
     self.assertEqual(False, ListMatching.is_match(value, attributes))
 
   def test_attr_list_fail7(self):
     # match the 3 required
     value = 'PNG,JPG,TIFF'
-    attributes = ListAttributes('*G*', '', 1)
+    attributes = AttributeSet('*G*', '', 1)
     self.assertEqual(False, ListMatching.is_match(value, attributes, required=3))
 
   def test_dependency_matching1(self):
     # match anything starting with cc-conj
     deps = 'cc-conj-d'
     dep_pattern = 'cc-conj*'
-    attributes = ListAttributes(dep_pattern, '', 1)
+    attributes = AttributeSet(dep_pattern, '', 1)
     self.assertEqual(True, ListMatching.is_match(deps, attributes, required=1))
 
   def test_dependency_matching2(self):
     # Pattern looks for dependent, not governor
     deps = 'cc-conj-g'
     dep_pattern = 'cc-conj-d'
-    attributes = ListAttributes(dep_pattern, '', 1)
+    attributes = AttributeSet(dep_pattern, '', 1)
     self.assertEqual(False, ListMatching.is_match(deps, attributes, required=1))
 
   def test_dependency_matching3(self):
     # require 2 conj dependencies
     deps = 'cc-conj-d,cc-conj-g'
     dep_pattern = 'cc-conj*'
-    attributes = ListAttributes(dep_pattern, '', 1)
+    attributes = AttributeSet(dep_pattern, '', 1)
     self.assertEqual(True, ListMatching.is_match(deps, attributes, required=2))
 
   def test_dependency_matching4(self):
     # match the conj, but exclude because it contains an excluded
     deps = 'cc-conj-d,cc-conj-g'
     dep_pattern = 'cc-conj*'
-    attributes = ListAttributes(dep_pattern, 'cc-conj-g', 1)
+    attributes = AttributeSet(dep_pattern, 'cc-conj-g', 1)
     self.assertEqual(False, ListMatching.is_match(deps, attributes, required=1))
+
+
+
+
+  def test_pattern_to_word_matching1(self):
+    anword = AnnotatedWord(index=7,
+                           word='bongoes',
+                           lemma='bongo',
+                           pos='IN',
+                           ner='O',
+                           dependencies='cc-conj-d')
+    pattern = pattern_pfx+'<word pos="IN" lemma="bon*" max="1"/>'
+    tree = etree.fromstring(pattern)
+    pattern_word = PatternWord(tree)
+    self.assertEqual(True,PatternMatcher.word_matches_pattern(anword, pattern_word))
+
+  def test_pattern_to_word_matching2(self):
+    anword = AnnotatedWord(index=5,
+                           word='baboons',
+                           lemma='bongo',
+                           pos='NN',
+                           ner='O',
+                           dependencies='cc-conj-d')
+    pattern = pattern_pfx+'<word word="*loon*"/>'
+    tree = etree.fromstring(pattern)
+    # print('\nPATTERN START\n')
+    pattern_word = PatternWord(tree)
+    self.assertEqual(False, PatternMatcher.word_matches_pattern(anword, pattern_word))
+
+  def test_pattern_to_word_matching3(self):
+    anword = AnnotatedWord(index=5,
+                           word='baboons',
+                           lemma='bongo',
+                           pos='NNS',
+                           ner='O',
+                           dependencies='cc-conj-d')
+    pattern = pattern_pfx+'<word pos="*" deps="cc*"/>'
+    tree = etree.fromstring(pattern)
+    pattern_word = PatternWord(tree)
+    self.assertEqual(True,PatternMatcher.word_matches_pattern(anword, pattern_word, verbose=True))
+
+
+  def test_pattern_to_word_matching4(self):
+    anword = AnnotatedWord(index=5,
+                           word='baboon',
+                           lemma='bongo',
+                           pos='NN',
+                           ner='O',
+                           dependencies='cc-conj-d')
+    pattern = pattern_pfx+'<word expos="*N*" word="baboon"/>'
+    tree = etree.fromstring(pattern)
+    pattern_word = PatternWord(tree)
+    self.assertEqual(False, PatternMatcher.word_matches_pattern(anword, pattern_word))
+
+
+  def test_pattern_to_word_matching5(self):
+    anword = AnnotatedWord(index=5,
+                           word='baboons',
+                           lemma='bongo',
+                           pos='NN',
+                           ner='O',
+                           dependencies='cc-conj-d')
+    pattern = pattern_pfx+'<word deps="cc-con*" exdeps="*-d"/>'
+    tree = etree.fromstring(pattern)
+    pattern_word = PatternWord(tree)
+    self.assertEqual(False, PatternMatcher.word_matches_pattern(anword, pattern_word))
+
+  def test_pattern_to_word_matching6(self):
+    anword = AnnotatedWord(index=5,
+                           word='baboons',
+                           lemma='bongo',
+                           pos='NN',
+                           ner='O',
+                           dependencies='cc-conj-d')
+    pattern = pattern_pfx+'<word deps="cc-con*" exdeps="*-d"/>'
+    tree = etree.fromstring(pattern)
+    pattern_word = PatternWord(tree)
+    self.assertEqual(False, PatternMatcher.word_matches_pattern(anword, pattern_word))
+
+

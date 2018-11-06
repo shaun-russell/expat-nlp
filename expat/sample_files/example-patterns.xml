@@ -20,8 +20,8 @@
   <!ATTLIST word contextual CDATA "false">
   <!ATTLIST word label CDATA "">
   <!-- Specific Word Matching -->
-  <!ATTLIST word lemma CDATA "">
-  <!ATTLIST word word CDATA "">
+  <!ATTLIST word lemma CDATA "*">
+  <!ATTLIST word word CDATA "*">
   <!-- Parts of Speech -->
   <!ATTLIST word pos CDATA "*">
   <!ATTLIST word expos CDATA "">
@@ -33,6 +33,7 @@
   <!ATTLIST word type CDATA "*">
   <!ATTLIST word extype CDATA "">
   <!ATTLIST word typenum CDATA "1">
+  <!ATTLIST word ner CDATA "O">
 
   <!-- Word Group element -->
   <!ELEMENT wordgroup (word)+>

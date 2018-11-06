@@ -1,6 +1,7 @@
 ''' Functions and classes for matching and comparing strings. '''
 
-from core.structures import ListAttributes
+# TODO: tidy this up
+from core.structures import AttributeSet,AnnotatedSentence,AnnotatedWord,Pattern,WordGroup,PatternWord
 
 # This class allows the functions to be returned by functions and avoids
 # problems with inconsistent parameters that may arise from using built-in
@@ -70,8 +71,10 @@ class StringMatching():
             return StringMatching._surrounds
 
     @staticmethod
-    def is_match(word: str, match_strings: list, ignore_case=True, required=1):
+    def is_match(word: str, match_strings, ignore_case=True, required=1):
         ''' Returns True if any of the match_strings apply to the word. '''
+        if isinstance(match_strings, str):
+            match_strings = match_strings.split(',')
         # Cache the uppercase word if ignoring case
         word = word.upper() if ignore_case else word
 
@@ -97,9 +100,9 @@ class StringMatching():
 
 class ListMatching():
     @staticmethod
-    def is_match(values: str, attributes: ListAttributes, required=1):
+    def is_match(values: str, attributes: AttributeSet, required=1):
         # Match the required number of values using the requirements in the
-        # provided ListAttributes object
+        # provided AttributeSet object
         match_count = 0
         for value in values.split(','):
             # first check that the value has the required attributes
@@ -133,6 +136,41 @@ class ListMatching():
 class PatternMatcher():
     ''' The main class that finds pattern matches in annotated sentences.'''
     @staticmethod
-    def get_pattern_matches(sentence_tokens):
+    def get_pattern_matches(sentence: AnnotatedSentence, pattern: Pattern):
         # TODO this.
+        matches = []
+        pass
+
+    @staticmethod
+    def word_matches_pattern(an_word: AnnotatedWord, pt_word: PatternWord, verbose=False):
+        # use an IF because it shortcircuits to improve performance
+        if not StringMatching.is_match(an_word.word, pt_word.word):
+            if verbose:
+                print('fail: word')
+            return False
+        if not StringMatching.is_match(an_word.lemma, pt_word.lemma):
+            if verbose: print('fail: lemma')
+            return False
+        if not StringMatching.is_match(an_word.ner, pt_word.ner):
+            if verbose: print('fail: ner')
+            return False
+        if not ListMatching.is_match(an_word.pos, pt_word.pos_attributes):
+            if verbose: print('fail: pos')
+            return False
+        if not ListMatching.is_match(an_word.dependencies, pt_word.dep_attributes):
+            if verbose: print('fail: deps')
+            return False
+        if not ListMatching.is_match(an_word.types, pt_word.type_attributes):
+            if verbose: print('fail: type')
+            return False
+        return True
+
+
+# Use a Tree-like, recursive pattern matching method.
+# foreach word in the sentence, try start the pattern
+    # if word in pattern, get next word in pattern
+
+class WordGraph():
+    @staticmethod
+    def build_all(pattern):
         pass

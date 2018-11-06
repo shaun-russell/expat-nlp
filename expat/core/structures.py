@@ -5,7 +5,7 @@ from core.helpers import get_value
 # Many of these class descriptions aren't very useful. At some point,
 # write better definitions.
 
-class ListAttributes():
+class AttributeSet():
   def __init__(self, to_find, to_exclude, required_num):
 
     # easy to understand bool value. This could be put in a function, but it
@@ -13,7 +13,7 @@ class ListAttributes():
     self.has_match_requirements = to_find != '*' and to_find != ''
     self.to_find = to_find.split(',')
 
-    self.required_num = required_num
+    self.required_num = int(required_num)
 
     # if nothing specified, nothing to exclude
     self.to_exclude = to_exclude.split(',')
@@ -72,19 +72,30 @@ class PatternWord():
     self.is_contextual = bool(tree.get('contextual'))
     self.label = tree.get('label')
     # pos
-    self.pos = tree.get('pos')
-    self.excluded_pos = tree.get('expos')
+    self._pos = tree.get('pos')
+    self._excluded_pos = tree.get('expos')
+    self._num_pos_needed = 1
+    self.pos_attributes = AttributeSet(self._pos,
+                                       self._excluded_pos,
+                                       self._num_pos_needed)
     # dependencies
-    self.dependencies = tree.get('deps')
-    self.excluded_dependencies = tree.get('exdeps')
-    self.num_dependencies_needed = tree.get('depnum')
+    self._dependencies = tree.get('deps')
+    self._excluded_dependencies = tree.get('exdeps')
+    self._num_dependencies_needed = tree.get('depnum')
+    self.dep_attributes = AttributeSet(self._dependencies,
+                                       self._excluded_dependencies,
+                                       self._num_dependencies_needed)
     # types
-    self.types = tree.get('type')
-    self.excluded_types = tree.get('extype')
-    self.num_types_needed = tree.get('typenum')
+    self._types = tree.get('type')
+    self._excluded_types = tree.get('extype')
+    self._num_types_needed = tree.get('typenum')
+    self.type_attributes = AttributeSet(self._types,
+                                        self._excluded_types,
+                                        self._num_types_needed)
     # words and lemmas
     self.word = tree.get('word')
     self.lemma = tree.get('lemma')
+    self.ner = tree.get('ner')
 
 
 

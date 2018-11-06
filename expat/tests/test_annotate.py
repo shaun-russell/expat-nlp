@@ -1,7 +1,7 @@
 ''' Tests for the annotators.py file. '''
 import unittest
 from core.match import StringMatching, ListMatching
-from core.structures import ListAttributes
+from core.structures import AttributeSet
 from core.annotators import BasicNltkAnnotator,StanfordCoreNLPAnnotator
 
 corenlp_url = 'http://localhost:9000'

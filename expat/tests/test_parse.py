@@ -32,8 +32,9 @@ XML_SAMPLE = '''
   <!ATTLIST word contextual CDATA "false">
   <!ATTLIST word label CDATA "">
   <!-- Specific Word Matching -->
-  <!ATTLIST word lemma CDATA "">
-  <!ATTLIST word word CDATA "">
+  <!ATTLIST word lemma CDATA "*">
+  <!ATTLIST word word CDATA "*">
+  <!ATTLIST word ner CDATA "O">
   <!-- Parts of Speech -->
   <!ATTLIST word pos CDATA "*">
   <!ATTLIST word expos CDATA "">
@@ -102,7 +103,7 @@ class TestParsing(unittest.TestCase):
 
   def test_parse_tree_parse1(self):
     xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_tag = xmltree.patterns[0].children[1].pos
+    expected_tag = xmltree.patterns[0].children[1].pos_attributes.to_find[0]
     self.assertEqual(expected_tag, 'IN')
 
   def test_parse_tree_parse2(self):
@@ -127,10 +128,10 @@ class TestParsing(unittest.TestCase):
 
   def test_parse_tree_parse6(self):
     xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_tag = xmltree.patterns[0].children[0].dependencies
+    expected_tag = xmltree.patterns[0].children[0]._dependencies
     self.assertEqual(expected_tag, '*')
 
   def test_parse_tree_filetest1(self):
     xmltree = parse.Parser.parse_patterns(XML_FILEPATH, True)
-    expected_tag = xmltree.patterns[0].children[0].dependencies
+    expected_tag = xmltree.patterns[0].children[0]._dependencies
     self.assertEqual(expected_tag, '*')
