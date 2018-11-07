@@ -18,7 +18,7 @@ XML_SAMPLE = '''
   <!ATTLIST patterngroup label CDATA "">
 
   <!-- Pattern Element -->
-  <!ELEMENT pattern (word | wordgroup)+>
+  <!ELEMENT pattern (word)+>
   <!ATTLIST pattern name ID #REQUIRED>
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
@@ -46,11 +46,6 @@ XML_SAMPLE = '''
   <!ATTLIST word type CDATA "*">
   <!ATTLIST word extype CDATA "">
   <!ATTLIST word typenum CDATA "1">
-
-  <!ELEMENT wordgroup (word)+>
-  <!ATTLIST wordgroup min CDATA "1">
-  <!ATTLIST wordgroup max CDATA "1">
-  <!ATTLIST wordgroup label CDATA "">
 ]>
 
 <!-- SEE README FOR USAGE AND DOCS -->
@@ -61,15 +56,6 @@ XML_SAMPLE = '''
 
     <!-- Optional preposition -->
     <word pos="IN" min="0" max="1" label="optional preposition" />
-
-    <!-- Find a word that is either (but not both) of the following -->
-    <wordgroup min="1" max="1">
-      <!-- Verb or adverb, not TFL type and not an amod dependency -->
-      <word pos="VB*,RB" extype="TFL" exdeps="amod"/>
-
-      <!-- Any part of speech and either nsubj and/or dobj -->
-      <word pos="*" deps="nsubj,dobj" depnum="1"/>
-    </wordgroup>
   </pattern>
 
   <!-- Find up to 3 adjectives that are preceded by a noun, but the noun
@@ -123,8 +109,8 @@ class TestParsing(unittest.TestCase):
 
   def test_parse_tree_parse5(self):
     xmltree = parse.Parser.parse_patterns(XML_SAMPLE)
-    expected_value = xmltree.patterns[0].children[2].min
-    self.assertEqual(expected_value, 1)
+    expected_value = xmltree.patterns[0].children[1].min
+    self.assertEqual(expected_value, 0)
 
   def test_parse_tree_parse6(self):
     xmltree = parse.Parser.parse_patterns(XML_SAMPLE)

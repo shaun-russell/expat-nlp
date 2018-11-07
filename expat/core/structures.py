@@ -42,8 +42,8 @@ class Pattern():
     self.children = [Pattern.get_correct_class(el) for el in tree.getchildren()]
 
     # graph for pattern traversal and matching
-    self.graph = self._create_graph(self.children)
-    self.graph_entry_nodes = []
+    # self.graph = self._create_graph(self.children)
+    # self.graph_entry_nodes = []
 
   def _create_graph(self, pattern_items):
     dgraph = nx.DiGraph()
@@ -53,60 +53,37 @@ class Pattern():
     # establish the entry nodes for the pattern
     entry_nodes = []
     for (status,item) in decomposed_pattern:
-      if item.
+      pass
 
     print(decomposed_pattern)
     for item in decomposed_pattern:
-      if isinstance(item, PatternWord):
-        # add a single edge
-        if item.min > 0:
-          # at least 1 required node
-          pass
-        else:
-          # all nodes are optional
-          pass
+      # add a single edge
+      if item.min > 0:
+        # at least 1 required node
         pass
-      elif isinstance(item, WordGroup):
-        # add a non-optional option
+      else:
+        # all nodes are optional
         pass
-
+      pass
     return None
   
   def _decompose_pattern(self, pattern_items):
     ''' Separate pattern words into optional and required nodes. '''
     decomposed_list = []
     for item in pattern_items:
-      if isinstance(item, PatternWord):
-        for i in range(0, item.min):
-          decomposed_list.append(('required', item))
-        for i in range(item.max-item.min, item.max):
-          decomposed_list.append(('optional', item))
-      else:
-        # group
+      for i in range(0, item.min):
+        decomposed_list.append(('required', item))
+      for i in range(item.max-item.min, item.max):
+        decomposed_list.append(('optional', item))
     return decomposed_list
 
   @staticmethod
   def get_correct_class(element):
     if element.tag == 'word':
       return PatternWord(element)
-    elif element.tag == 'wordgroup':
-      return WordGroup(element)
-    # if it's not a word and word group, throw an exception rather than
-    # try to continue quietly.
     else:
-      raise ValueError('Element is not a word or wordgroup.') 
+      raise ValueError('Element is not a word.') 
 
-class WordGroup():
-  ''' A group that contains multiple pattern words. This allows matching of words
-      only if N of those words occur. Allows structures like ( word1 word2 ) | (word3). '''
-  def __init__(self, tree):
-    # min and max are the number of word matches needed for the whole
-    # group to match. If only 1 word matches and 2 are required, the 
-    # entire group fails to match.
-    self.min = int(tree.get('min'))
-    self.max = int(tree.get('max'))
-    self.label = tree.get('label')
-    self.words = [Pattern.get_correct_class(element) for element in tree.getchildren()]
 
 class PatternWord():
   # this description is terrible, change this at some point

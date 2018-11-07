@@ -43,7 +43,7 @@ This example does _a thing_.
 [x] Check that default values are working
 [x] Connect to Stanford NLP Server
 [ ] Main Processing Loop to parse sentence
-[ ] Rename WordGroup to WordSelector or something
+[ ] Remove WordGroup
 
 
 ## Pattern File Description
@@ -55,10 +55,6 @@ Structural Hierarchy:
   <patterngroup>
     <pattern>
       <word />
-      <wordgroup>
-        <word />
-        <word />
-        ...
       <word />
       ...
     ...
@@ -71,7 +67,7 @@ Structural Hierarchy:
     <!ATTLIST patterngroup label CDATA "">
 
     <!-- Pattern Element -->
-    <!ELEMENT pattern (word | wordgroup)+>
+    <!ELEMENT pattern (word)+>
     <!ATTLIST pattern name ID #REQUIRED>
     <!ATTLIST pattern description CDATA "">
     <!ATTLIST pattern class CDATA #REQUIRED>
@@ -98,11 +94,6 @@ Structural Hierarchy:
     <!ATTLIST word type CDATA "*">
     <!ATTLIST word extype CDATA "">
     <!ATTLIST word typenum CDATA "1">
-
-    <!ELEMENT wordgroup (word)+>
-    <!ATTLIST wordgroup min CDATA "1">
-    <!ATTLIST wordgroup max CDATA "1">
-    <!ATTLIST wordgroup label CDATA "">
   ]>
 
   Notes:
@@ -199,16 +190,4 @@ Structural Hierarchy:
 
     - label : string
       # Descriptive metadata for a word. Non-operative.
-
-    
-    # WordGroup should be renamed, because it acts like an OR block. One of the items in this Group must be selected. Allows more flexible optional word logic
-    <wordgroup>
-    # The wordgroup element is a container to allow sequences of words (or groups)
-    # to be matched.
-    - min : number
-      # The minimum number of items in this group to match
-    - max : number
-      # The maximum number of items in this group to match.
-    - label : string
-      # Descriptive metadata for the group. Non-operative.
 ```

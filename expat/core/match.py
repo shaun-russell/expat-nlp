@@ -1,7 +1,7 @@
 ''' Functions and classes for matching and comparing strings. '''
 
 # TODO: tidy this up
-from core.structures import AttributeSet,AnnotatedSentence,AnnotatedWord,Pattern,WordGroup,PatternWord
+from core.structures import AttributeSet,AnnotatedSentence,AnnotatedWord,Pattern,PatternWord
 
 # This class allows the functions to be returned by functions and avoids
 # problems with inconsistent parameters that may arise from using built-in

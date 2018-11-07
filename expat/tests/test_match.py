@@ -27,11 +27,6 @@ pattern_pfx = '''
   <!ATTLIST word extype CDATA "">
   <!ATTLIST word typenum CDATA "1">
   <!ATTLIST word ner CDATA "O">
-
-  <!ELEMENT wordgroup (word)+>
-  <!ATTLIST wordgroup min CDATA "1">
-  <!ATTLIST wordgroup max CDATA "1">
-  <!ATTLIST wordgroup label CDATA "">
 ]>
 '''
 

@@ -6,7 +6,7 @@
   <!ATTLIST patterngroup label CDATA "">
 
   <!-- Pattern Element -->
-  <!ELEMENT pattern (word | wordgroup)+>
+  <!ELEMENT pattern (word)+>
   <!ATTLIST pattern name ID #REQUIRED>
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
@@ -35,11 +35,6 @@
   <!ATTLIST word typenum CDATA "1">
   <!ATTLIST word ner CDATA "O">
 
-  <!-- Word Group element -->
-  <!ELEMENT wordgroup (word)+>
-  <!ATTLIST wordgroup min CDATA "1">
-  <!ATTLIST wordgroup max CDATA "1">
-  <!ATTLIST wordgroup label CDATA "">
 ]>
 
 <!-- SEE README FOR USAGE AND DOCS -->
@@ -50,17 +45,6 @@
 
     <!-- Optional preposition -->
     <word pos="IN" min="0" max="1" label="optional preposition" />
-
-    <!-- Find a word that is either (but not both) of the following -->
-    <!-- WordGroup should be renamed, because it acts like an OR block. One of the items in this Group
-    must be selected. Allows more flexible optional word logic -->
-    <wordgroup min="1" max="1">
-      <!-- Verb or adverb, not TFL type and not an amod dependency -->
-      <word pos="VB*,RB" extype="TFL" exdeps="amod"/>
-
-      <!-- Any part of speech and either nsubj and/or dobj -->
-      <word pos="*" deps="nsubj,dobj" depnum="1"/>
-    </wordgroup>
   </pattern>
 
   <!-- Find up to 3 adjectives that are preceded by a noun, but the noun
