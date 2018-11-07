@@ -4,7 +4,7 @@ setup(
   name='expat-nlp',
   version='1.0',
   py_modules=['main', 'parse', 'match', 'structures', 'annotators', 'helpers'],
-  install_requires=['Click', 'pycorenlp', 'nltk'],
+  install_requires=['Click', 'pycorenlp', 'nltk', 'networkx'],
   entry_points='''
     [console_scripts]
     main=main:cli

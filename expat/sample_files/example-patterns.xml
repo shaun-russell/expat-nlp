@@ -52,6 +52,8 @@
     <word pos="IN" min="0" max="1" label="optional preposition" />
 
     <!-- Find a word that is either (but not both) of the following -->
+    <!-- WordGroup should be renamed, because it acts like an OR block. One of the items in this Group
+    must be selected. Allows more flexible optional word logic -->
     <wordgroup min="1" max="1">
       <!-- Verb or adverb, not TFL type and not an amod dependency -->
       <word pos="VB*,RB" extype="TFL" exdeps="amod"/>

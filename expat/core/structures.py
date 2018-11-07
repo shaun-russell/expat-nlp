@@ -1,6 +1,7 @@
 ''' Common structures to pass data around. '''
 
 from core.helpers import get_value
+import networkx as nx
 
 # Many of these class descriptions aren't very useful. At some point,
 # write better definitions.
@@ -39,6 +40,50 @@ class Pattern():
     self.label = tree.get('label')
     # create the correct object for the child elements of the pattern
     self.children = [Pattern.get_correct_class(el) for el in tree.getchildren()]
+
+    # graph for pattern traversal and matching
+    self.graph = self._create_graph(self.children)
+    self.graph_entry_nodes = []
+
+  def _create_graph(self, pattern_items):
+    dgraph = nx.DiGraph()
+
+    decomposed_pattern = self._decompose_pattern(pattern_items)
+
+    # establish the entry nodes for the pattern
+    entry_nodes = []
+    for (status,item) in decomposed_pattern:
+      if item.
+
+    print(decomposed_pattern)
+    for item in decomposed_pattern:
+      if isinstance(item, PatternWord):
+        # add a single edge
+        if item.min > 0:
+          # at least 1 required node
+          pass
+        else:
+          # all nodes are optional
+          pass
+        pass
+      elif isinstance(item, WordGroup):
+        # add a non-optional option
+        pass
+
+    return None
+  
+  def _decompose_pattern(self, pattern_items):
+    ''' Separate pattern words into optional and required nodes. '''
+    decomposed_list = []
+    for item in pattern_items:
+      if isinstance(item, PatternWord):
+        for i in range(0, item.min):
+          decomposed_list.append(('required', item))
+        for i in range(item.max-item.min, item.max):
+          decomposed_list.append(('optional', item))
+      else:
+        # group
+    return decomposed_list
 
   @staticmethod
   def get_correct_class(element):

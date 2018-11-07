@@ -137,9 +137,13 @@ class PatternMatcher():
     ''' The main class that finds pattern matches in annotated sentences.'''
     @staticmethod
     def get_pattern_matches(sentence: AnnotatedSentence, pattern: Pattern):
+        ''' Return all sequences of AnnotatedWords that match the pattern. '''
         # TODO this.
         matches = []
-        pass
+        for anword in sentence:
+            pass
+            # check a word for the start of a pattern
+
 
     @staticmethod
     def word_matches_pattern(an_word: AnnotatedWord, pt_word: PatternWord, verbose=False):

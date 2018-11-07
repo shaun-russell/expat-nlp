@@ -38,11 +38,12 @@ This example does _a thing_.
 
 ## To-do
 [x] XML Spec and DTD done
-[ ] Create classes for the XML elements
-[ ] Read and parse XML file
-[ ] Check that default values are working
-[ ] Connect to Stanford NLP Server
+[x] Create classes for the XML elements
+[x] Read and parse XML file
+[x] Check that default values are working
+[x] Connect to Stanford NLP Server
 [ ] Main Processing Loop to parse sentence
+[ ] Rename WordGroup to WordSelector or something
 
 
 ## Pattern File Description
@@ -200,6 +201,7 @@ Structural Hierarchy:
       # Descriptive metadata for a word. Non-operative.
 
     
+    # WordGroup should be renamed, because it acts like an OR block. One of the items in this Group must be selected. Allows more flexible optional word logic
     <wordgroup>
     # The wordgroup element is a container to allow sequences of words (or groups)
     # to be matched.
