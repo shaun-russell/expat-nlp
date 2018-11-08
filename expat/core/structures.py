@@ -2,6 +2,7 @@
 
 from core.helpers import get_value
 import networkx as nx
+from copy import deepcopy
 
 # Many of these class descriptions aren't very useful. At some point,
 # write better definitions.
@@ -31,7 +32,7 @@ class PatternGroup():
 
 class Pattern():
   ''' Represents a sequence of words that represent a certain pattern. '''
-  def __init__(self, tree):
+  def __init__(self, tree, debug=False):
     self.name = tree.get('name')
     self.description = tree.get('description')
     # 'class' is a protected word in python, so the field is 'classname'
@@ -39,16 +40,16 @@ class Pattern():
     self.priority = int(tree.get('priority'))
     self.label = tree.get('label')
     # create the correct object for the child elements of the pattern
-    self.children = [Pattern.get_correct_class(el) for el in tree.getchildren()]
+    self.children = [PatternWord(el,i) for i,el in enumerate(tree.getchildren())]
 
     # graph for pattern traversal and matching
     decomposed_pattern = self._decompose_pattern(self.children)
     self.graph_entry_points = GraphBuilder.get_entry_points(decomposed_pattern)
     self.graph_exit_points = GraphBuilder.get_exit_points(decomposed_pattern)
-    self.graph = self._create_graph(decomposed_pattern)
+    self.graph = self._create_graph(decomposed_pattern, debug)
 
 
-  def _create_graph(self, pattern_items):
+  def _create_graph(self, pattern_items, debug=False):
     dgraph = nx.DiGraph()
 
     # list is now a mix of Required and Optional words.
@@ -57,7 +58,8 @@ class Pattern():
     # that is next in the sequence.
 
     # this adds all nodes.
-    for status,item in pattern_items:
+    for (status,item) in pattern_items:
+      if debug: print('Add node:', item._pos, item.index)
       dgraph.add_node(item)
 
     # # add all edges between required nodes
@@ -66,36 +68,54 @@ class Pattern():
     #   dgraph.add_weighted_edges_from([(prev_item, item, 1)])
 
     # now to join optional nodes to the required nodes.
+    if debug: print('Start adding edges.')
     open_nodes = []
     for i,(required, item) in enumerate(pattern_items):
       # exception case for the first node
       if i == 0:
         open_nodes.append(item)
+        if debug: print('add first node:', item.index)
         continue
 
       # for all new nodes, make connections between the open nodes and the new node
       for node in open_nodes:
+        if debug: print('add edge:', node.index, '->', item.index)
         dgraph.add_weighted_edges_from([(node,item,1)])
+
+      # add item 
+      open_nodes.append(item)
 
       # when it gets to a required node
       if required:
         # closing point for any open nodes
         # remove all nodes
         open_nodes = []
+        if debug: print('reset nodes')
         # add the current required node to the open
+        if debug: print('req, adding:', item.index)
         open_nodes.append(item)
-
+      if debug: print('loop')
     return dgraph
   
   def _decompose_pattern(self, pattern_items):
     ''' Separate pattern words into optional and required nodes. '''
     decomposed_list = []
+    # because words are repeated for the optionals (if max > 1)
+    # the items need to be copied and given a unique index which
+    # represents the word's position in the pattern
+    index = 0
     for item in pattern_items:
       if item.max > item.min:
         for i in range(0, item.max-item.min):
-          decomposed_list.append((False, item))
+          copied_item = deepcopy(item)
+          copied_item.set_index(index)
+          decomposed_list.append((False, copied_item))
+          index += 1
       for i in range(0, item.min):
-        decomposed_list.append((True, item))
+        copied_item = deepcopy(item)
+        copied_item.set_index(index)
+        decomposed_list.append((True, copied_item))
+        index += 1
     return decomposed_list
 
   @staticmethod
@@ -109,7 +129,7 @@ class Pattern():
 class PatternWord():
   # this description is terrible, change this at some point
   ''' The attributes of a word that is part of a pattern definition. '''
-  def __init__(self, tree):
+  def __init__(self, tree, index = -1):
     self.min = int(tree.get('min'))
     self.max = int(tree.get('max'))
     self.is_contextual = bool(tree.get('contextual'))
@@ -140,6 +160,11 @@ class PatternWord():
     self.lemma = tree.get('lemma')
     self.ner = tree.get('ner')
 
+    self.index = index
+
+  def set_index(self, id):
+    self.index = id
+    
 
 
 class AnnotatedSentence():

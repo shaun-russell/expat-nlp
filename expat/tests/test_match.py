@@ -396,5 +396,61 @@ class TestMatching(unittest.TestCase):
     self.assertTrue(contains_node1)
 
 
+  def test_pattern_graph_successors1(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ" min="1"/>
+      <word pos="IN" min="0"/>
+      <word pos="NN" min="1" max="2"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+    self.assertTrue(pattern.graph.is_directed())
+
+    # starting_node = pattern.graph.nodes(data=pattern.graph_entry_points[0])
+    starting = pattern.graph_entry_points[0]
+    successors = []
+    for succ in pattern.graph.successors(starting):
+      successors.append(succ._pos)
+
+    self.assertTrue(starting._pos == 'JJ')
+    self.assertTrue(successors[0] == 'IN')
+    self.assertTrue(successors[1] == 'NN')
+
+
+  def test_pattern_graph_structure1(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ" min="1"/>
+      <word pos="IN" min="0"/>
+      <word pos="NN" min="1" max="2"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    # print('\n') # print debug information
+    # pattern = Pattern(tree, True)
+    pattern = Pattern(tree, True)
+    self.assertTrue(pattern.graph.is_directed())
+
+    starting = pattern.graph_entry_points[0]
+    successor = None
+    for x in pattern.graph.successors(starting):
+      successor = x
+      break
+    print('\nSUCCESSOR:', successor._pos)
+    
+    successors2 = []
+    for node in pattern.graph.successors(successor):
+      print(node._pos)
+      successors2.append(node._pos)
+
+    self.assertTrue(successors2[0] == 'NN')
+    self.assertTrue(successors2[1] == 'NN')
+
+
+
+
+
+
+
 
 
