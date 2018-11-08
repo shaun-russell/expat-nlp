@@ -43,12 +43,9 @@ class Pattern():
 
     # graph for pattern traversal and matching
     decomposed_pattern = self._decompose_pattern(self.children)
-    # print('Pattern')
     self.graph_entry_points = GraphBuilder.get_entry_points(decomposed_pattern)
-    # print('Entry points')
-    # print(self.graph_entry_points)
     self.graph_exit_points = GraphBuilder.get_exit_points(decomposed_pattern)
-    # self.graph = self._create_graph(self.children)
+    self.graph = self._create_graph(decomposed_pattern)
 
 
   def _create_graph(self, pattern_items):
@@ -59,18 +56,36 @@ class Pattern():
     # Optional nodes branch from the previous node and join to the required node
     # that is next in the sequence.
 
-    print(decomposed_pattern)
-    for status,item in decomposed_pattern:
-      break
-      # add a single edge
-      if item.min > 0:
-        # at least 1 required node
-        pass
-      else:
-        # all nodes are optional
-        pass
-      pass
-    return None
+    # this adds all nodes.
+    for status,item in pattern_items:
+      dgraph.add_node(item)
+
+    # # add all edges between required nodes
+    # for i,(status, item) in enumerate([((s,i) for s,i in pattern_items[1:] if s == True):
+    #   prev_item = pattern_items[i-1]
+    #   dgraph.add_weighted_edges_from([(prev_item, item, 1)])
+
+    # now to join optional nodes to the required nodes.
+    open_nodes = []
+    for i,(required, item) in enumerate(pattern_items):
+      # exception case for the first node
+      if i == 0:
+        open_nodes.append(item)
+        continue
+
+      # for all new nodes, make connections between the open nodes and the new node
+      for node in open_nodes:
+        dgraph.add_weighted_edges_from([(node,item,1)])
+
+      # when it gets to a required node
+      if required:
+        # closing point for any open nodes
+        # remove all nodes
+        open_nodes = []
+        # add the current required node to the open
+        open_nodes.append(item)
+
+    return dgraph
   
   def _decompose_pattern(self, pattern_items):
     ''' Separate pattern words into optional and required nodes. '''
@@ -174,8 +189,9 @@ class GraphBuilder():
 
   @staticmethod
   def get_exit_points(decomposed_pattern):
-    # establish the entry nodes for the pattern
-    # until a node is required, every optional node is an entry point
+    # establish the exit nodes for the pattern
+    # same as entry, but with a reversed list
+    # could actually refactor this
     exit_nodes = []
     # [::-1] reverses a list
     for is_required,item in decomposed_pattern[::-1]:
@@ -185,13 +201,4 @@ class GraphBuilder():
         break
       else:
         exit_nodes.append(item)
-
     return exit_nodes
-      # exit_nodes.append(item)
-      # # the last entry point is the first required node
-      # # because patterns fail if they don't have the required nodes, therefore
-      # # it must enter before or on the first required node
-      # if is_required:
-      #   exit_nodes.append(item)
-      #   # add the required entry point
-      #   break
