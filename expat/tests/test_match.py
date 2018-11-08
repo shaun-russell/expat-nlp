@@ -1,11 +1,19 @@
 ''' Tests for the match.py file. '''
 import unittest
 from core.match import StringMatching, ListMatching,PatternMatcher
-from core.structures import AttributeSet,PatternWord,AnnotatedWord
+from core.structures import AttributeSet,PatternWord,AnnotatedWord,Pattern
 import xml.etree.cElementTree as etree
 
 pattern_pfx = '''
 <!DOCTYPE root [
+  <!-- Pattern Element -->
+  <!ELEMENT pattern (word)+>
+  <!ATTLIST pattern name ID #REQUIRED>
+  <!ATTLIST pattern description CDATA "">
+  <!ATTLIST pattern class CDATA #REQUIRED>
+  <!ATTLIST pattern priority CDATA "1">
+  <!ATTLIST pattern label CDATA "">
+
   <!-- Word element -->
   <!ELEMENT word EMPTY>
   <!ATTLIST word min CDATA "1">
@@ -330,5 +338,63 @@ class TestMatching(unittest.TestCase):
     tree = etree.fromstring(pattern)
     pattern_word = PatternWord(tree)
     self.assertEqual(False, PatternMatcher.word_matches_pattern(anword, pattern_word))
+
+
+
+  def test_pattern_graph_entry_points1(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ" min="1"/>
+      <word pos="NN" min="1"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+    is_correct_length = len(pattern.graph_entry_points) == 1
+    contains_node = pattern.graph_entry_points[0]._pos == 'JJ'
+    self.assertTrue(is_correct_length)
+    self.assertTrue(contains_node)
+
+  def test_pattern_graph_entry_points2(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ" min="0"/>
+      <word pos="NN" min="1"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+    is_correct_length = len(pattern.graph_entry_points) == 2
+    contains_node1 = pattern.graph_entry_points[0]._pos == 'JJ'
+    contains_node2 = pattern.graph_entry_points[1]._pos == 'NN'
+    self.assertTrue(is_correct_length)
+    self.assertTrue(contains_node1)
+    self.assertTrue(contains_node2)
+
+  def test_pattern_graph_exit_points1(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ" min="1"/>
+      <word pos="NN" min="1"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+    is_correct_length = len(pattern.graph_exit_points) == 1
+    contains_node = pattern.graph_exit_points[0]._pos == 'NN'
+    self.assertTrue(is_correct_length)
+    self.assertTrue(contains_node)
+
+  def test_pattern_graph_exit_points2(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ" min="1"/>
+      <word pos="NN" min="1" max="2"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+    is_correct_length = len(pattern.graph_exit_points) == 1
+    contains_node1 = pattern.graph_exit_points[0]._pos == 'NN'
+    self.assertTrue(is_correct_length)
+    self.assertTrue(contains_node1)
+
+
 
 

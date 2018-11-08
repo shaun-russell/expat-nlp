@@ -42,21 +42,26 @@ class Pattern():
     self.children = [Pattern.get_correct_class(el) for el in tree.getchildren()]
 
     # graph for pattern traversal and matching
+    decomposed_pattern = self._decompose_pattern(self.children)
+    # print('Pattern')
+    self.graph_entry_points = GraphBuilder.get_entry_points(decomposed_pattern)
+    # print('Entry points')
+    # print(self.graph_entry_points)
+    self.graph_exit_points = GraphBuilder.get_exit_points(decomposed_pattern)
     # self.graph = self._create_graph(self.children)
-    # self.graph_entry_nodes = []
+
 
   def _create_graph(self, pattern_items):
     dgraph = nx.DiGraph()
 
-    decomposed_pattern = self._decompose_pattern(pattern_items)
-
-    # establish the entry nodes for the pattern
-    entry_nodes = []
-    for (status,item) in decomposed_pattern:
-      pass
+    # list is now a mix of Required and Optional words.
+    # For the graph, the entry and exit points need to be saved and marked
+    # Optional nodes branch from the previous node and join to the required node
+    # that is next in the sequence.
 
     print(decomposed_pattern)
-    for item in decomposed_pattern:
+    for status,item in decomposed_pattern:
+      break
       # add a single edge
       if item.min > 0:
         # at least 1 required node
@@ -71,10 +76,11 @@ class Pattern():
     ''' Separate pattern words into optional and required nodes. '''
     decomposed_list = []
     for item in pattern_items:
+      if item.max > item.min:
+        for i in range(0, item.max-item.min):
+          decomposed_list.append((False, item))
       for i in range(0, item.min):
-        decomposed_list.append(('required', item))
-      for i in range(item.max-item.min, item.max):
-        decomposed_list.append(('optional', item))
+        decomposed_list.append((True, item))
     return decomposed_list
 
   @staticmethod
@@ -148,3 +154,44 @@ class AnnotatedWord():
     self.types = get_value('type', kwargs, '')
     self.ner = get_value('ner', kwargs, 'O') # O is none
 
+class GraphBuilder():
+  @staticmethod
+  def get_entry_points(decomposed_pattern):
+    # establish the entry nodes for the pattern
+    # until a node is required, every optional node is an entry point
+    entry_nodes = []
+    for is_required,item in decomposed_pattern:
+      # the last entry point is the first required node
+      # because patterns fail if they don't have the required nodes, therefore
+      # it must enter before or on the first required node
+      if is_required:
+        entry_nodes.append(item)
+        # add the required entry point
+        break
+      else:
+        entry_nodes.append(item)
+    return entry_nodes
+
+  @staticmethod
+  def get_exit_points(decomposed_pattern):
+    # establish the entry nodes for the pattern
+    # until a node is required, every optional node is an entry point
+    exit_nodes = []
+    # [::-1] reverses a list
+    for is_required,item in decomposed_pattern[::-1]:
+      if is_required:
+        exit_nodes.append(item)
+        # add the required entry point
+        break
+      else:
+        exit_nodes.append(item)
+
+    return exit_nodes
+      # exit_nodes.append(item)
+      # # the last entry point is the first required node
+      # # because patterns fail if they don't have the required nodes, therefore
+      # # it must enter before or on the first required node
+      # if is_required:
+      #   exit_nodes.append(item)
+      #   # add the required entry point
+      #   break
