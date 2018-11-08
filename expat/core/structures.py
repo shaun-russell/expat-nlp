@@ -2,7 +2,8 @@
 
 from core.helpers import get_value
 import networkx as nx
-from copy import deepcopy
+from copy import deepcopy,copy
+from collections import deque 
 
 # Many of these class descriptions aren't very useful. At some point,
 # write better definitions.
@@ -183,6 +184,15 @@ class AnnotatedSentence():
     for i,_ in enumerate(self.words):
       # using words[i] because sometimes the copy is changed, rather than ref
       words[i].index = i
+  
+  def get_queue(self):
+    ''' Return the sentence as a queue of words. '''
+    q = deque()
+    for word in self.words:
+      q.append(word)
+    # need to reverse because otherwise the sentence is backwards (no matches)
+    q.reverse()
+    return q
 
 class AnnotatedWord():
   def __init__(self, **kwargs):
@@ -227,3 +237,4 @@ class GraphBuilder():
       else:
         exit_nodes.append(item)
     return exit_nodes
+

@@ -73,6 +73,10 @@ class StringMatching():
     @staticmethod
     def is_match(word: str, match_strings, ignore_case=True, required=1):
         ''' Returns True if any of the match_strings apply to the word. '''
+        # If the annotation doesn't support the feature, pass by default?
+        if word is None and '*' in match_strings:
+            return True
+
         if isinstance(match_strings, str):
             match_strings = match_strings.split(',')
         # Cache the uppercase word if ignoring case

@@ -2,7 +2,10 @@
 import unittest
 from core.match import StringMatching, ListMatching,PatternMatcher
 from core.structures import AttributeSet,PatternWord,AnnotatedWord,Pattern
+from core.annotators import BasicNltkAnnotator
+from core.search import GraphSearch,BreadthFirstWithQueue,MatchBuilder
 import xml.etree.cElementTree as etree
+from collections import deque
 
 pattern_pfx = '''
 <!DOCTYPE root [
@@ -428,7 +431,7 @@ class TestMatching(unittest.TestCase):
     tree = etree.fromstring(pattern)
     # print('\n') # print debug information
     # pattern = Pattern(tree, True)
-    pattern = Pattern(tree, True)
+    pattern = Pattern(tree)
     self.assertTrue(pattern.graph.is_directed())
 
     starting = pattern.graph_entry_points[0]
@@ -436,18 +439,38 @@ class TestMatching(unittest.TestCase):
     for x in pattern.graph.successors(starting):
       successor = x
       break
-    print('\nSUCCESSOR:', successor._pos)
     
     successors2 = []
     for node in pattern.graph.successors(successor):
-      print(node._pos)
       successors2.append(node._pos)
 
     self.assertTrue(successors2[0] == 'NN')
     self.assertTrue(successors2[1] == 'NN')
 
 
+  def test_pattern_graph_matches1(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="VB*" />
+      <word pos="DT" min="0"/>
+      <word pos="NN*" />
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
 
+    sentence = "He is running the race."
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    print('\n')
+    print([(x.word,x.pos) for x in annotated_sentence.get_queue()])
+    bfs_search = BreadthFirstWithQueue()
+
+    matches = MatchBuilder.find_all_matches(annotated_sentence, pattern, bfs_search)
+    print(matches)
+    for m in matches:
+      print([(x.word,x.pos) for x in m])
+
+    starting = pattern.graph_entry_points[0]
 
 
 
