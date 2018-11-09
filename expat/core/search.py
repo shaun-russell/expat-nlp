@@ -16,11 +16,12 @@ class BreadthFirstWithQueue(GraphSearch):
   @staticmethod
   def find_all_paths(graph, start_node, queue, verbose=False):
     ''' Provide a graph reference, the starting node, and the search queue. '''
+    # The debug/verbose statements are useful for debugging, but they could
+    # probably be cleaned up and re-worded.
     if verbose: print('SQ:', [x.word for x in queue])
 
-
     # if the queue is empty, pop() will make it fail. Also there are no patterns
-    # that could be found on an empty list
+    # that could be found on an empty list, so we just exit here.
     if not queue:
       return []
     first_word = queue.pop()
@@ -29,6 +30,8 @@ class BreadthFirstWithQueue(GraphSearch):
       return []
 
     # add the first word back in so we can look at the successors
+    # The main search loop evaluates child elements, so we need to insert the
+    # starting parent node back into the queue, so it can be treated like a child
     queue.appendleft(first_word)
     # prep the queue with the first items
     search_queue = deque()

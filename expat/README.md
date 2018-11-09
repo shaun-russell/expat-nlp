@@ -22,7 +22,11 @@ TERMINAL USAGE OUTPUT HERE
 
 To start the CoreNLP Server, use this script.
 ``` sh
-java -mx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000 -annotators tokenize,ssplit,pos,lemma,ner,truecase,parse,depparse ```
+java -mx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000 -annotators tokenize,ssplit,pos,lemma,ner,truecase,parse,depparse
+```
+
+## More notes
+- Patterns cannot end on an optional word, meaning the final word in a pattern must have a minimum of 1 or more (not zero). Instead, just make a copy of the pattern with that as required with a different priority value if the optional parameter is important.
 
 ## Examples
 Using the sample files, an example is:
