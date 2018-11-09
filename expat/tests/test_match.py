@@ -461,18 +461,76 @@ class TestMatching(unittest.TestCase):
     sentence = "He is running the race."
     annotator = BasicNltkAnnotator()
     annotated_sentence = annotator.annotate(sentence)
-    print('\n')
-    print([(x.word,x.pos) for x in annotated_sentence.get_queue()])
     bfs_search = BreadthFirstWithQueue()
 
     matches = MatchBuilder.find_all_matches(annotated_sentence, pattern, bfs_search)
-    print(matches)
-    for m in matches:
-      print([(x.word,x.pos) for x in m])
+    actual = ' '.join([x.word for x in matches[0]])
+    expected = 'running the race'
+    self.assertEqual(actual, expected)
 
-    starting = pattern.graph_entry_points[0]
+  def test_pattern_graph_matches2(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="JJ*" />
+      <word pos="NN*" />
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+
+    sentence = "He has a big dog that lives in the green house."
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    bfs_search = BreadthFirstWithQueue()
+
+    matches = MatchBuilder.find_all_matches(annotated_sentence, pattern, bfs_search)
+    actual1 = ' '.join([x.word for x in matches[0]])
+    expected1 = 'big dog'
+    actual2 = ' '.join([x.word for x in matches[1]])
+    expected2 = 'green house'
+    self.assertEqual(actual1, expected1)
+    self.assertEqual(actual2, expected2)
+
+  def test_pattern_graph_matches3(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="DT" min="0"/>
+      <word pos="NN*" />
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+
+    sentence = "This is the dog who barks at moons."
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    bfs_search = BreadthFirstWithQueue()
+
+    matches = MatchBuilder.find_all_matches(annotated_sentence, pattern, bfs_search)
+    actual1 = ' '.join([x.word for x in matches[0]])
+    self.assertEqual(actual1, 'the dog')
+    actual2 = ' '.join([x.word for x in matches[1]])
+    self.assertEqual(actual2, 'dog')
+    actual3 = ' '.join([x.word for x in matches[2]])
+    self.assertEqual(actual3, 'moons')
 
 
+  def test_pattern_graph_matches4(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word pos="VB*" />
+      <word pos="DT" min="2"/>
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+
+    sentence = "He is running the race by eating the the mungo."
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    bfs_search = BreadthFirstWithQueue()
+
+    matches = MatchBuilder.find_all_matches(annotated_sentence, pattern, bfs_search)
+    actual = ' '.join([x.word for x in matches[0]])
+    expected = 'eating the the'
+    self.assertEqual(actual, expected)
 
 
 
