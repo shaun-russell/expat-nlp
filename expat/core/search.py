@@ -58,20 +58,28 @@ class MatchBuilder():
     while sentence_queue:
       print('Sentence Q loop')
       # get the word that starts the queue
-      word = sentence_queue.pop()
-      print(word.word, word.pos)
       # make a copy because we can have queues
       queuecopy = copy(sentence_queue)
+      # this could be improved, but basically we get the first word to do the
+      # initial evaluation, but because we still need this word, we put it back in.\
+      # Once the tests work, try just feed every word into the algorithm.find_all_paths(...)
+      # and see if the result is the same (should be the proper way)
+      # word = queuecopy.pop()
+      # queuecopy.appendleft(word)
+      # print(word.word, word.pos)
       # see if the word matches any of the entry points for the pattern
       for entry in pattern.graph_entry_points:
-        print('Test entry: {}={}, {}={}'.format(word.word, entry.word, word.pos, entry._pos))
-        if PatternMatcher.word_matches_pattern(word, entry):
-          print('MATCH: ', entry.word, entry._pos)
-          # if it meets the entry requirements, find all the pattern matches
-          results = algorithm.find_all_paths(pattern.graph, entry, queuecopy)
-          # save the matches, if there are any
-          if len(results) > 0:
-            matches += results
-    
+        results = algorithm.find_all_paths(pattern.graph, entry, queuecopy)
+        if len(results) > 0:
+          matches += results
+        # print('Test entry: {}={}, {}={}'.format(word.word, entry.word, word.pos, entry._pos))
+        # if PatternMatcher.word_matches_pattern(word, entry):
+        #   print('MATCH: ', entry.word, entry._pos)
+        #   # if it meets the entry requirements, find all the pattern matches
+        #   results = algorithm.find_all_paths(pattern.graph, entry, queuecopy)
+        #   # save the matches, if there are any
+        #   if len(results) > 0:
+        #     matches += results
+      sentence_queue.pop()
     return matches
 
