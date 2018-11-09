@@ -30,18 +30,19 @@ Otherwise, the NLTK annotator does PoS tagging, lemmatising (maybe?), and basic 
 - Patterns cannot end on an optional word, meaning the final word in a pattern must have a minimum of 1 or more (not zero). Instead, just make a copy of the pattern with that as required with a different priority value if the optional parameter is important.
 
 ## To-do
-[x] XML Spec and DTD done
-[x] Create classes for the XML elements
-[x] Read and parse XML file
-[x] Check that default values are working
-[x] Connect to Stanford NLP Server
-[x] Main Processing class to parse sentence
-[x] Remove WordGroup
-[ ] Main command-line interface to select annotators, search algorithms, give instructions, input and output
-[ ] Make the graph generation into a class (strategy pattern) rather than baked into the Pattern class. Probably aren't going to be many ways to build a graph but it's safer this way.
-[ ] Refactoring (comment cleanup, code-analysis)
-[ ] Refactoring (file rearranging, namespace cleanup and removing circular dependencies)
-[ ] More tests (edge cases like 1-word patterns, lots of optionals, empty sentences, really bad annotators where everything is None...etc)
+
+- [x] XML Spec and DTD done
+- [x] Create classes for the XML elements
+- [x] Read and parse XML file
+- [x] Check that default values are working
+- [x] Connect to Stanford NLP Server
+- [x] Main Processing class to parse sentence
+- [x] Remove WordGroup
+- [ ] Main command-line interface to select annotators, search algorithms, give instructions, input and output
+- [ ] Make the graph generation into a class (strategy pattern) rather than baked into the Pattern class. Probably aren't going to be many ways to build a graph but it's safer this way.
+- [ ] Refactoring (comment cleanup, code-analysis)
+- [ ] Refactoring (file rearranging, namespace cleanup and removing circular dependencies)
+- [ ] More tests (edge cases like 1-word patterns, lots of optionals, empty sentences, really bad annotators where everything is None...etc)
 
 ## Examples
 Using the sample files, an example is:
