@@ -25,7 +25,7 @@ def print_matches(pattern, matches):
 # required arguments
 @click.argument('in-file', type=click.File('r'), required=True)
 @click.argument('pattern-file', type=str, required=True)
-@click.argument('out-file', type=click.File('w+', encoding='utf8'), required=True)
+# @click.argument('out-file', type=click.File('w+', encoding='utf8'), required=True)
 
 # optional arguments
 @click.option('--annotator', '-n', type=click.Choice(['nltk', 'corenlp']),
@@ -50,7 +50,7 @@ def print_matches(pattern, matches):
 
 
 # main entry point function
-def cli(in_file, pattern_file, out_file,
+def cli(in_file, pattern_file, #out_file,
         annotator, corenlp_url, delimiter, split_index,
         automated, verbose, ignore_case):
   '''
