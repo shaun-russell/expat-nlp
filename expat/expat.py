@@ -18,7 +18,7 @@ def print_matches(pattern, matches):
   click.echo('PATTERN: {} ({})'.format(pattern.name, pattern.classname))
   for i,match in enumerate(matches):
     all_words = ['({}. {})'.format(w.index, w.word) for w in match]
-    click.echo('{}: {}'.format(i, " ".join(all_words)))
+    click.echo('  {}: {}'.format(i+1, " ".join(all_words)))
 
 # START CLI COMMANDS
 @click.command(context_settings=CONTEXT_SETTINGS)
