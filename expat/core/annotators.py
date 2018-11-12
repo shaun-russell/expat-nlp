@@ -1,7 +1,9 @@
 ''' Annotator objects. '''
 from nltk.tokenize import word_tokenize
+from core.match import StringMatching
 from core.structures import AnnotatedSentence,AnnotatedWord
 from nltk import pos_tag
+from nltk.stem.porter import PorterStemmer
 import json
 
 # core nlp annotator
@@ -72,5 +74,39 @@ class BasicNltkAnnotator(BaseAnnotator):
 
     return AnnotatedSentence(anno_words)
     
+class ExtensionWordSet():
+  def __init__(self, label, pos, filepath, stem=False):
+    self.label = label
+    self.pos = pos
+    if stem:
+      stemmer = PorterStemmer()
+      self.words = [stemmer.stem(w.strip()) for w in open(filepath, 'r', encoding='utf8').readlines()]
+    else:
+      self.words = [w.strip() for w in open(filepath, 'r', encoding='utf8').readlines()]
 
+class ExtensionAnnotatorBase():
+  def extend(self, annotated_sentence):
+    return annotated_sentence
 
+class GeoExtensionAnnotator(ExtensionAnnotatorBase):
+  def __init__(self, categories, stem=False):
+    self.wordsets = []
+    self.stemming = stem
+    for label,(pos,fpath) in categories.items():
+     self.wordsets.append(ExtensionWordSet(label, pos, fpath, self.stemming))
+
+  def extend(self, annotated_sentence):
+    stemmer = PorterStemmer()
+    extended_sentence = []
+    for word in annotated_sentence.words:
+      stemmed_word = stemmer.stem(word.word)
+      # convert the current word types to a list
+      word_types = word.types.split(',') if word.types != '' else []
+      # for all the wordsets whose part of speech tags match the current word
+      for wordset in [s for s in self.wordsets if StringMatching.is_match(word.pos, s.pos)]:
+        if stemmed_word in wordset.words:
+          word_types.append(wordset.label)
+
+      word.types = ','.join(word_types)
+      extended_sentence.append(word)
+    return AnnotatedSentence(extended_sentence)
