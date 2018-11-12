@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(
-  name='expat-nlp',
+  name='expat',
   version='1.0',
-  py_modules=['main', 'parse', 'match', 'structures', 'annotators', 'helpers'],
+  py_modules=['expat', 'core.parse', 'core.match', 'core.structures', 'core.annotators', 'core.helpers', 'core.search'],
   install_requires=['Click', 'pycorenlp', 'nltk', 'networkx'],
   entry_points='''
     [console_scripts]
-    main=main:cli
+    expat=expat:cli
   '''
 )

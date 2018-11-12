@@ -73,8 +73,10 @@ class StringMatching():
     @staticmethod
     def is_match(word: str, match_strings, ignore_case=True, required=1):
         ''' Returns True if any of the match_strings apply to the word. '''
-        # If the annotation doesn't support the feature, pass by default?
-        if word is None and '*' in match_strings:
+        # print(word)
+        # print(match_strings)
+        # if there is no data (attribute is None), don't fail.
+        if word is None:
             return True
 
         if isinstance(match_strings, str):

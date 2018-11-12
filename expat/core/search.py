@@ -55,6 +55,9 @@ class BreadthFirstWithQueue(GraphSearch):
       # for every successor, add to the queue
       for i,successor in enumerate(graph.successors(node)):
         queue_copy = copy(wordq)
+        # exit if queue is empty, because popping an empty queue throws an error
+        if not queue_copy:
+          break
         word = queue_copy.pop()
         if verbose: print('Successor ->', i, successor._pos)
         # check that the item in the queue matches the starting pattern
