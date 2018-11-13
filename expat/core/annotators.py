@@ -78,17 +78,19 @@ class ExtensionWordSet():
   def __init__(self, label, pos, filepath, stem=False):
     self.label = label
     self.pos = pos
-    if stem:
-      stemmer = PorterStemmer()
-      self.words = [stemmer.stem(w.strip()) for w in open(filepath, 'r', encoding='utf8').readlines()]
-    else:
-      self.words = [w.strip() for w in open(filepath, 'r', encoding='utf8').readlines()]
+    with open(filepath, 'r', encoding='utf8') as wordfile:
+      lines = wordfile.readlines()
+      if stem:
+        stemmer = PorterStemmer()
+        self.words = [stemmer.stem(w.strip()) for w in lines]
+      else:
+        self.words = [w.strip() for w in lines]
 
 class ExtensionAnnotatorBase():
   def extend(self, annotated_sentence):
     return annotated_sentence
 
-class GeoExtensionAnnotator(ExtensionAnnotatorBase):
+class TypeExtensionAnnotator(ExtensionAnnotatorBase):
   def __init__(self, categories, stem=False):
     self.wordsets = []
     self.stemming = stem
@@ -99,7 +101,7 @@ class GeoExtensionAnnotator(ExtensionAnnotatorBase):
     stemmer = PorterStemmer()
     extended_sentence = []
     for word in annotated_sentence.words:
-      stemmed_word = stemmer.stem(word.word)
+      stemmed_word = stemmer.stem(word.word) if self.stemming else word.word
       # convert the current word types to a list
       word_types = word.types.split(',') if word.types != '' else []
       # for all the wordsets whose part of speech tags match the current word

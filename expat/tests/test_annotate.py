@@ -2,7 +2,7 @@
 import unittest
 from core.match import StringMatching, ListMatching
 from core.structures import AttributeSet
-from core.annotators import BasicNltkAnnotator,StanfordCoreNLPAnnotator, GeoExtensionAnnotator
+from core.annotators import BasicNltkAnnotator,StanfordCoreNLPAnnotator, TypeExtensionAnnotator
 
 corenlp_url = 'http://localhost:9000'
 
@@ -85,7 +85,7 @@ class TestMatching(unittest.TestCase):
     annotated_sentence = annotator.annotate(sentence)
     self.assertEqual(None, annotated_sentence.at(-2))
 
-  def test_annotate_nltk_geoextension(self):
+  def test_annotate_nltk_geoextension1(self):
     sentence = 'Houses and rabbits look like badgers, oil rigs, and gas stations.'
     annotator = BasicNltkAnnotator()
     annotated_sentence = annotator.annotate(sentence)
@@ -93,11 +93,45 @@ class TestMatching(unittest.TestCase):
       'GNN' : ('NN*', 'tests/test-files/gnns.txt'),
       'ANIMAL' : ('NN*', 'tests/test-files/animals.txt'),
     }
-    geo_annotator = GeoExtensionAnnotator(geo_categories, stem=True)
+    geo_annotator = TypeExtensionAnnotator(geo_categories, stem=True)
     geo_sentence = geo_annotator.extend(annotated_sentence)
 
     animal_count = len([w for w in geo_sentence.words if 'ANIMAL' in w.types])
     gnn_count = len([w for w in geo_sentence.words if 'GNN' in w.types])
     self.assertEqual(animal_count, 2)
     self.assertEqual(gnn_count, 5)
+
+  def test_annotate_nltk_geoextension2(self):
+    sentence = "Musical instruments don't sound like badgers."
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    geo_categories = {
+      'GNN' : ('NN*', 'tests/test-files/gnns.txt'),
+      'ANIMAL' : ('NN*', 'tests/test-files/animals.txt'),
+    }
+    geo_annotator = TypeExtensionAnnotator(geo_categories, stem=True)
+    geo_sentence = geo_annotator.extend(annotated_sentence)
+
+    animal_count = len([w for w in geo_sentence.words if 'ANIMAL' in w.types])
+    gnn_count = len([w for w in geo_sentence.words if 'GNN' in w.types])
+    self.assertEqual(animal_count, 1)
+    self.assertEqual(gnn_count, 0)
+
+  def test_annotate_nltk_geoextension3(self):
+    sentence = 'Houses and rabbits look like badgers, oil rigs, and gas stations.'
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    geo_categories = {
+      'GNN' : ('NN*', 'tests/test-files/gnns.txt'),
+      'ANIMAL' : ('NN*', 'tests/test-files/animals.txt'),
+    }
+    geo_annotator = TypeExtensionAnnotator(geo_categories)
+    geo_sentence = geo_annotator.extend(annotated_sentence)
+
+    animal_count = len([w for w in geo_sentence.words if 'ANIMAL' in w.types])
+    gnn_count = len([w for w in geo_sentence.words if 'GNN' in w.types])
+    self.assertEqual(animal_count, 0)
+    self.assertEqual(gnn_count, 2)
+
+
 
