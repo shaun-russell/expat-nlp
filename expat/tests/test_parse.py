@@ -22,7 +22,7 @@ XML_SAMPLE = '''
   <!ATTLIST pattern name ID #REQUIRED>
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
-  <!ATTLIST pattern priority CDATA "1">
+  <!ATTLIST pattern weight CDATA "1">
   <!ATTLIST pattern label CDATA "">
 
   <!-- Word element -->
@@ -50,7 +50,7 @@ XML_SAMPLE = '''
 
 <!-- SEE README FOR USAGE AND DOCS -->
 <patterngroup label="basic" version="1.0">
-  <pattern name="named-pattern" class="examples" description="for example purposes" priority="7"> 
+  <pattern name="named-pattern" class="examples" description="for example purposes" weight="7"> 
     <!-- Find a word whose PoS begins with NN but isn't a plural, and is of type TXE or HGH -->
     <word pos="NN*" expos="*S" type="TXE,HGH"/>
 

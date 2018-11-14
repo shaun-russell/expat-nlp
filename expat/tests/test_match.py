@@ -14,7 +14,7 @@ pattern_pfx = '''
   <!ATTLIST pattern name ID #REQUIRED>
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
-  <!ATTLIST pattern priority CDATA "1">
+  <!ATTLIST pattern weight CDATA "1">
   <!ATTLIST pattern label CDATA "">
 
   <!-- Word element -->

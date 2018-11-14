@@ -27,7 +27,7 @@ java -mx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -t
 Otherwise, the NLTK annotator does PoS tagging, lemmatising (maybe?), and basic NER and has no external dependencies outside NLTK.
 
 ## Important info re: patterns
-- Patterns cannot end on an optional word, meaning the final word in a pattern must have a minimum of 1 or more (not zero). Instead, just make a copy of the pattern with that as required with a different priority value if the optional parameter is important.
+- Patterns cannot end on an optional word, meaning the final word in a pattern must have a minimum of 1 or more (not zero). Instead, just make a copy of the pattern with that as required with a different weight value if the optional parameter is important.
 
 ## To-do
 
@@ -82,7 +82,7 @@ Structural Hierarchy:
     <!ATTLIST pattern name ID #REQUIRED>
     <!ATTLIST pattern description CDATA "">
     <!ATTLIST pattern class CDATA #REQUIRED>
-    <!ATTLIST pattern priority CDATA "1">
+    <!ATTLIST pattern weight CDATA "1">
     <!ATTLIST pattern label CDATA "">
 
     <!-- Word element -->
@@ -140,7 +140,7 @@ Structural Hierarchy:
       # A short description or more detailed name of what the pattern is.
     - class : string
       # The class/category that the pattern belongs to, i.e. 'noun-group' or 'prp-phrase'
-    - priority : numeric
+    - weight : numeric
       # Allows patterns to be ordered or sorted based on
     - label : string
       # More descriptive metadata. Non-operative.

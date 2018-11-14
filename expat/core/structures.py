@@ -38,7 +38,7 @@ class Pattern():
     self.description = tree.get('description')
     # 'class' is a protected word in python, so the field is 'classname'
     self.classname = tree.get('class')
-    self.priority = int(tree.get('priority'))
+    self.weight = int(tree.get('weight'))
     self.label = tree.get('label')
     # create the correct object for the child elements of the pattern
     self.children = [PatternWord(el,i) for i,el in enumerate(tree.getchildren())]
