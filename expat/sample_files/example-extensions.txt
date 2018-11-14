@@ -1,0 +1,3 @@
+# comment
+# Semicolon delimited columns
+Category-Name;PoS,Tag*;path/to/wordlists.txt

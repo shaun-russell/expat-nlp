@@ -1,0 +1,4 @@
+# comment
+# Semicolon delimited columns
+Animals;NN*;tests/test-files/animals.txt
+GNNS;NN*,JJ*;tests/test-files/gnns.txt

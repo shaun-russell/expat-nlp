@@ -1,5 +1,6 @@
 ''' Tests for the annotators.py file. '''
 import unittest
+import core.parse as parse
 from core.match import StringMatching, ListMatching
 from core.structures import AttributeSet
 from core.annotators import BasicNltkAnnotator,StanfordCoreNLPAnnotator, TypeExtensionAnnotator
@@ -132,6 +133,25 @@ class TestMatching(unittest.TestCase):
     gnn_count = len([w for w in geo_sentence.words if 'GNN' in w.types])
     self.assertEqual(animal_count, 0)
     self.assertEqual(gnn_count, 2)
+
+  def test_annotate_nltk_geoextension_fileload(self):
+    sentence = 'Houses and rabbits look like badgers, oil rigs, and gas stations.'
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+
+    exfile = open('tests/test-files/test-extensions.txt', 'r')
+    geo_categories = parse.ExtensionParser.parse(exfile)
+    exfile.close()
+
+    geo_annotator = TypeExtensionAnnotator(geo_categories)
+    geo_sentence = geo_annotator.extend(annotated_sentence)
+
+    animal_count = len([w for w in geo_sentence.words if 'ANIMAL' in w.types])
+    gnn_count = len([w for w in geo_sentence.words if 'GNN' in w.types])
+    self.assertEqual(animal_count, 0)
+    self.assertEqual(gnn_count, 2)
+
+
 
 
 

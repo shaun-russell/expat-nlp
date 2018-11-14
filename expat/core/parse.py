@@ -14,3 +14,14 @@ class Parser():
     # build the entire structure through the PatternGroup constructor
     patterns = PatternGroup(tree)
     return patterns
+
+class ExtensionParser():
+  @staticmethod
+  def parse(extensionfile):
+    extensions = {}
+    for line in extensionfile:
+      if not line.startswith('#') and len(line) > 3:
+        data = line.strip().split(';')
+        extensions[data[0]] = (data[1], data[2])
+    
+    return extensions

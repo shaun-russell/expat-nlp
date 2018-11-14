@@ -12,10 +12,6 @@ from colorama import init
 # used to tell Click that -h is shorthand for help
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-class Colours():
-  base_colour = click.style('', fg='white')
-  pos_colour = click.style('', fg='cyan')
-
 # individual functions go here
 def print_matches(pattern, matches):
   ''' Pretty-print the matches that were found. '''
@@ -30,6 +26,9 @@ def print_matches(pattern, matches):
 @click.argument('in-file', type=click.File('r'), required=True)
 @click.argument('pattern-file', type=str, required=True)
 # @click.argument('out-file', type=click.File('w+', encoding='utf8'), required=True)
+
+@click.option('--extension-file', '-x', type=click.File('r'), default='',
+              help='Extension annotators for type annotation.')
 
 # optional arguments
 @click.option('--annotator', '-n', type=click.Choice(['nltk', 'corenlp']),
@@ -54,7 +53,7 @@ def print_matches(pattern, matches):
 
 
 # main entry point function
-def cli(in_file, pattern_file, #out_file,
+def cli(in_file, pattern_file, extension_file,
         annotator, corenlp_url, delimiter, split_index,
         automated, verbose, ignore_case):
   '''
@@ -77,6 +76,12 @@ def cli(in_file, pattern_file, #out_file,
     selected_annotator = anno.BasicNltkAnnotator()
   elif annotator == 'corenlp':
     selected_annotator = anno.StanfordCoreNLPAnnotator(corenlp_url)
+
+  # TODO: make this flexible
+  spatial_annotator = None
+  if extension_file != ''
+    categories = parse.ExtensionParser.parse(extension_file)
+    spatial_annotator = anno.TypeExtensionAnnotator()
 
   # At some point, implement the search/graph generation algorithm selection here
   search_method = search.BreadthFirstWithQueue()

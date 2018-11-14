@@ -121,3 +121,11 @@ class TestParsing(unittest.TestCase):
     xmltree = parse.Parser.parse_patterns(XML_FILEPATH, True)
     expected_tag = xmltree.patterns[0].children[0]._dependencies
     self.assertEqual(expected_tag, '*')
+
+  def test_extension_parse(self):
+    exfile = open('tests/test-files/test-extensions.txt', 'r')
+    results = parse.ExtensionParser.parse(exfile)
+    exfile.close()
+    print(results['Animals'][1])
+    self.assertTrue('animals' in results['Animals'][1])
+    self.assertEqual(results['GNNS'][0], ('NN*,JJ*'))
