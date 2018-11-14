@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE patterngroup [
+  <!-- Pattern Group Element -->
+  <!ELEMENT patterngroup (pattern)+>
+  <!ATTLIST patterngroup version CDATA #REQUIRED>
+  <!ATTLIST patterngroup label CDATA "">
+
+  <!-- Pattern Element -->
+  <!ELEMENT pattern (word)+>
+  <!ATTLIST pattern name ID #REQUIRED>
+  <!ATTLIST pattern description CDATA "">
+  <!ATTLIST pattern class CDATA #REQUIRED>
+  <!ATTLIST pattern weight CDATA "1">
+  <!ATTLIST pattern label CDATA "">
+
+  <!-- Word element -->
+  <!ELEMENT word EMPTY>
+  <!ATTLIST word min CDATA "1">
+  <!ATTLIST word max CDATA "1">
+  <!ATTLIST word contextual CDATA "false">
+  <!ATTLIST word label CDATA "">
+  <!-- Specific Word Matching -->
+  <!ATTLIST word lemma CDATA "*">
+  <!ATTLIST word word CDATA "*">
+  <!-- Parts of Speech -->
+  <!ATTLIST word pos CDATA "*">
+  <!ATTLIST word expos CDATA "">
+  <!-- Dependencies -->
+  <!ATTLIST word deps CDATA "*">
+  <!ATTLIST word exdeps CDATA "">
+  <!ATTLIST word depnum CDATA "1">
+  <!-- Additional Type -->
+  <!ATTLIST word type CDATA "*">
+  <!ATTLIST word extype CDATA "">
+  <!ATTLIST word typenum CDATA "1">
+  <!ATTLIST word ner CDATA "O">
+
+]>
+
+<!-- SEE README FOR USAGE AND DOCS -->
+<patterngroup label="spatial-patterns" version="1.0">
+  <pattern name="gnn-3" class="geonouns" description="Match up to 3 geonouns"> 
+    <word pos="NN*" type="GNN" max="3"/>
+  </pattern>
+  <pattern name="nn-gnn" class="geonouns" description="Nouns followed by GNNs"> 
+    <word pos="NN*" max="3"/>
+    <word pos="NN*" type="GNN" max="3"/>
+  </pattern>
+  <pattern name="gnn-nn" class="geonouns" description="GNNs followed by nouns" weight="2"> 
+    <word pos="NN*" type="GNN" max="3"/>
+    <word pos="NN*" max="3"/>
+  </pattern>
+</patterngroup>

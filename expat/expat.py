@@ -7,10 +7,14 @@ import core.annotators as anno
 import core.structures as struct
 import core.match as match
 import core.search as search
+from colorama import init
 
 # used to tell Click that -h is shorthand for help
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
+class Colours():
+  base_colour = click.style('', fg='white')
+  pos_colour = click.style('', fg='cyan')
 
 # individual functions go here
 def print_matches(pattern, matches):
@@ -42,7 +46,7 @@ def print_matches(pattern, matches):
               help='Something about case-sensitivity.')
 @click.option('--automated', '-a', is_flag=True,
               help="Don't wait before proceeding to the next sentence.")
-@click.option('--verbose', is_flag=True,
+@click.option('--verbose', '-v', is_flag=True,
               help='Enables information-dense terminal output.')
 
 # other required arguments
@@ -57,6 +61,13 @@ def cli(in_file, pattern_file, #out_file,
     A description of what this main function does.
   '''
 
+  if verbose:
+    click.echo('Processing...')
+  
+  if not in_file:
+    click.echo('Pattern file not found.')
+  if not pattern_file:
+    click.echo('Pattern file not found.')
   # load all files from patterns
   all_patterns = parse.Parser.parse_patterns(pattern_file, True)
 
@@ -84,7 +95,7 @@ def cli(in_file, pattern_file, #out_file,
     # the selected annotator annotates the sentence
     annotated_sentence = selected_annotator.annotate(line)
     click.echo('\nAnnotated Sentence:')
-    click.echo(' '.join(['{} ({})'.format(x.word, x.pos) for x in annotated_sentence.words]))
+    click.echo(' '.join(['{} ({})'.format(x.word, click.style(x.pos, 'cyan')) for x in annotated_sentence.words]))
     # then find all matches in that sentence for every pattern
     for pattern in all_patterns.patterns:
       pattern_matches = search.MatchBuilder.find_all_matches(annotated_sentence,

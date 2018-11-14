@@ -92,12 +92,14 @@ class ExtensionAnnotatorBase():
 
 class TypeExtensionAnnotator(ExtensionAnnotatorBase):
   def __init__(self, categories, stem=False):
+    ''' Initialise the annotator with { label: (pos,filepath) }. '''
     self.wordsets = []
     self.stemming = stem
     for label,(pos,fpath) in categories.items():
      self.wordsets.append(ExtensionWordSet(label, pos, fpath, self.stemming))
 
   def extend(self, annotated_sentence):
+    ''' Extend an existing annotated sentence with types (from wordlists). '''
     stemmer = PorterStemmer()
     extended_sentence = []
     for word in annotated_sentence.words:
