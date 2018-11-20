@@ -533,5 +533,23 @@ class TestMatching(unittest.TestCase):
     self.assertEqual(actual, expected)
 
 
+  def test_pattern_graph_matches5(self):
+    pattern = pattern_pfx+'''
+    <pattern name="ex" class="ex-patterns">
+      <word lemma="word*" />
+      <word word="abcd" />
+    </pattern>'''
+    tree = etree.fromstring(pattern)
+    pattern = Pattern(tree)
+
+    sentence = "He is running the race by eating the the mungo."
+    annotator = BasicNltkAnnotator()
+    annotated_sentence = annotator.annotate(sentence)
+    bfs_search = BreadthFirstWithQueue()
+
+    matches = MatchBuilder.find_all_matches(annotated_sentence, pattern, bfs_search)
+    self.assertEqual(len(matches), 0)
+
+
 
 
