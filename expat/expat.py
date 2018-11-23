@@ -21,6 +21,7 @@ def print_matches(pattern, matches):
     click.echo('  {}: {}'.format(i+1, " ".join(all_words)))
 
 def print_sentence_patterns(patterns, annotated_words):
+  print(patterns)
   for word in annotated_words:
     for patt in patterns:
       for pw in patt:
@@ -48,12 +49,13 @@ def print_sentence_patterns(patterns, annotated_words):
               help='Which delimiter to use IF splitting. Default is TAB.')
 @click.option('--split-index', '-i', type=int, default=-1,
               help='Which index to split on. Default is -1, which means the line is not split.')
-@click.option('--no-header', '-n', is_flag=True,
-              help='Read the first line as data, rather than as a header')
-
+@click.option('--export-matrix', '-x', type=click.File('w+', encoding='utf8'),
+              help='A filename to export the pattern matrix to.')
 @click.option('--debug-pattern', '-g', type=str,
               help='A pattern to run full verbose output on.')
 
+@click.option('--no-header', '-n', is_flag=True,
+              help='Read the first line as data, rather than as a header')
 @click.option('--ignore-case', '-i', is_flag=True,
               help='Something about case-sensitivity.')
 @click.option('--verbose', '-v', is_flag=True,
@@ -65,7 +67,7 @@ def print_sentence_patterns(patterns, annotated_words):
 
 # main entry point function
 def cli(in_file, pattern_file, extension_file,
-        annotator, corenlp_url, delimiter, split_index, debug_pattern,
+        annotator, corenlp_url, delimiter, split_index, debug_pattern, export_matrix,
         no_header, verbose, ignore_case):
   '''
     A description of what this main function does.
@@ -114,14 +116,18 @@ def cli(in_file, pattern_file, extension_file,
     header_line = in_file.readline()
     header = header_line.strip()
 
+  output_matrix = []
+  output_matrix.append(['sentence'] + [p.name for p in all_patterns.patterns])
   for line in in_file:
     # the selected annotator annotates the sentence
-    annotated_sentence = selected_annotator.annotate(line)
+    annotated_sentence = selected_annotator.annotate(line.strip())
     if spatial_annotator != None:
       annotated_sentence = spatial_annotator.extend(annotated_sentence)
     click.echo('\nAnnotated Sentence:')
     click.echo(' '.join(['{} ({},[{}]) '.format(x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta')) for x in annotated_sentence.words]))
     # then find all matches in that sentence for every pattern
+    # make the csv line nicely formatted
+    row = ["{}".format(line.strip().replace('"',"'"))]
     matched_patterns = []
     for pattern in all_patterns.patterns:
       debug = False
@@ -136,14 +142,22 @@ def cli(in_file, pattern_file, extension_file,
         click.echo(click.style('End Debugging.', fg='white', bg='green'))
       if verbose:
         print_matches(pattern, pattern_matches)
+      row.append(str(len(pattern_matches)))
+    output_matrix.append(row)
 
-    print_sentence_patterns(matched_patterns, annotated_sentence.words)
+
+
+    # print_sentence_patterns(matched_patterns, annotated_sentence.words)
 
     # periodic progress updates
     # word_index += 1
     # if verbose and word_index % 10 == 0:
     #   click.echo('\rProcessed {}.'.format(word_index), nl=False)
    
+  if export_matrix:
+    for row in output_matrix:
+      export_matrix.write(','.join(row) + '\n')
+  export_matrix.close()
   # TODO: here
   # implement objects that select and merge patterns
 
