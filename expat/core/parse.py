@@ -22,6 +22,6 @@ class ExtensionParser():
     for line in extensionfile:
       if not line.startswith('#') and len(line) > 3:
         data = line.strip().split(';')
-        extensions[data[0]] = (data[1], data[2])
+        extensions[data[0]] = (data[1], data[2], data[3])
     
     return extensions

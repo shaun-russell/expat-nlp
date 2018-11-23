@@ -1,4 +1,5 @@
 ''' Search algorithms. ''' 
+import click
 from collections import deque
 from copy import copy
 from core.match import PatternMatcher
@@ -23,10 +24,14 @@ class BreadthFirstWithQueue(GraphSearch):
     # if the queue is empty, pop() will make it fail. Also there are no patterns
     # that could be found on an empty list, so we just exit here.
     if not queue:
+      if verbose:
+        click.echo(click.style('No queue, exiting.', fg='bright_red'))
       return []
     first_word = queue.pop()
     # first word doesn't match the start node, exit because no point continuing
     if not PatternMatcher.word_matches_pattern(first_word, start_node):
+      if verbose:
+        click.echo(click.style("First word doesn't match, exiting.", fg='bright_red'))
       return []
 
     # add the first word back in so we can look at the successors
@@ -44,11 +49,13 @@ class BreadthFirstWithQueue(GraphSearch):
       # each search_queue item is the graph-node, the current queue of words,
       # and the saved path
       node,wordq,path = search_queue.pop()
-      if verbose: print('Popped:',node._pos, [x.pos for x in path])
+      if verbose: print('Popped:', node.word, node._pos, [x.pos for x in path])
 
       if verbose: print('Successors (before end check):', [x._pos for x in graph.successors(node)])
       if len(list(graph.successors(node))) == 0:
-        if verbose: print('End of graph')
+        if verbose:
+          click.echo(click.style('END GRAPH, SAVING PATTERN', fg='green'))
+          click.echo(click.style(' '.join([x.word for x in path]), fg='cyan'))
         # reached a final node, save this path.
         saved_paths.append((path))
 
@@ -59,12 +66,16 @@ class BreadthFirstWithQueue(GraphSearch):
         if not queue_copy:
           break
         word = queue_copy.pop()
-        if verbose: print('Successor ->', i, successor._pos)
+        if verbose:
+          click.echo('Checking word: {}'.format(click.style(word.word, fg='cyan')))
+          click.echo('Successor -> {} {} {}'.format(i, successor.word, successor._pos))
         # check that the item in the queue matches the starting pattern
         if PatternMatcher.word_matches_pattern(word, successor):
-          if verbose: print('Successor MATCH', word.pos, successor._pos)
+          if verbose: print('Successor MATCH', word.word, word.pos, successor.word, successor._pos)
           # if this word matches the 
-          search_queue.append((successor, queue_copy, path + [word]))
+          if word not in path:
+            path += [word]
+          search_queue.append((successor, queue_copy, path))
 
     return saved_paths
 

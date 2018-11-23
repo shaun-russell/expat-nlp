@@ -85,17 +85,18 @@ class ExtensionWordSet():
         self.words = [stemmer.stem(w.strip()) for w in lines]
       else:
         self.words = [w.strip() for w in lines]
+    print(label, pos, len(self.words))
 
 class ExtensionAnnotatorBase():
   def extend(self, annotated_sentence):
     return annotated_sentence
 
 class TypeExtensionAnnotator(ExtensionAnnotatorBase):
-  def __init__(self, categories, stem=False):
+  def __init__(self, categories, stem=True):
     ''' Initialise the annotator with { label: (pos,filepath) }. '''
     self.wordsets = []
     self.stemming = stem
-    for label,(pos,fpath) in categories.items():
+    for label,(pos,fpath,stem) in categories.items():
      self.wordsets.append(ExtensionWordSet(label, pos, fpath, self.stemming))
 
   def extend(self, annotated_sentence):
