@@ -20,6 +20,15 @@ def print_matches(pattern, matches):
     all_words = ['({}. {})'.format(w.index, w.word) for w in match]
     click.echo('  {}: {}'.format(i+1, " ".join(all_words)))
 
+def print_sentence_patterns(patterns, annotated_words):
+  for word in annotated_words:
+    for patt in patterns:
+      for pw in patt:
+        if pw.index == word.index:
+          word = click.style(word, fg='green')
+    click.echo('', nl=False)
+  click.echo('')
+
 # START CLI COMMANDS
 @click.command(context_settings=CONTEXT_SETTINGS)
 # required arguments
@@ -102,6 +111,7 @@ def cli(in_file, pattern_file, extension_file,
     click.echo('\nAnnotated Sentence:')
     click.echo(' '.join(['{} ({})'.format(x.word, click.style(x.pos, 'cyan')) for x in annotated_sentence.words]))
     # then find all matches in that sentence for every pattern
+    all_patterns = []
     for pattern in all_patterns.patterns:
       pattern_matches = search.MatchBuilder.find_all_matches(annotated_sentence,
                                                              pattern,
@@ -109,11 +119,19 @@ def cli(in_file, pattern_file, extension_file,
       if verbose:
         print_matches(pattern, pattern_matches)
 
+    print_sentence_patterns(all_patterns, annotated_sentence.words)
+
     # periodic progress updates
     # word_index += 1
     # if verbose and word_index % 10 == 0:
     #   click.echo('\rProcessed {}.'.format(word_index), nl=False)
    
+  # TODO: here
+  # implement objects that select and merge patterns
+
+  # print sentence, using colours (1 for each pattern class?), to show what is matched
+
+
   # if verbose: click.echo('Saving...')
 
   # use the same line endings as the input

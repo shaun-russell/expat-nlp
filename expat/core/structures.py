@@ -238,3 +238,46 @@ class GraphBuilder():
         exit_nodes.append(item)
     return exit_nodes
 
+
+class Selector():
+  def merge_patterns(pattern_list):
+    return pattern_list
+
+  def apply_patterns_to_sentence(pattern_list, sentences):
+    pass
+
+
+class LengthSelector():
+  def __init__(self, longest=True):
+    self.longest_first = longest
+
+  def merge_patterns(pattern_list):
+    # do stuff to patterns
+    merged_patterns = []
+    # for every class name
+    for pattern_class in set([w.classname for w in pattern_list]):
+      # find all patterns of that class
+      patterns_of_class = [w for w in pattern_list if w.classname == pattern_class]
+      # if patterns overlap, select the pattern with the longest length.
+      # if equal length, use priority. If equal priority, let python's sort() choose
+      non_overlapping_patterns = []
+
+    return merged_patterns
+
+  def apply_patterns_to_sentence(pattern_list, sentences):
+    patterns = self.merge_patterns
+    # apply patterns to sentence
+
+    # how to rank pattern classes?
+
+class PrioritySelector():
+  def __init__(self):
+    pass
+
+  def merge_patterns(pattern_list):
+    # do stuff to patterns
+    return pattern_list
+
+  def apply_patterns_to_sentence(pattern_list, sentences):
+    patterns = self.merge_patterns
+    # apply patterns to sentence
