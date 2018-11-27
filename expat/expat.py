@@ -21,14 +21,27 @@ def print_matches(pattern, matches):
     click.echo('  {}: {}'.format(i+1, " ".join(all_words)))
 
 def print_sentence_patterns(patterns, annotated_words):
-  print(patterns)
+  # print(patterns)
+  words = []
   for word in annotated_words:
+    # print('w:', word.index)
+    found = False
     for patt in patterns:
+      # print(patt)
+      if found:
+        break
       for pw in patt:
+        # print('pw:', pw)
+        # print('pw:', pw.index)
+        if found:
+          break
         if pw.index == word.index:
-          word = click.style(word, fg='green')
-    click.echo('', nl=False)
-  click.echo('')
+          words.append(click.style(word.word, fg='green'))
+          found = True
+          break
+    if not found:
+      words.append(word.word)
+  click.echo(' '.join(words))
 
 # START CLI COMMANDS
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -53,11 +66,15 @@ def print_sentence_patterns(patterns, annotated_words):
               help='A filename to export the pattern matrix to.')
 @click.option('--debug-pattern', '-g', type=str,
               help='A pattern to run full verbose output on.')
+@click.option('--heading', type=str, default='sentence',
+              help='The heading to use for the sentence output. Default is "sentence", but override this is there is more than 1 column in the sentences file.')
 
 @click.option('--no-header', '-n', is_flag=True,
               help='Read the first line as data, rather than as a header')
 @click.option('--ignore-case', '-i', is_flag=True,
               help='Something about case-sensitivity.')
+@click.option('--stepwise', '-s', is_flag=True,
+              help='Manually cycle through the sentences to scan what is matched.')
 @click.option('--verbose', '-v', is_flag=True,
               help='Enables information-dense terminal output.')
 
@@ -67,8 +84,8 @@ def print_sentence_patterns(patterns, annotated_words):
 
 # main entry point function
 def cli(in_file, pattern_file, extension_file,
-        annotator, corenlp_url, delimiter, split_index, debug_pattern, export_matrix,
-        no_header, verbose, ignore_case):
+        annotator, corenlp_url, delimiter, split_index, debug_pattern, export_matrix, heading,
+        no_header, verbose, ignore_case, stepwise):
   '''
     A description of what this main function does.
   '''
@@ -77,7 +94,7 @@ def cli(in_file, pattern_file, extension_file,
     click.echo('Processing...')
   
   if not in_file:
-    click.echo('Pattern file not found.')
+    click.echo('Input file not found.')
   if not pattern_file:
     click.echo('Pattern file not found.')
   # load all files from patterns
@@ -117,14 +134,18 @@ def cli(in_file, pattern_file, extension_file,
     header = header_line.strip()
 
   output_matrix = []
-  output_matrix.append(['sentence'] + [p.name for p in all_patterns.patterns])
-  for line in in_file:
+  output_matrix.append([heading] + [p.name for p in all_patterns.patterns])
+  count = 0
+  all_lines = in_file.readlines()
+  linenum = len(all_lines)
+  for line in all_lines:
     # the selected annotator annotates the sentence
     annotated_sentence = selected_annotator.annotate(line.strip())
     if spatial_annotator != None:
       annotated_sentence = spatial_annotator.extend(annotated_sentence)
-    click.echo('\nAnnotated Sentence:')
-    click.echo(' '.join(['{} ({},[{}]) '.format(x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta')) for x in annotated_sentence.words]))
+    if verbose:
+      click.echo('\nAnnotated Sentence:')
+      click.echo(' '.join(['{} ({},[{}]) '.format(x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta')) for x in annotated_sentence.words]))
     # then find all matches in that sentence for every pattern
     # make the csv line nicely formatted
     row = ["{}".format(line.strip().replace('"',"'"))]
@@ -138,6 +159,7 @@ def cli(in_file, pattern_file, extension_file,
                                                              pattern,
                                                              search_method,
                                                              debug)
+      matched_patterns += pattern_matches
       if debug:
         click.echo(click.style('End Debugging.', fg='white', bg='green'))
       if verbose:
@@ -145,9 +167,17 @@ def cli(in_file, pattern_file, extension_file,
       row.append(str(len(pattern_matches)))
     output_matrix.append(row)
 
+    count += 1
+    if count % 20 == 0:
+      click.echo('\r{} of {}'.format(count, linenum), nl=False)
 
 
-    # print_sentence_patterns(matched_patterns, annotated_sentence.words)
+
+    if verbose:
+      print(len(matched_patterns))
+      print_sentence_patterns(matched_patterns, annotated_sentence.words)
+    if stepwise:
+      input('\rPress a key to continue...\n')
 
     # periodic progress updates
     # word_index += 1
