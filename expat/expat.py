@@ -140,7 +140,15 @@ def cli(in_file, pattern_file, extension_file,
   linenum = len(all_lines)
   for line in all_lines:
     # the selected annotator annotates the sentence
-    annotated_sentence = selected_annotator.annotate(line.strip())
+    cleaned_line = line.strip()
+    if ',' in heading:
+      last_comma_idx = cleaned_line.rfind(',')
+      cleaned_line = cleaned_line[0:last_comma_idx]
+    if '\t' in heading:
+      last_delim_idx = cleaned_line.rfind('\t')
+      cleaned_line = cleaned_line[0:last_delim_idx]
+
+    annotated_sentence = selected_annotator.annotate(cleaned_line)
     if spatial_annotator != None:
       annotated_sentence = spatial_annotator.extend(annotated_sentence)
     if verbose:
