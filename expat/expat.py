@@ -141,7 +141,7 @@ def cli(in_file, pattern_file, extension_file,
   for line in all_lines:
     # the selected annotator annotates the sentence
     # strip trailing and leading whitespace, then trailing and leading quote marks
-    cleaned_line = line.strip().strip(["'",'"'])
+    cleaned_line = line.replace('"',"'").strip().strip("'")
     if ',' in heading:
       last_comma_idx = cleaned_line.rfind(',')
       cleaned_line = cleaned_line[0:last_comma_idx]
