@@ -85,7 +85,7 @@ class ExtensionWordSet():
         self.words = [stemmer.stem(w.strip()) for w in lines]
       else:
         self.words = [w.strip() for w in lines]
-    print(label, pos, len(self.words))
+    print(label, 'pos:', pos, 'word count:', len(self.words))
 
 class ExtensionAnnotatorBase():
   def extend(self, annotated_sentence):
@@ -115,3 +115,42 @@ class TypeExtensionAnnotator(ExtensionAnnotatorBase):
       word.types = ','.join(word_types)
       extended_sentence.append(word)
     return AnnotatedSentence(extended_sentence)
+
+
+class Selector():
+  def select_patterns(self, patterns):
+    return patterns
+    
+
+class ContainingSelector(Selector):
+  def __init__(self):
+    pass
+
+  def _is_contained_in(self, parts, whole):
+    # if there is a part that is not in the whole, then not contained
+    whole_indices = [w.index for w in whole]
+    for part in parts:
+      if part.index not in whole_indices:
+        return False
+    # otherwise, everything was contained
+    return True
+
+  def select_patterns(self, matched):
+    selected_patterns = []
+    sorted_patterns = sorted(matched, key=len, reverse=True)
+    # do work in here
+    for wordlist in sorted_patterns:
+      # wordlist is a list of AnnotatedWord objects
+      found = False
+      # if the words in the current matched pattern are already matched by an
+      # existing pattern, we won't add it.
+      # If [A,B,C] is an existing pattern, [B], [C], and [B,C] will be excluded because
+      # [A,B,C] contains these.
+      for existing in selected_patterns:
+        if self._is_contained_in(wordlist, existing):
+          found = True
+          break
+      if not found:
+        selected_patterns.append(wordlist)
+
+    return selected_patterns

@@ -40,6 +40,8 @@ class Pattern():
     self.classname = tree.get('class')
     self.weight = int(tree.get('weight'))
     self.label = tree.get('label')
+    self.preprocess = tree.get('preprocess').lower() == 'true'
+    # print(self.name, 'Pre', self.preprocess, tree.get('preprocess'))
     # create the correct object for the child elements of the pattern
     self.children = [PatternWord(el,i) for i,el in enumerate(tree.getchildren())]
 
@@ -197,9 +199,9 @@ class AnnotatedSentence():
 class AnnotatedWord():
   def __init__(self, **kwargs):
     self.index = get_value('index', kwargs, -1)
-    self.word = get_value('word', kwargs, None)
-    self.lemma = get_value('lemma', kwargs, None)
-    self.pos = get_value('pos', kwargs, None)
+    self.word = get_value('word', kwargs, '')
+    self.lemma = get_value('lemma', kwargs, '')
+    self.pos = get_value('pos', kwargs, '')
     self.dependencies = get_value('dependencies', kwargs, '')
     self.types = get_value('type', kwargs, '')
     self.ner = get_value('ner', kwargs, 'O') # O is none

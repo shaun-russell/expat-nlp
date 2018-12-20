@@ -21,18 +21,14 @@ def print_matches(pattern, matches):
     click.echo('  {}: {}'.format(i+1, " ".join(all_words)))
 
 def print_sentence_patterns(patterns, annotated_words):
-  # print(patterns)
+  print('Applied Patterns')
   words = []
   for word in annotated_words:
-    # print('w:', word.index)
     found = False
     for patt in patterns:
-      # print(patt)
       if found:
         break
       for pw in patt:
-        # print('pw:', pw)
-        # print('pw:', pw.index)
         if found:
           break
         if pw.index == word.index:
@@ -42,6 +38,59 @@ def print_sentence_patterns(patterns, annotated_words):
     if not found:
       words.append(word.word)
   click.echo(' '.join(words))
+
+def print_sentence_pattern_categories(patterns, annotated_words):
+  print('Preprocessed Patterns')
+  skipnum = 0
+  words = []
+  for word in annotated_words:
+    if skipnum > 0:
+      skipnum -= 1
+      continue
+    found = False
+    for p,patt in patterns:
+      if found:
+        break
+      for px in patt:
+        for pw in px:
+          if found:
+            break
+          if pw.index == word.index:
+            words.append(click.style(p.classname, fg='cyan', bg='black'))
+            skipnum = len(px) - 1
+            found = True
+            break
+    if not found:
+      words.append(word.word)
+  click.echo(' '.join(words))
+
+def get_reduced_sentence(patterns, annotated_words):
+  skipnum = 0
+  words = []
+  index = 0
+  for word in annotated_words:
+    if skipnum > 0:
+      skipnum -= 1
+      continue
+    found = False
+    for p,patt in patterns:
+      if found:
+        break
+      for px in patt:
+        for pw in px:
+          if found:
+            break
+          if pw.index == word.index:
+            words.append(struct.AnnotatedWord(word=p.classname, index=index, lemma=word.lemma))
+            skipnum = len(px) - 1
+            found = True
+            index += 1
+            break
+    if not found:
+      words.append(word)
+      index += 1
+  return struct.AnnotatedSentence(words)
+
 
 # START CLI COMMANDS
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -54,7 +103,9 @@ def print_sentence_patterns(patterns, annotated_words):
 
 # optional arguments
 @click.option('--annotator', '-a', type=click.Choice(['nltk', 'corenlp']),
-              default='nltk', help='A non-flag option that needs a value.')
+              default='nltk', help='The annotator to use for tagging.')
+@click.option('--selector', '-s', type=click.Choice(['none', 'containing']),
+              default='none', help='Which type of selection algorithm to use to focus the patterns.')
 @click.option('--corenlp-url', '-u', type=str, default='http://localhost:9000',
               help='The url of the CoreNLP server.')
 
@@ -73,7 +124,7 @@ def print_sentence_patterns(patterns, annotated_words):
               help='Read the first line as data, rather than as a header')
 @click.option('--ignore-case', '-i', is_flag=True,
               help='Something about case-sensitivity.')
-@click.option('--stepwise', '-s', is_flag=True,
+@click.option('--stepwise', is_flag=True,
               help='Manually cycle through the sentences to scan what is matched.')
 @click.option('--verbose', '-v', is_flag=True,
               help='Enables information-dense terminal output.')
@@ -84,7 +135,7 @@ def print_sentence_patterns(patterns, annotated_words):
 
 # main entry point function
 def cli(in_file, pattern_file, extension_file,
-        annotator, corenlp_url, delimiter, split_index, debug_pattern, export_matrix, heading,
+        annotator, selector, corenlp_url, delimiter, split_index, debug_pattern, export_matrix, heading,
         no_header, verbose, ignore_case, stepwise):
   '''
     A description of what this main function does.
@@ -121,6 +172,11 @@ def cli(in_file, pattern_file, extension_file,
   # At some point, implement the search/graph generation algorithm selection here
   search_method = search.BreadthFirstWithQueue()
 
+  active_selector = None
+  if selector == 'containing':
+    print('Containing selection algorithm')
+    active_selector = anno.ContainingSelector()
+
   # store lines in here
   saved_lines = []
   
@@ -143,7 +199,7 @@ def cli(in_file, pattern_file, extension_file,
     # strip trailing and leading whitespace, then trailing and leading quote marks
     cleaned_line = line.replace('"',"'").strip().strip("'")
     if ',' in heading:
-      last_comma_idx = cleaned_line.rfind(',')
+      last_comma_idx = cleaned_line.rfind('"')
       cleaned_line = cleaned_line[0:last_comma_idx]
     if '\t' in heading:
       last_delim_idx = cleaned_line.rfind('\t')
@@ -157,23 +213,64 @@ def cli(in_file, pattern_file, extension_file,
       click.echo(' '.join(['{} ({},[{}]) '.format(x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta')) for x in annotated_sentence.words]))
     # then find all matches in that sentence for every pattern
     # make the csv line nicely formatted
-    row = ["{}".format(line.strip().replace('"',"'"))]
     matched_patterns = []
-    for pattern in all_patterns.patterns:
+    for pattern in [p for p in all_patterns.patterns if p.preprocess]:
       debug = False
       if pattern.name == debug_pattern:
         click.echo(click.style('Debugging:', fg='white', bg='red'))
         debug = True
+
+      # run pattern search
       pattern_matches = search.MatchBuilder.find_all_matches(annotated_sentence,
                                                              pattern,
                                                              search_method,
                                                              debug)
-      matched_patterns += pattern_matches
+
+      # use the selector to reduce/focus the matched patterns                                                            
+      if active_selector == None:
+        matched_patterns.append((pattern,list(pattern_matches)))
+      else:
+        matched_patterns.append((pattern, list(active_selector.select_patterns(pattern_matches))))
+
+      if debug:
+        click.echo(click.style('End Debugging.', fg='white', bg='green'))
+      if verbose:
+        print_matches(pattern, pattern_matches)
+
+    if verbose:
+      print(len(matched_patterns))
+      print_sentence_patterns([x for _,x in matched_patterns], annotated_sentence.words)
+      print_sentence_pattern_categories(matched_patterns, annotated_sentence.words)
+    
+    reduced_sentence = get_reduced_sentence(matched_patterns, annotated_sentence.words)
+
+    matched_patterns = []
+    row = ["\"{}\"".format(line.strip().replace('"',"'").strip('"'))]
+    for pattern in [p for p in all_patterns.patterns if not p.preprocess]:
+      debug = False
+      if pattern.name == debug_pattern:
+        click.echo(click.style('Debugging:', fg='white', bg='red'))
+        debug = True
+
+      # run pattern search
+      pattern_matches = search.MatchBuilder.find_all_matches(reduced_sentence,
+                                                             pattern,
+                                                             search_method,
+                                                             debug)
+
+      # use the selector to reduce/focus the matched patterns                                                            
+      if active_selector == None:
+        matched_patterns += pattern_matches
+      else:
+        matched_patterns += active_selector.select_patterns(pattern_matches)
+
+
       if debug:
         click.echo(click.style('End Debugging.', fg='white', bg='green'))
       if verbose:
         print_matches(pattern, pattern_matches)
       row.append(str(len(pattern_matches)))
+
     output_matrix.append(row)
 
     count += 1
@@ -184,7 +281,8 @@ def cli(in_file, pattern_file, extension_file,
 
     if verbose:
       print(len(matched_patterns))
-      print_sentence_patterns(matched_patterns, annotated_sentence.words)
+      print_sentence_patterns(matched_patterns, reduced_sentence.words)
+      # print_sentence_pattern_categories(matched_patterns, annotated_sentence.words)
     if stepwise:
       input('\rPress a key to continue...\n')
 
