@@ -277,7 +277,7 @@ def cli(in_file, pattern_file, extension_file,
     reduced_sentence = get_reduced_sentence(focus_patterns, annotated_sentence.words)
     if verbose: click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(x.index, x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta'),click.style(x.ner, fg='bright_green')) for x in reduced_sentence.words]))
     matched_patterns = []
-    row = ["\"{}\"{},{}".format(cleaned_line, excess, ' '.join([x.word for x in reduced_sentence.words))]
+    row = ["\"{}\"{},{}".format(cleaned_line, excess, ' '.join([x.word for x in reduced_sentence.words]))]
     for pattern in [p for p in all_patterns.patterns if not p.preprocess]:
       debug = False
       if pattern.name == debug_pattern:
