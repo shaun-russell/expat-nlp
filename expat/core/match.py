@@ -110,6 +110,8 @@ class ListMatching():
         # Match the required number of values using the requirements in the
         # provided AttributeSet object
         match_count = 0
+        if values == None:
+            return False
         for value in values.split(','):
             # first check that the value has the required attributes
             matches = True

@@ -19,7 +19,10 @@ class BreadthFirstWithQueue(GraphSearch):
     ''' Provide a graph reference, the starting node, and the search queue. '''
     # The debug/verbose statements are useful for debugging, but they could
     # probably be cleaned up and re-worded.
-    if verbose: print('SQ:', [x.word for x in queue])
+    if verbose:
+      q = [x.word for x in queue]
+      q.reverse()
+      click.echo('SQ: ' + ' '.join(q))
 
     # if the queue is empty, pop() will make it fail. Also there are no patterns
     # that could be found on an empty list, so we just exit here.
@@ -29,15 +32,19 @@ class BreadthFirstWithQueue(GraphSearch):
       return []
     first_word = queue.pop()
     # first word doesn't match the start node, exit because no point continuing
+    if verbose:
+      click.echo('{}({})[{}] == {}({})[{}] ?'.format(first_word.word, first_word.pos, first_word.types, start_node.word, start_node._pos, start_node._types))
     if not PatternMatcher.word_matches_pattern(first_word, start_node):
       if verbose:
-        click.echo(click.style("First word doesn't match, exiting.", fg='bright_red'))
+        click.echo(click.style("'{}' doesn't match, exiting.".format(first_word.word), fg='bright_red'))
       return []
 
     # add the first word back in so we can look at the successors
     # The main search loop evaluates child elements, so we need to insert the
     # starting parent node back into the queue, so it can be treated like a child
     queue.appendleft(first_word)
+    if verbose:
+      click.echo("Word = {}".format(click.style(first_word.word, fg='cyan')))
     # prep the queue with the first items
     search_queue = deque()
     search_queue.append((start_node,queue,[first_word]))
@@ -45,7 +52,8 @@ class BreadthFirstWithQueue(GraphSearch):
     saved_paths = []
     # go until the search queue is empty
     while search_queue:
-      if verbose: print('>  Search queue loop:')
+      if verbose:
+        click.echo('>  Search queue loop:')
       # each search_queue item is the graph-node, the current queue of words,
       # and the saved path
       node,wordq,path = search_queue.pop()
@@ -67,15 +75,22 @@ class BreadthFirstWithQueue(GraphSearch):
           break
         word = queue_copy.pop()
         if verbose:
-          click.echo('Checking word: {}'.format(click.style(word.word, fg='cyan')))
+          click.echo('Checking word: {}'.format(click.style(word.word, fg='bright_cyan')))
           click.echo('Successor -> {} {} {}'.format(i, successor.word, successor._pos))
         # check that the item in the queue matches the starting pattern
-        if PatternMatcher.word_matches_pattern(word, successor):
+        check = False
+        if verbose:
+          check = True
+          click.echo('Checking: {}({}) == {}({})'.format(click.style(word.word, fg='bright_cyan'), word.pos, click.style(successor.word, fg='bright_yellow'), successor._pos))
+        if PatternMatcher.word_matches_pattern(word, successor, verbose=verbose):
           if verbose: print('Successor MATCH', word.word, word.pos, successor.word, successor._pos)
           # if this word matches the 
           if word not in path:
             path += [word]
           search_queue.append((successor, queue_copy, path))
+        else:
+          if verbose and check:
+            click.echo(click.style('No match.', fg='bright_yellow'))
 
     return saved_paths
 

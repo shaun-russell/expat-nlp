@@ -5,6 +5,7 @@ from core.structures import AnnotatedSentence,AnnotatedWord
 from nltk import pos_tag
 from nltk.stem.porter import PorterStemmer
 import json
+import click
 
 # core nlp annotator
 from pycorenlp import StanfordCoreNLP
@@ -135,11 +136,15 @@ class ContainingSelector(Selector):
     # otherwise, everything was contained
     return True
 
-  def select_patterns(self, matched):
+  def select_patterns(self, pattern, matched, verbose=False):
     selected_patterns = []
-    sorted_patterns = sorted(matched, key=len, reverse=True)
+    pattern_name = pattern if isinstance(pattern, str) else pattern.classname
+    # sorted_patterns = sorted(matched, key=len, reverse=True)
     # do work in here
-    for wordlist in sorted_patterns:
+    if matched == []:
+      return []
+    if verbose: print('Filtering: ', pattern_name)
+    for wordlist in matched:
       # wordlist is a list of AnnotatedWord objects
       found = False
       # if the words in the current matched pattern are already matched by an
@@ -149,8 +154,46 @@ class ContainingSelector(Selector):
       for existing in selected_patterns:
         if self._is_contained_in(wordlist, existing):
           found = True
+          if verbose:
+            # print('Deleting {}'.format([x.word for x in wordlist]))
+            click.echo(click.style('Deleting {}'.format([x.word for x in wordlist]), fg="bright_yellow"))
           break
       if not found:
         selected_patterns.append(wordlist)
+        if verbose: click.echo(click.style('Keeping {}'.format([x.word for x in wordlist]), fg="bright_cyan"))
 
+    if verbose and len(selected_patterns) > 0:
+      click.echo(click.style('> Reduced {} to the following patterns:'.format(pattern_name), fg="bright_green"))
+      for s in selected_patterns:
+        click.echo(' '.join([w.word for w in s]))
     return selected_patterns
+  
+  def plength(self,value):
+    x,y = value
+    words = [a.word for a in y]
+    return len(words)
+
+  def reduce_pattern_collection(self, matched_patterns, verbose=False):
+    reduced = []
+    if verbose:
+      print(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in matched_patterns])
+    things = sorted(matched_patterns, key=self.plength, reverse=True)
+    if verbose:
+      print(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in things])
+      click.echo('Reducing across patterns...')
+    for pattern,words in things:
+      # if verbose:
+        # print([w.word for w in words])
+      for p,existing in reduced:
+        if self._is_contained_in(words, existing):
+          if verbose:
+            click.echo(click.style('Deleting {}'.format([x.word for x in words]), fg="bright_yellow"))
+          break
+      else:
+        if verbose: click.echo(click.style('Keeping {}'.format([x.word for x in words]), fg="bright_cyan"))
+        reduced.append((pattern, words))
+
+    if verbose:
+      for x,pl in reduced:
+        print([p.word for p in pl])
+    return reduced

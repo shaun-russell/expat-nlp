@@ -199,9 +199,9 @@ class AnnotatedSentence():
 class AnnotatedWord():
   def __init__(self, **kwargs):
     self.index = get_value('index', kwargs, -1)
-    self.word = get_value('word', kwargs, '')
-    self.lemma = get_value('lemma', kwargs, '')
-    self.pos = get_value('pos', kwargs, '')
+    self.word = get_value('word', kwargs, None)
+    self.lemma = get_value('lemma', kwargs, None)
+    self.pos = get_value('pos', kwargs, None)
     self.dependencies = get_value('dependencies', kwargs, '')
     self.types = get_value('type', kwargs, '')
     self.ner = get_value('ner', kwargs, 'O') # O is none
