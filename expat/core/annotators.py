@@ -4,6 +4,7 @@ from core.match import StringMatching
 from core.structures import AnnotatedSentence,AnnotatedWord
 from nltk import pos_tag
 from nltk.stem.porter import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 import json
 import click
 
@@ -76,16 +77,13 @@ class BasicNltkAnnotator(BaseAnnotator):
     return AnnotatedSentence(anno_words)
     
 class ExtensionWordSet():
-  def __init__(self, label, pos, filepath, stem=False):
+  def __init__(self, label, pos, filepath, lempos, lemmatiser, stemmer):
     self.label = label
     self.pos = pos
     with open(filepath, 'r', encoding='utf8') as wordfile:
       lines = wordfile.readlines()
-      if stem:
-        stemmer = PorterStemmer()
-        self.words = [stemmer.stem(w.strip()) for w in lines]
-      else:
-        self.words = [w.strip() for w in lines]
+      self.words = [stemmer.stem(lemmatiser.lemmatize(w.strip().lower(),pos=lempos)) for w in lines]
+        # self.words = [w.strip() for w in lines]
     print(label, 'pos:', pos, 'word count:', len(self.words))
 
 class ExtensionAnnotatorBase():
@@ -97,20 +95,27 @@ class TypeExtensionAnnotator(ExtensionAnnotatorBase):
     ''' Initialise the annotator with { label: (pos,filepath) }. '''
     self.wordsets = []
     self.stemming = stem
-    for label,(pos,fpath,stem) in categories.items():
-     self.wordsets.append(ExtensionWordSet(label, pos, fpath, self.stemming))
+    self.stemmer = PorterStemmer()
+    self.lemmatiser = WordNetLemmatizer()
+    for label,(pos,fpath,lempos) in categories.items():
+     self.wordsets.append(ExtensionWordSet(label, pos, fpath, lempos, self.lemmatiser, self.stemmer))
 
   def extend(self, annotated_sentence):
     ''' Extend an existing annotated sentence with types (from wordlists). '''
-    stemmer = PorterStemmer()
     extended_sentence = []
     for word in annotated_sentence.words:
-      stemmed_word = stemmer.stem(word.word) if self.stemming else word.word
+      # wordnet lemmatiser only accepts these 4 chars as pos-tags
+      lemma = self.stemmer.stem(word.lemma.lower())
+      if word.lemma == None or len(word.lemma) < 1:
+        postag = word.pos[0].lower()
+        postag = postag if postag in ['a','r','n','v'] else 'n'
+        lemma = self.stemmer.stem(self.lemmatiser.lemmatize(word.word.lower(), pos=postag))
+
       # convert the current word types to a list
       word_types = word.types.split(',') if word.types != '' else []
       # for all the wordsets whose part of speech tags match the current word
       for wordset in [s for s in self.wordsets if StringMatching.is_match(word.pos, s.pos)]:
-        if stemmed_word in wordset.words:
+        if lemma in wordset.words:
           word_types.append(wordset.label)
 
       word.types = ','.join(word_types)

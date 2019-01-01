@@ -111,7 +111,13 @@ class MatchBuilder():
       queuecopy = copy(sentence_queue)
       # see if the word matches any of the entry points for the pattern
       for entry in pattern.graph_entry_points:
-        results = algorithm.find_all_paths(pattern.graph, entry, queuecopy, verbose)
+        q = copy(queuecopy)
+        word = q.pop()
+        q.append(word)
+        if verbose:
+          click.echo('Entry point: {}({})'.format(entry.word, entry._pos))
+          click.echo('Checking: {}({})'.format(word.word, word.pos))
+        results = algorithm.find_all_paths(pattern.graph, entry, q, verbose)
         if len(results) > 0:
           matches += results
       sentence_queue.pop()

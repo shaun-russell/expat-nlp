@@ -160,7 +160,7 @@ class PatternMatcher():
             if verbose:
                 print('fail: word')
             return False
-        if not StringMatching.is_match(an_word.lemma, pt_word.lemma):
+        if not StringMatching.is_match(an_word.lemma.lower(), pt_word.lemma.lower()):
             if verbose: print('fail: lemma')
             return False
         if not StringMatching.is_match(an_word.ner, pt_word.ner):
