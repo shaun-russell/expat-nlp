@@ -11,6 +11,7 @@
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
   <!ATTLIST pattern weight CDATA "1">
+  <!ATTLIST pattern preprocess CDATA "false">
   <!ATTLIST pattern label CDATA "">
 
   <!-- Word element -->
@@ -33,36 +34,362 @@
   <!ATTLIST word type CDATA "*">
   <!ATTLIST word extype CDATA "">
   <!ATTLIST word typenum CDATA "1">
-  <!ATTLIST word ner CDATA "O">
+  <!ATTLIST word ner CDATA "*">
 
 ]>
 
-<!-- SEE README FOR USAGE AND DOCS -->
-<patterngroup label="spatial-patterns" version="1.0">
-  <pattern name="gnn-3" class="geonouns" description="Match up to 3 geonouns" weight="3"> 
+<patterngroup label="spatial-patterns-improved" version="1.0">
+  <!-- PREPROCESSING PATTERNS -->
+  <pattern name="noun-geonoun compound" class="GNN" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*" extype="GNN" min="0" max="2"/>
     <word pos="NN*" type="GNN" max="3"/>
   </pattern>
-  <pattern name="nn-gnn" class="geonouns" description="Nouns followed by GNNs" weight="2"> 
+  <pattern name="geonoun-noun compound" class="GNN" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*" type="GNN" max="3"/>
+    <word pos="NN*" extype="GNN" max="3"/>
+  </pattern>
+  <pattern name="geonoun-of-noun compound" class="GNN" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*" type="GNN" max="2"/>
+    <word word="of"/>
     <word pos="NN*" max="3"/>
+  </pattern>
+  <pattern name="strict-geonoun compound" class="GNN" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
     <word pos="NN*" type="GNN" max="3"/>
   </pattern>
-  <pattern name="gnn-nn" class="geonouns" description="GNNs followed by nouns" weight="1"> 
-    <word pos="NN*" type="GNN" max="3"/>
-    <word pos="NN*" max="3"/>
+  <!-- GENERIC NOUNS -->
+  <pattern name="nonspatial-noun compound" class="NOUN" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*" extype="GNN,LCS" ner="O" min="0" max="3"/>
+    <word pos="NN*" extype="GNN,LCS,QTF" ner="O" max="3"/>
   </pattern>
-  <pattern name="jj-gnn" class="geonouns" description="" weight="2"> 
-    <word pos="JJ*" max="2"/>
-    <word pos="NN*" max="3"/>
+  <pattern name="possessed-geonoun" class="GNN" description="" weight="1" preprocess="true"> 
+    <word pos="POS" max="1"/>
+    <word pos="NN*" type="GNN" extype="QTF" max="3"/>
   </pattern>
-  <pattern name="gjj-gnn" class="geonouns" description="" weight="4"> 
-    <word pos="JJ*" type="GNN" max="2"/>
-    <word pos="NN*" type="GNN" max="3"/>
+  <pattern name="possessed-location-specifier" class="LCS" description="" weight="1" preprocess="true"> 
+    <word pos="POS" max="1"/>
+    <word type="LCS" max="2"/>
   </pattern>
-  <pattern name="complex-gnn" class="geonouns" description="" weight="1"> 
-    <word pos="JJ" min="0" max="2"/>
-    <word pos="NN*" type="GNN" max="3"/>
-    <word pos="CC"/>
-    <word pos="JJ" min="0" max="2"/>
-    <word pos="NN*" type="GNN" max="3"/>
+  <!-- LOCATION SPECIFIER -->
+  <pattern name="location-specifier" class="LCS" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*" type="LCS" max="2" />
   </pattern>
+  <!-- SPATIALLY SIGNIFICANT VERB -->
+  <pattern name="single-spatial-verb" class="SVB" description="" weight="1" preprocess="true"> 
+    <word type="SSV" max="2" />
+  </pattern>
+  <pattern name="spatial-verb" class="SVB" description="" weight="1" preprocess="true"> 
+    <word pos="MD" min="0" max="1"/>
+    <word pos="RB" min="0" max="1"/>
+    <word type="SSV" max="2" />
+  </pattern>
+  <pattern name="complex-spatial-verb" class="SVB" description="" weight="1" preprocess="true"> 
+    <word pos="MD" min="0" max="1"/>
+    <word pos="VB*" min="1" max="1"/>
+    <word pos="RB" min="0" max="1"/>
+    <word type="SSV" max="2" />
+  </pattern>
+  <!-- NER -->
+  <pattern name="entity-person" class="PERSON" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*,IN*" ner="PERSON" max="5" />
+  </pattern>
+  <pattern name="entity-location" class="LOCATION" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*,IN*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE" max="4" />
+  </pattern>
+  <!-- <pattern name="entity-location-described" class="LOCATION" description="" weight="1" preprocess="true"> 
+    <word pos="NN*,JJ*,IN*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE" max="4" />
+    <word pos="," />
+    <word pos="NN*,JJ*,IN*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE" max="4" />
+  </pattern> -->
+  <pattern name="entity-org" class="ORG" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*,IN*" ner="ORGANIZATION" max="5" />
+  </pattern>
+  <pattern name="entity-misc" class="MISC" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*,IN*" ner="MISC" max="5" />
+  </pattern>
+  <!-- DIRECTIONS -->
+  <pattern name="direction compound" class="DIR" description="" weight="1" preprocess="true"> 
+    <word pos="DT" min="0" max="1"/>
+    <word pos="NN*,JJ*" type="DIR" max="3" />
+  </pattern>
+  <!-- QUANTIFIERS -->
+  <pattern name="quantifier" class="QTF" description="" weight="1" preprocess="true"> 
+    <word pos="NN*,CD*,JJ*" type="QTF" max="3" />
+  </pattern>
+  <pattern name="entity-quantifier" class="QTF" description="" weight="1" preprocess="true"> 
+    <word ner="NUMBER" max="3" />
+  </pattern>
+
+  <!-- POST-PROCESSING PATTERNS -->
+  <!-- SPATIAL RELATION PATTERNS -->
+  <!-- <pattern name="sverb qual rel geoentity" class="spatial-rel" description="" weight="2"> 
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION,ORG,MISC" max="2" />
+  </pattern> -->
+  <pattern name="sverb qual rel geoentity" class="spatial-rel" description="" weight="2"> 
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="sverb qual rel spatial" class="spatial-rel" description="" weight="2"> 
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="rel ssv spatial" class="spatial-rel" description="" weight="2"> 
+    <word type="SVS" max="2"/>
+    <word word="SVB" />
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="rel lcs rel geoentity" class="spatial-rel" description="" weight="2"> 
+    <word type="SVS" max="2"/>
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="rel lcs rel spatial" class="spatial-rel" description="" weight="2"> 
+    <word type="SVS" max="2"/>
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="noun svb rel noun" class="spatial-verb" description="" weight="2"> 
+    <word word="NOUN" max="2" />
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="gnn svb rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="GNN,LOCATION" max="2" />
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="noun svb rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="NOUN" max="2" />
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="svb noun rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2" />
+    <word word="NOUN" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="verb dir rel" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word type="SVS" max="2" />
+  </pattern>
+  <pattern name="verb rel dir" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2" />
+    <word word="DIR" max="1" />
+  </pattern>
+  <pattern name="gnn rel lcs rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="GNN,LOCATION" max="2" />
+    <word type="SVS" max="2" />
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="gnn rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="GNN,LOCATION" max="2" />
+    <word type="SVS" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="noun rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="NOUN,PERSON" max="2" />
+    <word type="SVS" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="rel gnn ssv gnn" class="spatial-verb" description="" weight="2"> 
+    <word type="SVS" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+    <word word="SSV" max="2" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <!--
+  <pattern name="rel-dir-lcs-rel-gnn" class="spatial-rel" description="" weight="3"> 
+    <word type="SVS" max="2"/>
+    <word word="DIR" max="1" />
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION,ORG,MISC" max="2" />
+  </pattern>
+  <pattern name="rel-gnn" class="spatial-rel" description="" weight="1"> 
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION,ORG,MISC" max="2" />
+  </pattern>
+  <pattern name="rel-non-gnn" class="spatial-rel" description="" weight="1"> 
+    <word type="SVS" max="2"/>
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="qtf-gnn-rel" class="spatial-rel" description="" weight="1"> 
+    <word word="QTF" max="2"/>
+    <word word="GNN,NN" max="2" />
+    <word type="SVS" max="2" />
+  </pattern>
+  <pattern name="rel-gnn-pos" class="spatial-rel" description="" weight="1"> 
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION,ORG,MISC" max="2" />
+    <word pos="POS" />
+    <word word="GNN,LCS" max="3" />
+  </pattern>
+  <pattern name="qual-dir-rel" class="spatial-rel" description="" weight="1"> 
+    <word type="SRQ" min="1" max="2"/>
+    <word word="DIR" min="1" max="2"/>
+    <word type="SVS" max="2"/>
+  </pattern>
+
+  <pattern name="rel-dir-rel" class="spatial-rel" description="" weight="1"> 
+    <word word="SVB" max="2"/>
+    <word word="DIR" max="2"/>
+    <word type="SVS" max="2"/>
+  </pattern>
+
+  <pattern name="spatial-verb-rel-basic" class="spatial-verb" description="" weight="2"> 
+    <word pos="VB*" min="0" max="1"/>
+    <word word="SVB" max="2"/>
+    <word type="SVS" max="2"/>
+  </pattern>
+
+  <pattern name="spatial-verb-noun-rel-gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2"/>
+    <word word="NOUN,GNN,PERSON" />
+    <word type="SVS" max="2"/>
+    <word type="GNN,LOCATION" max="2"/>
+  </pattern>
+
+  <pattern name="spatial-verb-noun-rel-noun" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2"/>
+    <word word="NOUN,GNN,PERSON" />
+    <word type="SVS" max="2"/>
+    <word type="NOUN" max="2"/>
+  </pattern>
+
+  <pattern name="geospatial-verb-rel-actor" class="spatial-verb" description="" weight="3"> 
+    <word pos="NN*,PRP*" min="1" max="2"/>
+    <word pos="VB*" min="0" max="1"/>
+    <word word="SVB" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2" />
+    <word word="GNN,LOCATION,ORG,MISC" max="2" />
+  </pattern>
+  <pattern name="geospatial-verb-rel-person" class="spatial-verb" description="" weight="3"> 
+    <word word="PERSON" min="1" max="2"/>
+    <word pos="VB*" min="0" max="1"/>
+    <word word="SVB" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2" />
+    <word word="GNN,LOCATION,ORG,MISC" max="2" />
+  </pattern>
+  <pattern name="spatial-verb-rel-actor" class="spatial-verb" description="" weight="3"> 
+    <word pos="NN*,PRP*" min="1" max="2"/>
+    <word pos="VB*" min="0" max="1"/>
+    <word word="SVB" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2" />
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="spatial-verb-rel-noun" class="spatial-verb" description="" weight="3"> 
+    <word word="NOUN" min="1" max="2"/>
+    <word pos="VB*" min="0" max="1"/>
+    <word word="SVB" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2" />
+    <word word="NOUN" max="2" />
+  </pattern>
+  <pattern name="spatial-verb-basic" class="spatial-verb" description="" weight="1"> 
+    <word pos="VB*" min="0" max="1"/>
+    <word word="SVB" max="2"/>
+  </pattern>
+  <pattern name="rel-spatial-verb" class="spatial-verb" description="" weight="1"> 
+    <word type="SVS" min="1" max="2"/>
+    <word word="SVB" max="2"/>
+  </pattern>
+  <pattern name="spatial-verb-with-noun" class="spatial-verb" description="" weight="1"> 
+    <word word="NOUN" min="1" max="2"/>
+    <word pos="MD" min="0" max="2"/>
+    <word pos="VB*" min="0" max="2"/>
+    <word word="SVB" max="2"/>
+  </pattern>
+  <pattern name="spatial-verb-with-actor" class="spatial-verb" description="" weight="1"> 
+    <word pos="NN*,PRP*" min="1" max="2"/>
+    <word pos="MD" min="0" max="2"/>
+    <word pos="VB*" min="0" max="2"/>
+    <word word="SVB" max="2"/>
+  </pattern>
+  <pattern name="spatial-verb-with-person" class="spatial-verb" description="" weight="1"> 
+    <word word="PERSON" min="1" max="2"/>
+    <word pos="MD" min="0" max="2"/>
+    <word pos="VB*" min="0" max="2"/>
+    <word word="SVB" max="2"/>
+  </pattern>
+
+  
+  <pattern name="geo-spatial-ner-vb-dir" class="non-spatial" description="" weight="1"> 
+    <word word="GNN,LOCATION,ORG,MISC,PERSON" min="1" max="2"/>
+    <word pos="VB*" extype="SSV" min="0" max="2"/>
+    <word pos="MD*" min="0" max="2"/>
+    <word pos="VB*" extype="SSV" min="1" max="2"/>
+    <word word="DIR" min="1" max="2"/>
+  </pattern>
+  <pattern name="spatial-ner-vb-dir" class="non-spatial" description="" weight="1"> 
+    <word pos="NN*" min="1" max="2"/>
+    <word pos="VB*" extype="SSV" min="0" max="2"/>
+    <word pos="MD*" min="0" max="2"/>
+    <word pos="VB*" extype="SSV" min="1" max="2"/>
+    <word word="DIR" min="1" max="2"/>
+  </pattern> -->
+  <pattern name="lcs" class="object" description="" weight="1"> 
+    <word word="LCS" min="1" max="2"/>
+  </pattern>
+  <pattern name="spatialverb" class="object" description="" weight="1"> 
+    <word word="SVB" min="1" max="2"/>
+  </pattern>
+  <pattern name="noun" class="object" description="" weight="1"> 
+    <word word="NOUN" min="1" max="2"/>
+  </pattern>
+  <pattern name="dir" class="object" description="" weight="1"> 
+    <word word="DIR" min="1" max="2"/>
+  </pattern>
+  <pattern name="qtf" class="object" description="" weight="1"> 
+    <word word="QTF" min="1" max="2"/>
+  </pattern>
+  <pattern name="person" class="object" description="" weight="1"> 
+    <word word="PERSON" min="1" max="2"/>
+  </pattern>
+  <pattern name="location" class="object" description="" weight="1"> 
+    <word word="LOCATION" min="1" max="2"/>
+  </pattern>
+  <pattern name="misc" class="object" description="" weight="1"> 
+    <word word="MISC" min="1" max="2"/>
+  </pattern>
+  <pattern name="org" class="object" description="" weight="1"> 
+    <word word="ORG" min="1" max="2"/>
+  </pattern>
+  <pattern name="gnn" class="object" description="" weight="1"> 
+    <word word="GNN" min="1" max="2"/>
+  </pattern>
+
 </patterngroup>
+
