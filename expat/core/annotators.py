@@ -63,6 +63,7 @@ class StanfordCoreNLPAnnotator(BaseAnnotator):
 
 class BasicNltkAnnotator(BaseAnnotator):
   def __init__(self):
+    self.lemmatiser = WordNetLemmatizer()
     pass
 
   def annotate(self, sentence):
@@ -72,7 +73,9 @@ class BasicNltkAnnotator(BaseAnnotator):
     pos_tagged_tokens = pos_tag(tokens)
     anno_words = []
     for i,(token,pos) in enumerate(pos_tagged_tokens):
-      anno_words.append(AnnotatedWord(index=i,word=token,pos=pos))
+      lemma_pos = 'n' if pos[0].lower() != 'v' else 'v'
+      word_lemma = self.lemmatiser.lemmatize(token, pos=lemma_pos)
+      anno_words.append(AnnotatedWord(index=i,word=token,pos=pos,lemma=word_lemma))
 
     return AnnotatedSentence(anno_words)
     

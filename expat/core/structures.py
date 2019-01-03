@@ -1,12 +1,24 @@
 ''' Common structures to pass data around. '''
 
-from core.helpers import get_value
 import networkx as nx
 from copy import deepcopy,copy
 from collections import deque 
 
 # Many of these class descriptions aren't very useful. At some point,
 # write better definitions.
+
+# FUNCTIONS
+# Having some problems with circular imports, which is a problem I tend
+# to have with Python. Just logically arranging functions into files doesn't
+# work, they have to be hierarchically grouped (usage grouping rather than
+# category grouping)
+def get_value(label, source, default):
+  ''' Quick function to get values with provided defaults) '''
+  if label in source:
+    return source[label]
+  else:
+    return default
+
 
 class AttributeSet():
   def __init__(self, to_find, to_exclude, required_num):
