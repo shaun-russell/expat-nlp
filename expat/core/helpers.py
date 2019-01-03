@@ -6,12 +6,7 @@ from core.structures import AnnotatedWord,AnnotatedSentence
 # -----------------
 # UTILITY FUNCTIONS
 # -----------------
-def get_value(label, source, default):
-  ''' Quick function to get values with provided defaults) '''
-  if label in source:
-    return source[label]
-  else:
-    return default
+
 
 def remove_duplicate_lists(messy_list):
   ''' Reduces a list of lists to only the unique lists'''
