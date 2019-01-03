@@ -8,6 +8,8 @@ import core.structures as struct
 import core.match as match
 import core.search as search
 import core.helpers as helpers
+
+from core.main import preprocess_pattern
 from colorama import init
 
 # used to tell Click that -h is shorthand for help
@@ -131,59 +133,35 @@ def cli(in_file, pattern_file, extension_file, annotator,
   # --------------------
 
   for line in all_lines:
+    # blank lines and junk get skipped
     if len(line) < 3:
       continue
-    # the selected annotator annotates the sentence
-    # cleaned_line = helpers.clean_line(line)
-    # excess = ''
-    # if ',' in heading:
-    #   last_comma_idx = cleaned_line.rfind('"')
-    #   if last_comma_idx < 1:
-    #     last_comma_idx = len(cleaned_line) - 1
-    #   excess = cleaned_line[last_comma_idx+1:].replace('"','')
-    #   cleaned_line = cleaned_line[0:last_comma_idx+1].replace('"','')
-    # if '\t' in heading:
-    #   last_delim_idx = cleaned_line.rfind('\t')
-    #   cleaned_line = cleaned_line[0:last_delim_idx].replace('"','')
-    #   excess = cleaned_line[last_delim_idx:].replace('"','')
+
+    # format the line for pain-free annotation
     cleaned_line,excess = helpers.get_content_and_extra(heading, helpers.clean_line(line))
-    # print('CL',cleaned_line, 'EX',excess)
+    # the selected annotator annotates the sentence
     annotated_sentence = selected_annotator.annotate(cleaned_line)
     if spatial_annotator != None:
       annotated_sentence = spatial_annotator.extend(annotated_sentence)
+
     if verbose:
-      click.echo('\nAnnotated Sentence:')
-      click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(x.index, x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta'),click.style(x.ner, fg='bright_green')) for x in annotated_sentence.words]))
+      # big pretty print of sentence with indices, words, pos, ner, and type
+      # annotations from the provided extensions set.
+      click.echo('Annotated Sentence:')
+      click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(
+          x.index, x.word, click.style(x.pos, fg='cyan'),
+          click.style(x.types, fg='bright_magenta'),
+          click.style(x.ner, fg='bright_green')) for x in annotated_sentence.words]))
 
+    # ______________________
     # PREPROCESSING PATTERNS
-
-    # then find all matches in that sentence for every pattern
-    # make the csv line nicely formatted
+    # Find all matches in the line for every pattern
     matched_patterns = []
     for pattern in [p for p in all_patterns.patterns if p.preprocess]:
-      debug = False
-      if pattern.name == debug_pattern:
-        click.echo(click.style('Debugging:', fg='white', bg='red'))
-        debug = True
-
-      # run pattern search
-      pattern_matches = sorted(helpers.remove_duplicate_lists(search.MatchBuilder.find_all_matches(annotated_sentence,
-                                                             pattern,
-                                                             search_method,
-                                                             debug)), key=len, reverse=True)
-
-      # use the selector to reduce/focus the matched patterns                                                            
-      if active_selector == None:
-        matched_patterns.append((pattern,pattern_matches))
-      else:
-        selected = active_selector.select_patterns(pattern, pattern_matches, verbose=debug)
-        for s in selected:
-          matched_patterns.append((pattern, s))
-
-      if debug:
-        click.echo(click.style('End Debugging.', fg='white', bg='green'))
-      if verbose:
-        helpers.print_matches(pattern, pattern_matches)
+      results = preprocess_pattern(pattern, annotated_sentence, active_selector, search_method,
+                                  verbose=verbose, debug_pattern=debug_pattern)
+      for res in results:
+        matched_patterns.append(res)
 
     # Reduce the patterns to as many that can fit without overlapping, applying longest patterns first
     focus_patterns = active_selector.reduce_pattern_collection(matched_patterns, verbose=verbose)
@@ -194,37 +172,26 @@ def cli(in_file, pattern_file, extension_file, annotator,
     
     # POST-PROCESSING PATTERNS
     reduced_sentence = helpers.get_reduced_sentence(focus_patterns, annotated_sentence.words)
-    if verbose: click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(x.index, x.word, click.style(x.pos, 'cyan'), click.style(x.types, fg='bright_magenta'),click.style(x.ner, fg='bright_green')) for x in reduced_sentence.words]))
-    matched_patterns = []
+    if verbose:
+      # some print formatting thing
+      click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(
+        x.index, x.word, click.style(x.pos, 'cyan'),
+         click.style(x.types, fg='bright_magenta'),
+         click.style(x.ner, fg='bright_green')) for x in reduced_sentence.words]))
+
     row = ['"{}"{},"{}"'.format(cleaned_line, excess, ' '.join([x.word for x in reduced_sentence.words]))]
+
+    matched_patterns = []
     for pattern in [p for p in all_patterns.patterns if not p.preprocess]:
-      debug = False
-      if pattern.name == debug_pattern:
-        click.echo(click.style('Debugging:', fg='white', bg='red'))
-        debug = True
-
-      # run pattern search
-      pattern_matches = sorted(helpers.remove_duplicate_lists(search.MatchBuilder.find_all_matches(reduced_sentence,
-                                                             pattern,
-                                                             search_method,
-                                                             debug)),key=len, reverse=True)
-
-      # use the selector to reduce/focus the matched patterns                                                            
-      if active_selector == None:
-        matched_patterns.append((pattern,pattern_matches))
-      else:
-        selected = active_selector.select_patterns(pattern, pattern_matches, verbose=debug)
-        for s in selected:
-          matched_patterns.append((pattern, s))
-
-      if debug:
-        click.echo(click.style('End Debugging.', fg='white', bg='green'))
-      # Print all matches of this pattern
-      if verbose:
-        helpers.print_matches(pattern, pattern_matches)
+      
+      results = preprocess_pattern(pattern, annotated_sentence, active_selector, search_method,
+                                  verbose=verbose, debug_pattern=debug_pattern)
+      for res in results:
+        matched_patterns.append(res)
+      # matched_patterns.append(result)
       
       # save row
-      row.append(str(len(pattern_matches)))
+      row.append(str(len(matched_patterns)))
 
     focus_patterns = active_selector.reduce_pattern_collection(matched_patterns, verbose=False)
     # PRINT PATTERN RESULTS IN CONTEXT

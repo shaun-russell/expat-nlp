@@ -7,7 +7,6 @@ from core.structures import AnnotatedWord,AnnotatedSentence
 # UTILITY FUNCTIONS
 # -----------------
 
-
 def remove_duplicate_lists(messy_list):
   ''' Reduces a list of lists to only the unique lists'''
   result = []
@@ -61,14 +60,17 @@ def get_content_and_extra(heading, line):
   annotating = ''
   non_annotating = ''
   # find the 
-  if ',' in heading:
-    delim_idx = line.rfind('"')+1
   if '\t' in heading:
     delim_idx = line.rfind('\t')
+  elif ',' in heading:
+    delim_idx = line.rfind('"')+1
+  else:
+    delim_idx = len(line) - 1
+  
 
   # if no delimiter, return the whole line
-  if delim_idx < 1:
-    return (line,None)
+  # if delim_idx < 1:
+  #   return (line,None)
 
   annotating = line[0:delim_idx].replace('"','')
   non_annotating = line[delim_idx:].replace('"','')
