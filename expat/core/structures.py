@@ -1,17 +1,15 @@
 ''' Common structures to pass data around. '''
 
 import networkx as nx
+import click
 from copy import deepcopy,copy
 from collections import deque 
-
-# Many of these class descriptions aren't very useful. At some point,
-# write better definitions.
 
 # FUNCTIONS
 # Having some problems with circular imports, which is a problem I tend
 # to have with Python. Just logically arranging functions into files doesn't
 # work, they have to be hierarchically grouped (usage grouping rather than
-# category grouping)
+# category grouping). This function therefore goes here.
 def get_value(label, source, default):
   ''' Quick function to get values with provided defaults) '''
   if label in source:
@@ -21,6 +19,7 @@ def get_value(label, source, default):
 
 
 class AttributeSet():
+  ''' Common class to store Required,Excluded,NumRequired sets: i.e. types, dependencies '''
   def __init__(self, to_find, to_exclude, required_num):
 
     # easy to understand bool value. This could be put in a function, but it
@@ -36,7 +35,7 @@ class AttributeSet():
 
 
 class PatternGroup():
-  ''' A collection of patterns. '''
+  ''' A collection of patterns. Parsed from XML.'''
   def __init__(self, tree):
     self.label = tree.find('label')
     self.version = tree.find('version')
@@ -44,8 +43,9 @@ class PatternGroup():
     self.patterns = [Pattern(child) for child in tree.getchildren()]
 
 class Pattern():
-  ''' Represents a sequence of words that represent a certain pattern. '''
+  ''' Represents a sequence of words that represent a certain pattern. Parsed from XML. '''
   def __init__(self, tree, debug=False):
+    # parse the attributes from an XML pattern definitions.
     self.name = tree.get('name')
     self.description = tree.get('description')
     # 'class' is a protected word in python, so the field is 'classname'
@@ -53,63 +53,68 @@ class Pattern():
     self.weight = int(tree.get('weight'))
     self.label = tree.get('label')
     self.preprocess = tree.get('preprocess').lower() == 'true'
-    # print(self.name, 'Pre', self.preprocess, tree.get('preprocess'))
     # create the correct object for the child elements of the pattern
-    self.children = [PatternWord(el,i) for i,el in enumerate(tree.getchildren())]
+    self.children = [PatternWord(pword,i) for i,pword in enumerate(tree.getchildren())]
 
-    # graph for pattern traversal and matching
+    # create graph for pattern traversal and matching
     decomposed_pattern = self._decompose_pattern(self.children)
     self.graph_entry_points = GraphBuilder.get_entry_points(decomposed_pattern)
+    # I think the 'graph_exit_points' variable is no longer used outside of tests.
     self.graph_exit_points = GraphBuilder.get_exit_points(decomposed_pattern)
     self.graph = self._create_graph(decomposed_pattern, debug)
 
 
   def _create_graph(self, pattern_items, debug=False):
+    ''' Constructs a graph of all possible path combinations. '''
+    # instantiate an empty directed graph
     dgraph = nx.DiGraph()
 
-    # list is now a mix of Required and Optional words.
     # For the graph, the entry and exit points need to be saved and marked
     # Optional nodes branch from the previous node and join to the required node
     # that is next in the sequence.
 
-    # this adds all nodes.
-    for (status,item) in pattern_items:
-      if debug: print('Add node:', item._pos, item.index)
+    # this adds all the nodes.
+    for (_,item) in pattern_items:
+      if debug: click.echo('Add node: {}:{}'.format(item._pos, item.index))
       dgraph.add_node(item)
 
-    # # add all edges between required nodes
-    # for i,(status, item) in enumerate([((s,i) for s,i in pattern_items[1:] if s == True):
-    #   prev_item = pattern_items[i-1]
-    #   dgraph.add_weighted_edges_from([(prev_item, item, 1)])
-
-    # now to join optional nodes to the required nodes.
-    if debug: print('Start adding edges.')
+    # create all the edges of the graph
+    # The following method is like a breadth-first edge linking method,
+    # but because it is a graph, not a tree (must join up to one node in the end)
+    # when a required node is reached, all open nodes are joined up to it
+    # Required nodes branch to the first optional, then further optionals form a chain.
+    # REQ_1 -> REQ_2 : CLOSE EDGE
+    # REQ_1 -> OPT_1 : OPEN CHAIN
+    # OPT_1 -> REQ_2 : CLOSE CHAIN
+    # OPT_1 -> OPT_2 : OPEN CHAIN
+    # OPT_2 -> REQ_2 : CLOSE CHAIN
+    if debug: click.echo('Start adding edges.')
     open_nodes = []
-    for i,(required, item) in enumerate(pattern_items):
+    for i,(is_required, item) in enumerate(pattern_items):
       # exception case for the first node
       if i == 0:
         open_nodes.append(item)
-        if debug: print('add first node:', item.index)
+        if debug: click.echo('add first node: {}'.format(item.index))
         continue
 
       # for all new nodes, make connections between the open nodes and the new node
       for node in open_nodes:
-        if debug: print('add edge:', node.index, '->', item.index)
+        if debug: click.echo('add edge: {} -> {}'.format(node.index, item.index))
         dgraph.add_weighted_edges_from([(node,item,1)])
 
       # add item 
       open_nodes.append(item)
 
       # when it gets to a required node
-      if required:
+      if is_required:
         # closing point for any open nodes
         # remove all nodes
         open_nodes = []
-        if debug: print('reset nodes')
+        if debug: click.echo('reset nodes')
         # add the current required node to the open
-        if debug: print('req, adding:', item.index)
+        if debug: click.echo('req, adding: {}'.format(item.index))
         open_nodes.append(item)
-      if debug: print('loop')
+      if debug: click.echo('loop')
     return dgraph
   
   def _decompose_pattern(self, pattern_items):
@@ -121,12 +126,12 @@ class Pattern():
     index = 0
     for item in pattern_items:
       if item.max > item.min:
-        for i in range(0, item.max-item.min):
+        for _ in range(0, item.max-item.min):
           copied_item = deepcopy(item)
           copied_item.set_index(index)
           decomposed_list.append((False, copied_item))
           index += 1
-      for i in range(0, item.min):
+      for _ in range(0, item.min):
         copied_item = deepcopy(item)
         copied_item.set_index(index)
         decomposed_list.append((True, copied_item))
@@ -142,14 +147,13 @@ class Pattern():
 
 
 class PatternWord():
-  # this description is terrible, change this at some point
-  ''' The attributes of a word that is part of a pattern definition. '''
+  ''' A structure that represents a single word in a pattern with its match criteria. '''
   def __init__(self, tree, index = -1):
     self.min = int(tree.get('min'))
     self.max = int(tree.get('max'))
     self.is_contextual = bool(tree.get('contextual'))
     self.label = tree.get('label')
-    # pos
+    # parts of speech
     self._pos = tree.get('pos')
     self._excluded_pos = tree.get('expos')
     self._num_pos_needed = 1
@@ -178,6 +182,7 @@ class PatternWord():
     self.index = index
 
   def set_index(self, id):
+    ''' Override the index. '''
     self.index = id
     
 
@@ -190,14 +195,17 @@ class AnnotatedSentence():
     self.words = annotated_words
 
   def at(self, index):
+    ''' Safe way of getting a word at a specified index.
+        Returns None if word doesn't exist.'''
     if index >= len(self.words) or index < 0:
       return None
     return self.words[index]
 
   def repair_indices(self):
+    ''' Re-indexes all words in the sentence from 0 to sentence length. '''
     for i,_ in enumerate(self.words):
       # using words[i] because sometimes the copy is changed, rather than ref
-      words[i].index = i
+      self.words[i].index = i
   
   def get_queue(self):
     ''' Return the sentence as a queue of words. '''
@@ -209,6 +217,7 @@ class AnnotatedSentence():
     return q
 
 class AnnotatedWord():
+  ''' A word that has been given attributes by an annotator. '''
   def __init__(self, **kwargs):
     self.index = get_value('index', kwargs, -1)
     self.word = get_value('word', kwargs, None)
@@ -219,8 +228,12 @@ class AnnotatedWord():
     self.ner = get_value('ner', kwargs, 'O') # O is none
 
 class GraphBuilder():
+  ''' Contains functions to help build graph structures. '''
   @staticmethod
   def get_entry_points(decomposed_pattern):
+    ''' Finds all the entry nodes of a pattern.
+        If a pattern starts with 1 optional, there are at least 2 entry points
+        for a word sequence. '''
     # establish the entry nodes for the pattern
     # until a node is required, every optional node is an entry point
     entry_nodes = []
@@ -238,6 +251,7 @@ class GraphBuilder():
 
   @staticmethod
   def get_exit_points(decomposed_pattern):
+    ''' Obsolete? '''
     # establish the exit nodes for the pattern
     # same as entry, but with a reversed list
     # could actually refactor this
@@ -254,44 +268,35 @@ class GraphBuilder():
 
 
 class Selector():
-  def merge_patterns(pattern_list):
+  ''' Selector object base class '''
+  def merge_patterns(self, pattern_list):
     return pattern_list
 
-  def apply_patterns_to_sentence(pattern_list, sentences):
-    pass
+  def apply_patterns_to_sentence(self, pattern_list, sentences):
+    return None
 
 
-class LengthSelector():
-  def __init__(self, longest=True):
-    self.longest_first = longest
+# class LengthSelector():
+#   ''' A selector that chooses the longest patterns first
+#       and ignores subsequent overlapping patterns. '''
+#   def __init__(self, longest=True):
+#     self.longest_first = longest
 
-  def merge_patterns(pattern_list):
-    # do stuff to patterns
-    merged_patterns = []
-    # for every class name
-    for pattern_class in set([w.classname for w in pattern_list]):
-      # find all patterns of that class
-      patterns_of_class = [w for w in pattern_list if w.classname == pattern_class]
-      # if patterns overlap, select the pattern with the longest length.
-      # if equal length, use priority. If equal priority, let python's sort() choose
-      non_overlapping_patterns = []
+#   def merge_patterns(self, pattern_list):
+#     # do stuff to patterns
+#     merged_patterns = []
+#     # for every class name
+#     for pattern_class in set([w.classname for w in pattern_list]):
+#       # find all patterns of that class
+#       patterns_of_class = [w for w in pattern_list if w.classname == pattern_class]
+#       # if patterns overlap, select the pattern with the longest length.
+#       # if equal length, use priority. If equal priority, let python's sort() choose
+#       non_overlapping_patterns = []
 
-    return merged_patterns
+#     return merged_patterns
 
-  def apply_patterns_to_sentence(pattern_list, sentences):
-    patterns = self.merge_patterns
-    # apply patterns to sentence
-
-    # how to rank pattern classes?
-
-class PrioritySelector():
-  def __init__(self):
-    pass
-
-  def merge_patterns(pattern_list):
-    # do stuff to patterns
-    return pattern_list
-
-  def apply_patterns_to_sentence(pattern_list, sentences):
-    patterns = self.merge_patterns
-    # apply patterns to sentence
+#   def apply_patterns_to_sentence(self, pattern_list, sentences):
+#     ''' Incomplete function at this stage. '''
+#     patterns = self.merge_patterns
+#     # apply patterns to sentence
+#     pass

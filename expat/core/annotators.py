@@ -177,7 +177,7 @@ class ContainingSelector(Selector):
     return selected_patterns
   
   def plength(self,value):
-    x,y = value
+    _,y = value
     words = [a.word for a in y]
     return len(words)
 

@@ -164,7 +164,9 @@ def cli(in_file, pattern_file, extension_file, annotator,
         matched_patterns.append(res)
 
     # Reduce the patterns to as many that can fit without overlapping, applying longest patterns first
-    focus_patterns = active_selector.reduce_pattern_collection(matched_patterns, verbose=verbose)
+    focus_patterns = []
+    if active_selector != None:
+      focus_patterns = active_selector.reduce_pattern_collection(matched_patterns, verbose=verbose)
     # PRINT PATTERN RESULTS IN CONTEXT
     if verbose:
       helpers.print_sentence_patterns([x for _,x in focus_patterns], annotated_sentence.words)
@@ -193,7 +195,9 @@ def cli(in_file, pattern_file, extension_file, annotator,
       # save row
       row.append(str(len(matched_patterns)))
 
-    focus_patterns = active_selector.reduce_pattern_collection(matched_patterns, verbose=False)
+    focus_patterns = []
+    if active_selector != None:
+      focus_patterns = active_selector.reduce_pattern_collection(matched_patterns, verbose=False)
     # PRINT PATTERN RESULTS IN CONTEXT
     if verbose:
       helpers.print_sentence_patterns([x for _,x in focus_patterns], reduced_sentence.words)
