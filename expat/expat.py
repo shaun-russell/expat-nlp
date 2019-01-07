@@ -35,10 +35,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
               default='none', help='Which type of selection algorithm to use to focus the patterns.')
 @click.option('--corenlp-url', '-u', type=str, default='http://localhost:9000',
               help='The url of the CoreNLP server.')
-@click.option('--delimiter', '-d', type=str, default='\t',
-              help='Which delimiter to use IF splitting. Default is TAB.')
-@click.option('--split-index', '-i', type=int, default=-1,
-              help='Which index to split on. Default is -1, which means the line is not split.')
+# @click.option('--delimiter', '-d', type=str, default='\t',
+#               help='Which delimiter to use IF splitting. Default is TAB.')
+# @click.option('--split-index', '-i', type=int, default=-1,
+#               help='Which index to split on. Default is -1, which means the line is not split.')
 @click.option('--export-matrix', '-x', type=click.File('w+', encoding='utf8'),
               help='A filename to export the pattern matrix to.')
 @click.option('--debug-pattern', '-g', type=str,
@@ -47,10 +47,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
               help='The heading to use for the sentence output. Default is "sentence", but override this is there is more than 1 column in the sentences file.')
 
 # flags
-@click.option('--no-header', '-n', is_flag=True,
-              help='Read the first line as data, rather than as a header')
-@click.option('--ignore-case', '-i', is_flag=True,
-              help='Something about case-sensitivity.')
+# @click.option('--no-header', '-n', is_flag=True,
+#               help='Read the first line as data, rather than as a header')
+# @click.option('--ignore-case', '-i', is_flag=True,
+              # help='Something about case-sensitivity.')
 @click.option('--stepwise', is_flag=True,
               help='Manually cycle through the sentences to scan what is matched.')
 @click.option('--verbose', '-v', is_flag=True,
@@ -62,8 +62,8 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 # main entry point function
 def cli(in_file, pattern_file, extension_file, annotator,
-        selector, corenlp_url, delimiter, split_index, debug_pattern,
-        export_matrix, heading, no_header, verbose, ignore_case, stepwise):
+        selector, corenlp_url, debug_pattern,
+        export_matrix, heading, verbose, stepwise):
   ''' The main annotation program called from the command line. '''
   # --------------------
   # INIT, CONFIG, AND LOADING
