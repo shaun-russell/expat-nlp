@@ -10,7 +10,7 @@ class GraphSearch():
       Probably not as important in Python since duck-typing... '''
   @staticmethod
   def find_all_paths(graph, start_node, queue):
-    print('# Uh oh! If this is called, something has not been properly configured.')
+    click.echo('# Uh oh! If this is called, something has not been properly configured.')
     return []
 
 

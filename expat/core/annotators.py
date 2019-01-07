@@ -18,6 +18,7 @@ class BaseAnnotator():
 
 
 class StanfordCoreNLPAnnotator(BaseAnnotator):
+  ''' An annotator that uses the Stanford CoreNLP toolset. '''
   def __init__(self, server_url, props=None):
     self.url = server_url
     self.nlp = StanfordCoreNLP(server_url)
@@ -29,12 +30,13 @@ class StanfordCoreNLPAnnotator(BaseAnnotator):
       self.props = props
 
   def annotate(self, sentence):
+    ''' Uses the CoreNLP server to create an AnnotatedSentence from a string. '''
     annotated_data = json.loads(self.nlp.annotate(sentence))
     annotated_sentence = annotated_data['sentences'][0]
     anno_words = []
     for token in annotated_sentence['tokens']:
-      dependencies = self._get_dependency_string(token['index'], annotated_sentence['basicDependencies'])
-      # print(dependencies)
+      dependencies = self._get_dependency_string(token['index'],
+                                                 annotated_sentence['basicDependencies'])
       # -1 the index because CoreNLP makes them 1-based rather than 0-based, so fix.
       anword = AnnotatedWord(index=token['index']-1,
                              word=token['word'],
@@ -62,9 +64,9 @@ class StanfordCoreNLPAnnotator(BaseAnnotator):
 
 
 class BasicNltkAnnotator(BaseAnnotator):
+  ''' An annotator that uses the offline NLTK toolset. '''
   def __init__(self):
     self.lemmatiser = WordNetLemmatizer()
-    pass
 
   def annotate(self, sentence):
     ''' Use the NLTK library to add basic NLP info to sentence.
@@ -80,14 +82,15 @@ class BasicNltkAnnotator(BaseAnnotator):
     return AnnotatedSentence(anno_words)
     
 class ExtensionWordSet():
+  ''' Holds data for extension (type) file processing. '''
   def __init__(self, label, pos, filepath, lempos, lemmatiser, stemmer):
     self.label = label
     self.pos = pos
     with open(filepath, 'r', encoding='utf8') as wordfile:
       lines = wordfile.readlines()
+      # Lemmatise, then stem.
       self.words = [stemmer.stem(lemmatiser.lemmatize(w.strip().lower(),pos=lempos)) for w in lines]
-        # self.words = [w.strip() for w in lines]
-    print(label, 'pos:', pos, 'word count:', len(self.words))
+    click.echo('{} pos:{} word-count: {}'.format(label, pos, len(self.words)))
 
 class ExtensionAnnotatorBase():
   def extend(self, annotated_sentence):
@@ -132,6 +135,7 @@ class Selector():
     
 
 class ContainingSelector(Selector):
+  ''' A selector that picks patterns that contain the most words without overlapping with other patterns.'''
   def __init__(self):
     pass
 
@@ -151,7 +155,7 @@ class ContainingSelector(Selector):
     # do work in here
     if matched == []:
       return []
-    if verbose: print('Filtering: ', pattern_name)
+    if verbose: click.echo('Filtering: ' + pattern_name)
     for wordlist in matched:
       # wordlist is a list of AnnotatedWord objects
       found = False
@@ -163,7 +167,6 @@ class ContainingSelector(Selector):
         if self._is_contained_in(wordlist, existing):
           found = True
           if verbose:
-            # print('Deleting {}'.format([x.word for x in wordlist]))
             click.echo(click.style('Deleting {}'.format([x.word for x in wordlist]), fg="bright_yellow"))
           break
       if not found:
@@ -184,15 +187,13 @@ class ContainingSelector(Selector):
   def reduce_pattern_collection(self, matched_patterns, verbose=False):
     reduced = []
     if verbose:
-      print(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in matched_patterns])
+      click.echo(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in matched_patterns])
     things = sorted(matched_patterns, key=self.plength, reverse=True)
     if verbose:
-      print(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in things])
+      click.echo(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in things])
       click.echo('Reducing across patterns...')
     for pattern,words in things:
-      # if verbose:
-        # print([w.word for w in words])
-      for p,existing in reduced:
+      for _,existing in reduced:
         if self._is_contained_in(words, existing):
           if verbose:
             click.echo(click.style('Deleting {}'.format([x.word for x in words]), fg="bright_yellow"))
@@ -202,6 +203,6 @@ class ContainingSelector(Selector):
         reduced.append((pattern, words))
 
     if verbose:
-      for x,pl in reduced:
-        print([p.word for p in pl])
+      for _,pattern_list in reduced:
+        click.echo(','.join([p.word for p in pattern_list]))
     return reduced

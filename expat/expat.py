@@ -1,4 +1,4 @@
-''' Tool for FUNCTION and FUNCTION. '''
+''' Main application for text analysis and processing using patterns. '''
 
 # Better description of thing.
 import click
@@ -114,8 +114,8 @@ def cli(in_file, pattern_file, extension_file, annotator,
     click.echo('No selector specified.')
 
   # parse the header for column indexes
-  if not no_header:
-    header_line = in_file.readline()
+  # if not no_header:
+  #   header_line = in_file.readline()
 
   # this is what the annotation matrix is saved in
   output_matrix = []

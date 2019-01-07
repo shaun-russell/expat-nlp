@@ -30,7 +30,7 @@ class ExtensionParser():
     for line in extensionfile:
       if not line.startswith('#') and len(line) > 3:
         data = line.strip().split(';')
-        print(data[1], data[2], data[3])
+        click.echo(' '.join(data[1], data[2], data[3]))
         extensions[data[0]] = (data[1], data[2], data[3])
     
     return extensions
