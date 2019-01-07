@@ -135,6 +135,9 @@ class BreadthFirstWithQueue(GraphSearch):
 class MatchBuilder():
   @staticmethod
   def find_all_matches(annotated_sentence, pattern, algorithm, verbose=False):
+    ''' Returns a list of all the paths that can be found in the provided sentence
+        using the provided pattern graph. The algorithm used to traverse the graph
+        and find patterns is also needed. '''
     sentence_queue = annotated_sentence.get_queue()
     matches = []
     # for every word in the sentence...
@@ -142,18 +145,23 @@ class MatchBuilder():
       # get the word that starts the queue
       # make a copy because we can have queues
       # this could be improved, but basically we get the first word to do the
-      # initial evaluation, but because we still need this word, we put it back in.\
+      # initial evaluation, but because we still need this word, we put it back in.
       # Once the tests work, try just feed every word into the algorithm.find_all_paths(...)
       # and see if the result is the same (should be the proper way)
       queuecopy = copy(sentence_queue)
       # see if the word matches any of the entry points for the pattern
       for entry in pattern.graph_entry_points:
+        # work with values rather than references, otherwise later patterns
+        # would be provided with empty lists (all the data has been popped)
         q = copy(queuecopy)
         word = q.pop()
         q.append(word)
+
         if verbose:
           click.echo('Entry point: {}({})'.format(entry.word, entry._pos))
           click.echo('Checking: {}({})'.format(word.word, word.pos))
+
+        # get a list of all the paths through the pattern graph
         results = algorithm.find_all_paths(pattern.graph, entry, q, verbose)
         if len(results) > 0:
           matches += results
