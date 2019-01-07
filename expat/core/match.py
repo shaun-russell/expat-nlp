@@ -1,7 +1,7 @@
 ''' Functions and classes for matching and comparing strings. '''
 
-# TODO: tidy this up
 from core.structures import AttributeSet,AnnotatedSentence,AnnotatedWord,Pattern,PatternWord
+import click
 
 # This class allows the functions to be returned by functions and avoids
 # problems with inconsistent parameters that may arise from using built-in
@@ -10,7 +10,6 @@ from core.structures import AttributeSet,AnnotatedSentence,AnnotatedWord,Pattern
 
 class StringMatching():
     ''' Independent functions for comparing string values. '''
-
     # ________________________
     # START MATCHING FUNCTIONS
     @staticmethod
@@ -73,8 +72,6 @@ class StringMatching():
     @staticmethod
     def is_match(word: str, match_strings, ignore_case=True, required=1):
         ''' Returns True if any of the match_strings apply to the word. '''
-        # print(word)
-        # print(match_strings)
         # if there is no data (attribute is None), don't fail.
         if word is None:
             return True
@@ -143,46 +140,26 @@ class ListMatching():
 
 class PatternMatcher():
     ''' The main class that finds pattern matches in annotated sentences.'''
-    @staticmethod
-    def get_pattern_matches(sentence: AnnotatedSentence, pattern: Pattern):
-        ''' Return all sequences of AnnotatedWords that match the pattern. '''
-        # TODO this.
-        matches = []
-        for anword in sentence:
-            pass
-            # check a word for the start of a pattern
-
 
     @staticmethod
     def word_matches_pattern(an_word: AnnotatedWord, pt_word: PatternWord, verbose=False):
         # use an IF because it shortcircuits to improve performance
         if not StringMatching.is_match(an_word.word, pt_word.word):
-            if verbose:
-                print('fail: word')
+            if verbose: click.echo('fail: word')
             return False
         if not StringMatching.is_match(an_word.lemma.lower(), pt_word.lemma.lower()):
-            if verbose: print('fail: lemma')
+            if verbose: click.echo('fail: lemma')
             return False
         if not StringMatching.is_match(an_word.ner, pt_word.ner):
-            if verbose: print('fail: ner')
+            if verbose: click.echo('fail: ner')
             return False
         if not ListMatching.is_match(an_word.pos, pt_word.pos_attributes):
-            if verbose: print('fail: pos')
+            if verbose: click.echo('fail: pos')
             return False
         if not ListMatching.is_match(an_word.dependencies, pt_word.dep_attributes):
-            if verbose: print('fail: deps')
+            if verbose: click.echo('fail: dependencies')
             return False
         if not ListMatching.is_match(an_word.types, pt_word.type_attributes):
-            if verbose: print('fail: type')
+            if verbose: click.echo('fail: type')
             return False
         return True
-
-
-# Use a Tree-like, recursive pattern matching method.
-# foreach word in the sentence, try start the pattern
-    # if word in pattern, get next word in pattern
-
-class WordGraph():
-    @staticmethod
-    def build_all(pattern):
-        pass
