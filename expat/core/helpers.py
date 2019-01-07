@@ -20,30 +20,32 @@ def clean_line(line):
   return line.strip().strip("'")
 
 def get_reduced_sentence(patterns, annotated_words):
-  skipnum = 0
+  ''' Replaces preprocessor patterns with a single classname word,
+      e.g. "the book" would become "NOUN". '''
+  skip_num = 0
   words = []
   index = 0
   for word in annotated_words:
-    if skipnum > 0:
-      skipnum -= 1
+    if skip_num > 0:
+      skip_num -= 1
       continue
     found = False
-    for p,patt in patterns:
+    for ptype,pattern_words in patterns:
       if found:
         break
-      for pw in patt:
+      for pword in pattern_words:
         if found:
           break
-        if pw.index == word.index:
-          words.append(AnnotatedWord(word=p.classname, index=index, lemma=word.lemma, pos='NULL'))
-          skipnum = len(patt) - 1
+        if pword.index == word.index:
+          words.append(AnnotatedWord(word=ptype.classname, index=index, lemma=word.lemma, pos='NULL'))
+          skip_num = len(pattern_words) - 1
           found = True
           break
     if not found:
       word.index = index
       words.append(word)
   
-  # repair indices?
+  # repair indices
   index = 0
   for word in words:
     word.index = index
@@ -59,22 +61,22 @@ def get_content_and_extra(heading, line):
   delim_idx = 0
   annotating = ''
   non_annotating = ''
-  # find the 
+
+  # find the index of the first delimiter
   if '\t' in heading:
-    delim_idx = line.rfind('\t')
+    # First tab character is the end of the first column.
+    delim_idx = line.find('\t')
   elif ',' in heading:
-    delim_idx = line.rfind('"')+1
+    # Last " character is the end of a sentence. Can't look for commas,
+    # because the text content could contain a comma.
+    delim_idx = line.rfind('"') + 1
   else:
     delim_idx = len(line) - 1
-  
-
-  # if no delimiter, return the whole line
-  # if delim_idx < 1:
-  #   return (line,None)
 
   annotating = line[0:delim_idx].replace('"','')
   non_annotating = line[delim_idx:].replace('"','')
 
+  # Maybe make this a proper object, rather than a mystery tuple...
   return (annotating, non_annotating)
 
 
@@ -84,6 +86,7 @@ def get_content_and_extra(heading, line):
 def print_sentence_patterns(patterns, annotated_words):
   ''' Prints a sentence on a line, highlighting pattern words GREEN. '''
   words = []
+  # these variable names don't matter that much because they're just for looping.
   for word in annotated_words:
     found = False
     for patt in patterns:
@@ -102,19 +105,19 @@ def print_sentence_patterns(patterns, annotated_words):
 
 def print_sentence_pattern_categories(patterns, annotated_words):
   ''' Prints a sentence, highlighting pattern groups (and their component words). '''
-  skipnum = 0
+  skip_num = 0
   words = []
   for word in annotated_words:
     # if a pattern is applied, skip all the words that are part of that pattern.
     # This avoids overlapping pattern application, e.g. [The,Cave] and [Cave] 
     # will match on the <The> word, then <Cave>. Since <Cave> is the next word,
     # but we've already matched it, we skip 1 word i.e. len(pattern)
-    if skipnum > 0:
-      skipnum -= 1
+    if skip_num > 0:
+      skip_num -= 1
       words.append(click.style(str(word.index) + '.' + word.word, bg='bright_yellow', fg='black'))
       continue
-    # these loop variables are a bit messy
-    # TODO: Giff nice variable names
+
+    # these variable names don't matter that much because they're just for looping.
     found = False
     for p,patt in patterns:
       if found:
@@ -123,9 +126,16 @@ def print_sentence_pattern_categories(patterns, annotated_words):
         if found:
           break
         if pw.index == word.index:
-          words.append(click.style(p.classname + ':', fg='white', bg='cyan'))
-          words.append(click.style(str(word.index) + '.' + word.word, bg='bright_yellow', fg='black'))
-          skipnum = len(patt) - 1
+          # If the word matches, insert this pattern category and skip
+          # pattern checks for all the words contained in this pattern
+          # to prevent overlapping patterns when printing.
+          words.append(click.style(p.classname + ':',
+                                    fg='white',
+                                    bg='cyan'))
+          words.append(click.style(str(word.index) + '.' + word.word,
+                                    bg='bright_yellow',
+                                    fg='black'))
+          skip_num = len(patt) - 1
           found = True
           break
     if not found:
