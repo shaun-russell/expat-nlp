@@ -60,6 +60,9 @@ Options:
                                   Default is "sentence", but override this is
                                   there is more than 1 column in the sentences
                                   file.
+  -o, --output-type [csv|tsv|arff]
+                                  What format the exported matrix should be
+                                  in.
   --stepwise Manually cycle through the sentences to scan what is matched. 
   -v, --verbose Enables information-dense terminal output. 
 
@@ -108,6 +111,8 @@ An example type extension line is: ```motion-verb;VB*;path/to/motion-verbs.txt;v
   `-g, --debug-pattern TEXT` Specify a pattern name to run full verbose output on it. Use this if you have a pattern that doesn't seem to be matching correctly and it will show the key steps that the program is taking to match this pattern.
 
   `--heading TEXT` The heading to use for the sentence output. Default is 'sentence', but it is the column name for the text being annotated in the final output. Override this if there is more than 1 column in the sentences file, e.g. sentence,class1,class2
+
+  `-o, --output-type [csv|tsv|arff]` Use this to change the delimiter or file format of the output. An ARFF file is the data storage format used by the WEKA machine learning toolset. Expat cannot detect nominal types at this stage and will assign only STRING and NUMERIC data types.
 
   `--stepwise` Manually cycle through the sentences to scan what is matched. Use this when debugging a pattern as it pauses the program after each sentence, allowing you to look at each result (to debug or investigate).
 

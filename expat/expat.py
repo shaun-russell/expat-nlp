@@ -125,7 +125,10 @@ def cli(in_file, pattern_file, extension_file, annotator,
   output_matrix = []
   # any new non-pattern columns need to be added in the header
   # (ideally after 'extracted' and before the patterns)
-  output_matrix.append([heading] + ['abstracted'] + [p.name for p in all_patterns.patterns if not p.preprocess])
+  delimiter = ','
+  if '\t' in heading:
+    delimiter = '\t'
+  output_matrix.append(heading.split(delimiter) + ['abstracted'] + [p.name for p in all_patterns.patterns if not p.preprocess])
 
   # init some variables to keep track of progress
   count = 0
@@ -185,7 +188,7 @@ def cli(in_file, pattern_file, extension_file, annotator,
          click.style(x.types, fg='bright_magenta'),
          click.style(x.ner, fg='bright_green')) for x in reduced_sentence.words]))
 
-    row = ['"{}"{}'.format(cleaned_line, excess)] + ['"' + ' '.join([x.word for x in reduced_sentence.words]) + '"']
+    row = ['"{}"'.format(cleaned_line)] + excess.split(delimiter) + ['"' + ' '.join([x.word for x in reduced_sentence.words]) + '"']
 
     matched_patterns = []
     for pattern in [p for p in all_patterns.patterns if not p.preprocess]:
@@ -238,7 +241,7 @@ def cli(in_file, pattern_file, extension_file, annotator,
         export_matrix.write(delimiter.join(row) + eol)
       export_matrix.close()
     # if verbose:
-    click.echo('Saved as {}'.format(output_type))
+    click.echo('\nSaved as {} in {}'.format(output_type, export_matrix.name))
   else:
     # might break this out into a separate function...
     # ARFF file generation
@@ -254,4 +257,5 @@ def cli(in_file, pattern_file, extension_file, annotator,
 
     export_matrix.write(','.join(row) + '\n')
     export_matrix.write(eol.join([','.join(x) for x in output_matrix[1:]]))
+    click.echo('\nSaved as {} in {}'.format(output_type, export_matrix.name))
     export_matrix.close()
