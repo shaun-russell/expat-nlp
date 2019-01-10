@@ -15,6 +15,14 @@ def remove_duplicate_lists(messy_list):
       result.append(item)
   return result
 
+def is_number(string):
+  ''' Returns true if the string is a number. '''
+  try:
+      float(string)
+  except ValueError:
+      return False
+  return True
+
 def clean_line(line):
   ''' Strip trailing and leading whitespace, then trailing and leading quote marks. '''
   return line.strip().strip("'")
@@ -71,7 +79,7 @@ def get_content_and_extra(heading, line):
     # because the text content could contain a comma.
     delim_idx = line.rfind('"') + 1
   else:
-    delim_idx = len(line) - 1
+    delim_idx = len(line)
 
   annotating = line[0:delim_idx].replace('"','')
   non_annotating = line[delim_idx:].replace('"','')

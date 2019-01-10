@@ -37,14 +37,14 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
               help='The url of the CoreNLP server.')
 # @click.option('--delimiter', '-d', type=str, default='\t',
 #               help='Which delimiter to use IF splitting. Default is TAB.')
-# @click.option('--split-index', '-i', type=int, default=-1,
-#               help='Which index to split on. Default is -1, which means the line is not split.')
 @click.option('--export-matrix', '-x', type=click.File('w+', encoding='utf8'),
               help='A filename to export the pattern matrix to.')
 @click.option('--debug-pattern', '-g', type=str,
               help='A pattern to run full verbose output on.')
 @click.option('--heading', type=str, default='sentence',
               help='The heading to use for the sentence output. Default is "sentence", but override this is there is more than 1 column in the sentences file.')
+@click.option('--output-type', '-o', type=click.Choice(['csv', 'tsv', 'arff']), default='csv',
+              help='What format the exported matrix should be in.')
 
 # flags
 # @click.option('--no-header', '-n', is_flag=True,
@@ -62,7 +62,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 # main entry point function
 def cli(in_file, pattern_file, extension_file, annotator,
-        selector, corenlp_url, debug_pattern,
+        selector, corenlp_url, debug_pattern, output_type,
         export_matrix, heading, verbose, stepwise):
   ''' The main annotation program called from the command line. '''
   # --------------------
@@ -76,6 +76,10 @@ def cli(in_file, pattern_file, extension_file, annotator,
     click.echo('Input file not found.')
   if not pattern_file:
     click.echo('Pattern file not found.')
+
+  if not export_matrix:
+    click.echo('NOTE: NOT SAVING RESULTS.')
+    click.echo('Use the --export-matrix option to save output.')
 
   # load all files from patterns
   all_patterns = parse.Parser.parse_patterns(pattern_file, True)
@@ -181,7 +185,7 @@ def cli(in_file, pattern_file, extension_file, annotator,
          click.style(x.types, fg='bright_magenta'),
          click.style(x.ner, fg='bright_green')) for x in reduced_sentence.words]))
 
-    row = ['"{}"{},"{}"'.format(cleaned_line, excess, ' '.join([x.word for x in reduced_sentence.words]))]
+    row = ['"{}"{}'.format(cleaned_line, excess)] + ['"' + ' '.join([x.word for x in reduced_sentence.words]) + '"']
 
     matched_patterns = []
     for pattern in [p for p in all_patterns.patterns if not p.preprocess]:
@@ -220,9 +224,34 @@ def cli(in_file, pattern_file, extension_file, annotator,
     click.echo('Saving...')
 
   # SAVE ALL TO FILE (if file provided)
-  if export_matrix:
-    for row in output_matrix:
-      export_matrix.write(','.join(row) + '\n')
+  delimiter = ','
+  if output_type == 'csv':
+    delimiter = ','
+  elif output_type == 'tsv':
+    delimiter = '\t'
+
+  eol = '\n'
+
+  if output_type != 'arff':
+    if export_matrix:
+      for row in output_matrix:
+        export_matrix.write(delimiter.join(row) + eol)
+      export_matrix.close()
+    # if verbose:
+    click.echo('Saved as {}'.format(output_type))
+  else:
+    # might break this out into a separate function...
+    # ARFF file generation
+    # create the attribute lines for each thing in the header
+    attributes = ''
+    for i,column in enumerate(output_matrix[0]):
+      datatype = 'NUMERIC' if helpers.is_number(output_matrix[1][i]) else 'STRING'
+      attributes += ('@ATTRIBUTE "{}" {}{}'.format(column.replace('"',''), datatype, eol))
+    
+    export_matrix.write('@RELATION expat-generated-output' + eol)
+    export_matrix.write(attributes)
+    export_matrix.write('@DATA'+ eol)
+
+    export_matrix.write(','.join(row) + '\n')
+    export_matrix.write(eol.join([','.join(x) for x in output_matrix[1:]]))
     export_matrix.close()
-  if verbose:
-    click.echo('Saved')
