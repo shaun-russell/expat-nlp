@@ -140,6 +140,7 @@ class ContainingSelector(Selector):
     pass
 
   def _is_contained_in(self, parts, whole):
+    ''' Determines if a partial list is contained in a larger list. '''
     # if there is a part that is not in the whole, then not contained
     whole_indices = [w.index for w in whole]
     for part in parts:
@@ -149,6 +150,7 @@ class ContainingSelector(Selector):
     return True
 
   def select_patterns(self, pattern, matched, verbose=False):
+    ''' Reduces all the results of a single pattern to only its longest, non-intersecting matches. '''
     selected_patterns = []
     pattern_name = pattern if isinstance(pattern, str) else pattern.classname
     # sorted_patterns = sorted(matched, key=len, reverse=True)
@@ -180,11 +182,13 @@ class ContainingSelector(Selector):
     return selected_patterns
   
   def plength(self,value):
+    ''' Sorts a pattern-list tuple by the length of its pattern component. '''
     _,y = value
     words = [a.word for a in y]
     return len(words)
 
   def reduce_pattern_collection(self, matched_patterns, verbose=False):
+    ''' Applies the selection algorithm to find the longest, non-overlapping patterns. '''
     reduced = []
     if verbose:
       click.echo(['{}:{}'.format(x.classname,[w.word for w in y]) for x,y in matched_patterns])
