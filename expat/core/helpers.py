@@ -81,8 +81,8 @@ def get_content_and_extra(heading, line):
   else:
     delim_idx = len(line)
 
-  annotating = line[0:delim_idx].replace('"','')
-  non_annotating = line[delim_idx:].replace('"','')
+  annotating = line[0:delim_idx].replace('"','').strip('\t').strip(',')
+  non_annotating = line[delim_idx:].replace('"','').strip('\t').strip(',')
 
   # Maybe make this a proper object, rather than a mystery tuple...
   return (annotating, non_annotating)
