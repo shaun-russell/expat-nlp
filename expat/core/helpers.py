@@ -25,7 +25,7 @@ def is_number(string):
 
 def clean_line(line):
   ''' Strip trailing and leading whitespace, then trailing and leading quote marks. '''
-  return line.strip().strip("'")
+  return line.strip().strip("'").replace('\\','')
 
 def get_reduced_sentence(patterns, annotated_words):
   ''' Replaces preprocessor patterns with a single classname word,

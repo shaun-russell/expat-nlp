@@ -194,12 +194,10 @@ def cli(in_file, pattern_file, extension_file, annotator,
 
     matched_patterns = []
     for pattern in [p for p in all_patterns.patterns if not p.preprocess]:
-      
-      results = preprocess_pattern(pattern, annotated_sentence, active_selector, search_method,
+      results = preprocess_pattern(pattern, reduced_sentence, active_selector, search_method,
                                   verbose=verbose, debug_pattern=debug_pattern)
       for res in results:
         matched_patterns.append(res)
-      # matched_patterns.append(result)
       
       # save row
       row.append(str(len(matched_patterns)))
