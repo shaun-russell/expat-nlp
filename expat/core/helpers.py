@@ -75,14 +75,17 @@ def get_content_and_extra(heading, line):
     # First tab character is the end of the first column.
     delim_idx = line.find('\t')
   elif ',' in heading:
-    # Last " character is the end of a sentence. Can't look for commas,
-    # because the text content could contain a comma.
-    delim_idx = line.rfind('"') + 1
+    # count how many commas appear in the header
+    comma_count = heading.count(',')
+    while comma_count > 0:
+      delim_idx = line.rfind(',', 0, delim_idx-1)
+      comma_count -= 1
+    delim_idx += 1
   else:
     delim_idx = len(line)
 
-  annotating = line[0:delim_idx].replace('"','').strip('\t').strip(',')
-  non_annotating = line[delim_idx:].replace('"','').strip('\t').strip(',')
+  annotating = line[0:delim_idx].replace('"','').strip('\t').strip(',').strip("'")
+  non_annotating = line[delim_idx:].replace('"','').strip('\t').strip(',').strip("'")
 
   # Maybe make this a proper object, rather than a mystery tuple...
   return (annotating, non_annotating)

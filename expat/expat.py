@@ -146,6 +146,8 @@ def cli(in_file, pattern_file, extension_file, annotator,
 
     # format the line for pain-free annotation
     cleaned_line,excess = helpers.get_content_and_extra(heading, helpers.clean_line(line))
+    if verbose:
+      click.echo("{}\n{}\t{}".format(line, cleaned_line, excess))
     # the selected annotator annotates the sentence
     annotated_sentence = selected_annotator.annotate(cleaned_line)
     if spatial_annotator != None:
@@ -220,7 +222,7 @@ def cli(in_file, pattern_file, extension_file, annotator,
 
     # ALLOW MANUAL PROGRESSION FOR DEBUGGING OR VIEWING
     if stepwise:
-      input('\rPress <return>/<enter> to continue...\n')
+      input('\rPress <enter> to continue...\n')
 
    
   if verbose:
