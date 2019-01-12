@@ -33,10 +33,20 @@ def get_reduced_sentence(patterns, annotated_words):
   skip_num = 0
   words = []
   index = 0
+  dependencies = []
   for word in annotated_words:
     if skip_num > 0:
       skip_num -= 1
+      dependencies.append(word.dependencies)
       continue
+
+    # if found dependencies, it means the last word will be a preprocessor chunk
+    if len(dependencies) > 0:
+      # append the found dependencies to the preprocessed chunk
+      words[-1].dependencies = ','.join(list(set(dependencies)))
+    # reset dependencies
+    dependencies = []
+
     found = False
     for ptype,pattern_words in patterns:
       if found:
@@ -48,6 +58,7 @@ def get_reduced_sentence(patterns, annotated_words):
           words.append(AnnotatedWord(word=ptype.classname, index=index, lemma=word.lemma, pos='NULL'))
           skip_num = len(pattern_words) - 1
           found = True
+          dependencies.append(word.dependencies)
           break
     if not found:
       word.index = index

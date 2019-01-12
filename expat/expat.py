@@ -157,9 +157,10 @@ def cli(in_file, pattern_file, extension_file, annotator,
       # big pretty print of sentence with indices, words, pos, ner, and type
       # annotations from the provided extensions set.
       click.echo('Annotated Sentence:')
-      click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(
+      click.echo(' '.join(['{}.{} ({},[{}]:[{}]:{}) '.format(
           x.index, x.word, click.style(x.pos, fg='cyan'),
           click.style(x.types, fg='bright_magenta'),
+          click.style(x.dependencies, fg='bright_yellow'),
           click.style(x.ner, fg='bright_green')) for x in annotated_sentence.words]))
 
     # ______________________
@@ -185,9 +186,10 @@ def cli(in_file, pattern_file, extension_file, annotator,
     reduced_sentence = helpers.get_reduced_sentence(focus_patterns, annotated_sentence.words)
     if verbose:
       # some print formatting thing
-      click.echo(' '.join(['{}.{} ({},[{}]:{}) '.format(
+      click.echo(' '.join(['{}.{} ({},[{}]:[{}]{}) '.format(
         x.index, x.word, click.style(x.pos, 'cyan'),
          click.style(x.types, fg='bright_magenta'),
+          click.style(x.dependencies, fg='bright_yellow'),
          click.style(x.ner, fg='bright_green')) for x in reduced_sentence.words]))
 
     row = ['"{}"'.format(cleaned_line)] + excess.split(delimiter) + ['"' + ' '.join([x.word for x in reduced_sentence.words]) + '"']
