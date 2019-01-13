@@ -143,11 +143,19 @@ class ContainingSelector(Selector):
     ''' Determines if a partial list is contained in a larger list. '''
     # if there is a part that is not in the whole, then not contained
     whole_indices = [w.index for w in whole]
+    whole_words = [w.word for w in whole]
+    # print('Whole indices:', whole_indices, whole_words)
     for part in parts:
-      if part.index not in whole_indices:
-        return False
+      # print(part.index)
+      # click.echo(part.word + ': ' + ' '.join([p.word for p in parts]))
+      if part.index in whole_indices:
+        # print(part.index, 'found in', whole_indices)
+        return True
+      # if part.index not in whole_indices:
+      #   print(part.index, 'not found in', whole_indices)
+      #   return False
     # otherwise, everything was contained
-    return True
+    return False
 
   def select_patterns(self, pattern, matched, verbose=False):
     ''' Reduces all the results of a single pattern to only its longest, non-intersecting matches. '''

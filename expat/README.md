@@ -148,6 +148,32 @@ The word pattern above would look for an animal name that _has two of the specif
 ## Example Files
 Example files are provided in the `sample_files` folder. The sample files contain geospatial vocab lists, an extension file, a pattern file, and some sentences.
 
+## How to write good patterns
+Pattern creation will involves a lot of iterative improvement and sometimes a bit of trial and error. The output file created by expat includes a column called `abstracted`. This is what the original sentence looks like after being run through any preprocessor patterns. It is recommended to use preprocessor patterns to handle adjectives, determiners, and other less important syntax, so your semantic patterns are not bloated and unwieldy by trying to match all forms of noun in some sort of noun phrase.
+
+Use the `abstracted` column to find out if your preprocessor patterns are missing anything (or are too greedy). It's better to get the preprocessor working well _before_ looking into further patterns, since you'll likely have to modify post-processing patterns when the preprocessor changes.
+
+An example abstraction:
+
+`Kyogre is the mascot for Pokemon Sapphire, and is located at the bottom of the Cave of Origin in Sootopolis City in that game.`
+becomes `NOUN is NOUN for ORG , and SVB at LCS of MISC in LOCATION in NOUN .`
+
+This abstracted form is much simpler for patterns to read and match. A `spatial-verb` at a `location-specifier` of `something` in a `location` could be an entire pattern, or it could be broken up into smaller parts.
+
+Abstracted sentences are also useful for identifying problems with vocabulary lists. If a word matches to a pattern that is not correct, check to see if the incorrect word exists in a related vocabulary list and remove (or add) it.
+
+
+### Flexible patterns
+If you want a pattern to be more flexible, change the `min` and `max` values to allow optional words and repeated sequences. A phrase like `the big green house` has a determiner followed by **2** adjectives, then a geographic noun. If a pattern used the default `max` of 1 for adjectives, it would not match that phrase.
+
+### Crash course on Dependencies
+Expat patterns can check words for dependencies. PoS tags, words, lemmas, and types are easy to understand, but dependencies are where it gets tricky (and powerful). A dependency has a category and an arrow, with the origin of the arrow being the 'governor' and the point of the arrow being the 'dependent' [I think...]. Dependencies allow us to look past syntax and sequence into more of the semantics of the sentence.
+
+Dependencies can be used in patterns to restrict matches, for example if a verb follows a noun we might want to make sure that they are connected by some sort of dependency. If they aren't, then the meaning could be very different and our pattern shouldn't (or maybe it should) match those words. Dependencies can also be used instead of part of speech tags in the case of noun descriptions. A noun could be preceded by an adjective, by two adjectives, or by a list of adjectives with commas and conjunctions. We could check for 3 common dependencies instead of the parts of speech and check that the noun also shares one of these dependencies (noun governs dependent adjectives).
+
+**Important note when writing the 'deps' attribute**.
+Because dependencies have a governor and dependent, a **copula** dependency is `cop-d` or `cop-g`. If you want to identify any copula and are not interested in the direction of the dependency, use `deps="cop*"` or `deps="cop-*"` to match all suffixes. Dependencies can be written in list form to match any from the list.
+
 ## Pattern File Description
 ``` xml
 EXPAT Template Description

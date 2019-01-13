@@ -42,8 +42,23 @@ def get_reduced_sentence(patterns, annotated_words):
 
     # if found dependencies, it means the last word will be a preprocessor chunk
     if len(dependencies) > 0:
+      # when merging dependencies, governor and dependent dependencies of the same type
+      # should cancel out. A noun compound that contains both compound-g and compound-d
+      # has _internal_ dependencies. These don't matter and may confuse other patterns.
+      # We're only interested in 'unresolved' dependencies (only a dependent or a governor)
+      dep_list = list(set(dependencies))
+      reduced_dependencies = []
+      for dep in dep_list:
+        depname = dep.split('-')[0]
+        if depname + '-g' in dep_list and depname + '-d' in dep_list:
+          # both found, ignore
+          continue
+        else:
+          # 'unresolved' dependency, save this
+          reduced_dependencies.append(dep)
+
       # append the found dependencies to the preprocessed chunk
-      words[-1].dependencies = ','.join(list(set(dependencies)))
+      words[-1].dependencies = ','.join(reduced_dependencies)
     # reset dependencies
     dependencies = []
 
