@@ -23,6 +23,7 @@ XML_SAMPLE = '''
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
   <!ATTLIST pattern weight CDATA "1">
+  <!ATTLIST pattern preprocess CDATA "false">
   <!ATTLIST pattern label CDATA "">
 
   <!-- Word element -->
@@ -126,6 +127,6 @@ class TestParsing(unittest.TestCase):
     exfile = open('tests/test-files/test-extensions.txt', 'r')
     results = parse.ExtensionParser.parse(exfile)
     exfile.close()
-    print(results['Animals'][1])
-    self.assertTrue('animals' in results['Animals'][1])
+    # print(results['ANIMALS'][1])
+    self.assertTrue('animals' in results['ANIMALS'][1])
     self.assertEqual(results['GNNS'][0], ('NN*,JJ*'))

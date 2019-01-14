@@ -15,6 +15,7 @@ pattern_pfx = '''
   <!ATTLIST pattern description CDATA "">
   <!ATTLIST pattern class CDATA #REQUIRED>
   <!ATTLIST pattern weight CDATA "1">
+  <!ATTLIST pattern preprocess CDATA "false">
   <!ATTLIST pattern label CDATA "">
 
   <!-- Word element -->
