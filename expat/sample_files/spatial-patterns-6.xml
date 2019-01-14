@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE patterngroup [
+  <!-- Pattern Group Element -->
+  <!ELEMENT patterngroup (pattern)+>
+  <!ATTLIST patterngroup version CDATA #REQUIRED>
+  <!ATTLIST patterngroup label CDATA "">
+
+  <!-- Pattern Element -->
+  <!ELEMENT pattern (word)+>
+  <!ATTLIST pattern name ID #REQUIRED>
+  <!ATTLIST pattern description CDATA "">
+  <!ATTLIST pattern class CDATA #REQUIRED>
+  <!ATTLIST pattern weight CDATA "1">
+  <!ATTLIST pattern preprocess CDATA "false">
+  <!ATTLIST pattern label CDATA "">
+
+  <!-- Word element -->
+  <!ELEMENT word EMPTY>
+  <!ATTLIST word min CDATA "1">
+  <!ATTLIST word max CDATA "1">
+  <!ATTLIST word contextual CDATA "false">
+  <!ATTLIST word label CDATA "">
+  <!-- Specific Word Matching -->
+  <!ATTLIST word lemma CDATA "*">
+  <!ATTLIST word word CDATA "*">
+  <!-- Parts of Speech -->
+  <!ATTLIST word pos CDATA "*">
+  <!ATTLIST word expos CDATA "">
+  <!-- Dependencies -->
+  <!ATTLIST word deps CDATA "*">
+  <!ATTLIST word exdeps CDATA "">
+  <!ATTLIST word depnum CDATA "1">
+  <!-- Additional Type -->
+  <!ATTLIST word type CDATA "*">
+  <!ATTLIST word extype CDATA "">
+  <!ATTLIST word typenum CDATA "1">
+  <!ATTLIST word ner CDATA "*">
+
+]>
+
+<patterngroup label="spatial-patterns-improved" version="1.0">
+  <!-- 
+  PREPROCESSING PATTERNS.
+  These convert short sequences (or single words) into a single-word abstraction.
+  This makes later pattern matching much simpler because it removes the need to search
+  for adjectives, compound words, certain verbs or phrases, etc.
+   -->
+  <pattern name="noun-geonoun compound" class="GNN"
+           description="A compound of non-geo nouns followed by geonouns."
+           weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - The house.
+      - The green forest.
+      - A big, filthy, and prosperous city.
+      - Brick factory.
+    -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" max="6"/>
+    <word pos="NN*,JJ*" extype="GNN" deps="compound"  min="0" max="2"/>
+    <word pos="NN*" type="GNN" deps="compound"  max="3"/>
+  </pattern>
+
+  <pattern name="geonoun-noun compound" class="GNN"
+           description="A compound of geonouns followed by non-geo nouns"
+           weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Factory floor.
+      - The local village community fair.
+      - A big, fancy mountain retreat.
+    -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" max="6"/>
+    <word pos="NN*" type="GNN" deps="compound" max="3"/>
+    <word pos="NN*" extype="GNN" deps="compound"  max="3"/>
+  </pattern>
+
+  <pattern name="strict-geonoun" class="GNN"
+           description=""
+           weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Big lake.
+      - A busy village.
+      - The imposing mountain road.
+      - A swampy, wet and polluted river delta.
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" max="6"/>
+    <word pos="NN*" type="GNN" max="3"/>
+  </pattern>
+
+  <pattern name="strict-geonoun compound" class="GNN"
+           description=""
+           weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Big lake.
+      - A busy village.
+      - The imposing mountain road.
+      - A swampy, wet and polluted river delta.
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" max="6"/>
+    <word pos="NN*" type="GNN" deps="compound*" exdeps="punct*" max="4"/>
+  </pattern>
+
+  <pattern name="possessed-geonoun" class="GNN" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - x's big house.
+      - x's green soccer field.
+      - x's library.
+      -->
+    <word pos="POS" max="1"/>
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" extype="LCS" max="6"/>
+    <word pos="NN*" extype="QTF" min="0" max="2"/>
+    <word pos="NN*" type="GNN" extype="QTF" max="4"/>
+  </pattern>
+
+  <!-- GENERIC NOUNS -->
+  <pattern name="nonspatial-noun compound" class="NOUN" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - A red brick.
+      - The big scary dog.
+      - Black, white, and red penguin.
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" extype="GNN,LCS" expos="VB*" max="6"/>
+    <word pos="NN*" extype="GNN,LCS,QTF" ner="O" max="4"/>
+  </pattern>
+
+
+  <!-- LOCATION SPECIFIER -->
+  <pattern name="location-specifier" class="LCS" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - the centre
+      - the western edge
+      - the coastal side
+      -->
+    <word deps="det*" min="0"/>
+    <word type="DIR" min="0" max="2"/>
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" max="6"/>
+    <word type="DIR" min="0" max="2"/>
+    <word type="LCS" max="2"/>
+  </pattern>
+
+  <pattern name="possessed-location-specifier" class="LCS" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - x's centre.
+      - x's left side
+      - x's colossal north eastern border
+      -->
+    <word pos="POS" max="1"/>
+    <word min="0" deps="cc*,amod*,conj*,punct*" exdeps="*obj*,*subj*" max="6"/>
+    <word type="DIR" min="0" max="2"/>
+    <word type="LCS" max="2"/>
+  </pattern>
+
+
+  <!-- SPATIALLY SIGNIFICANT VERB -->
+  <pattern name="spatial-verb standard" class="SVB" 
+           description=""
+           weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - is running
+      - walked
+      - will walk
+      - will quickly walk
+      - will not run
+      The JJ* matches things like 'located'
+      -->
+    <word pos="MD" deps="aux*,cop*" min="0" />
+    <word pos="VB*" deps="aux*,cop*" min="0" max="3" />
+    <!-- <word pos="RB" deps="advmod*,neg*" min="0" max="2"/> -->
+    <word pos="RB*,RP*" deps="advmod*,comp*,neg*" min="0" max="2"/>
+    <word pos="VB*,JJ*" deps="dobj*,nmod*,nsubj*" type="SSV" max="2" />
+  </pattern>
+
+  <pattern name="spatial-verb post-adverb" class="SVB"
+           description=""
+           weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Will run quickly
+      The JJ* matches things like 'located'
+      -->
+    <word pos="MD" min="0" max="1"/>
+    <word pos="VB*" deps="aux*,cop*" min="0" max="1" />
+    <word pos="RB" deps="advmod*,neg*" min="0" max="2"/>
+    <word pos="VB*,JJ*" deps="dobj*,nmod*,nsubj*" type="SSV" max="2" />
+    <word pos="RB*,RP*" deps="advmod*,comp*"/>
+  </pattern>
+
+
+  <!-- NER -->
+  <pattern name="entity-person" class="PERSON" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches groups recognised by the NER stage:
+      - Bob Smith
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word ner="PERSON" max="5" />
+  </pattern>
+
+  <pattern name="entity-person mixed-ner" class="PERSON" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches groups recognised by the NER stage:
+      - Coco the Clown
+      - Sergei the Russian Foreign Minister
+      -->
+    <word pos="NNP*" ner="O,TITLE,MISC,PERSON" deps="compound*" max="3" />
+    <word deps="det*" min="0" max="1"/>
+    <word pos="NNP*" ner="TITLE,MISC,NAT*" deps="compound*" max="4" />
+  </pattern>
+
+  <pattern name="entity-person group" class="PERSON" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches groups recognised by the NER stage:
+      - The Portuguese [who shopped...]
+      - [go talk to] the Russians.
+      -->
+    <word deps="det*" min="1" max="1"/>
+    <word pos="NNP*" ner="TITLE,MISC,NAT*" deps="nsubj*" max="3" />
+  </pattern>
+
+  <pattern name="entity-location" class="LOCATION" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Russia
+      - New Plymouth
+      - the Commonwealth of Massachusetts
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word type="DIR" deps="amod*" min="0" max="2"/>
+    <word pos="NN*,JJ*,IN*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE" max="4" />
+  </pattern>
+
+  <pattern name="entity-location compound" class="LOCATION" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Russia
+      - New Plymouth
+      - the Commonwealth of Massachusetts
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word type="DIR" deps="amod*" min="0" max="2"/>
+    <word pos="NN*,JJ*,IN*" deps="appos*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE" max="4" />
+    <word deps="punct*" />
+    <word pos="NN*,JJ*,IN*" deps="appos*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE" max="4" />
+  </pattern>
+
+  <pattern name="entity-location-complex" class="LOCATION" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Russia
+      - New Plymouth
+      - the Commonwealth of Massachusetts
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word pos="NNP*" deps="nmod*" min="1" max="3" />
+    <word word="of" deps="case*" min="1"/>
+    <word type="DIR" deps="amod*" min="0" max="2"/>
+    <word pos="NN*,JJ*,IN*" deps="compound*" ner="LOCATION,CITY,COUNTRY,STATE_OR_PROVINCE,CAUS*" max="4" />
+  </pattern>
+
+  <pattern name="entity-org" class="ORG" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Fancy Company
+      - the Fancy Company
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word pos="NN*,JJ*,IN*" ner="ORGANIZATION" max="5" />
+  </pattern>
+
+  <pattern name="entity-misc" class="MISC" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - Miscellaneous? NER confused.
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word pos="NN*,JJ*,IN*" ner="MISC" max="5" />
+  </pattern>
+
+
+  <!-- DIRECTIONS -->
+  <pattern name="direction compound" class="DIR" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - the east
+      - a southeastern
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word pos="NN*,JJ*" type="DIR" max="3" />
+  </pattern>
+
+  <pattern name="direction conj-compound" class="DIR" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - the left and right
+      - the south and southwest
+      - to and from
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word pos="NN*,JJ*" deps="conj*" type="DIR,SVS" max="3" />
+    <word pos="CC*" max="2" />
+    <word pos="NN*,JJ*" deps="conj*" type="DIR,SVS" max="3" />
+  </pattern>
+
+  <!-- QUANTIFIERS -->
+  <pattern name="quantifier" class="QTF" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches:
+      - three
+      - fourteen
+      - one hundred
+      - a thousand
+      -->
+    <word deps="det*,nmod:pos*,neg*" min="0" max="2" />
+    <word pos="NN*,CD*,JJ*" type="QTF" max="3" />
+  </pattern>
+
+  <pattern name="quantifier-ner" class="QTF" description="" weight="1" preprocess="true"> 
+    <!-- This pattern matches named entity numbers. -->
+    <word ner="NUMBER" max="3" />
+  </pattern>
+
+
+  <!-- What dependencies are important? I think the preprocessing stage is pretty good, but for
+  the post-processing patterns, we want to look for semantic meaning along with the syntax.
+  The syntax and preprocessor abstractions tell us structure and word-level classification,
+  but the dependencies should tell us how these are being used in a sentence. Using only
+  syntax and word classifications gets us to 70-80%, but dependency checking should allow us
+  to filter out some false positives, maybe a few metaphors, but will definitely allow us to
+  make more specific patterns if the general patterns aren't doing enough. -->
+
+  <!-- The following post-processing patterns assume the preprocessor patterns are effective. -->
+
+  <!-- Preprocessor 'word' elements:
+    - GNN
+    - NOUN
+    - LCS
+    - SVB
+    - DIR
+    - QTF
+    - LOCATION,MISC,PERSON,ORG
+ -->
+
+  <!-- POST-PROCESSING PATTERNS -->
+  <!-- SPATIAL RELATION PATTERNS -->
+  <pattern name="sverb qual geoentity simple" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - crossed a highway
+      - sharply divides the landscape
+      -->
+    <word type="SRQ" min="0" max="2"/>
+    <word word="SVB" />
+    <word word="GNN,LOCATION,LCS" max="2" />
+  </pattern>
+  <pattern name="sverb qual geoentity" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - hastens the demise
+      - almost finished the book 
+      -->
+    <word type="SRQ" min="0" max="2"/>
+    <word word="SVB" />
+    <word word="NOUN,MISC,ORG,PERSON" max="2" />
+  </pattern>
+  <pattern name="sverb qual rel geoentity complex" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - crossed a highway
+      - ran straight towards the house
+      - sits just beside that river
+      - is located across from Burger Town
+      - walks next to the road
+      -->
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2"/>
+    <word type="SVS" min="0" max="2"/>
+    <word pos="TO" min="0" max="1"/>
+    <word word="GNN,LOCATION,LCS" max="2" />
+  </pattern>
+
+  <pattern name="sverb qual rel non-spatial-1" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - crosses out the answer
+      - passed a rugby ball
+      - sits a test
+      -->
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2"/>
+    <word type="SVS" min="0" max="2"/>
+    <word word="NOUN,MISC,ORG,PERSON" max="2" />
+  </pattern>
+
+  <pattern name="sverb qual rel non-spatial-2" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - passed a rugby ball to Pedro
+      -->
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2"/>
+    <word type="SVS" min="0" max="2"/>
+    <word word="NOUN,MISC,ORG,PERSON" max="2" />
+    <word pos="TO" max="1" />
+    <word word="NOUN,MISC,ORG,PERSON" max="2" />
+  </pattern>
+
+  <pattern name="sverb to dir" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - moved just to the right
+      - ran north
+      - travelled to the east
+      -->
+    <word word="SVB" />
+    <word type="SRQ" min="0" max="2" />
+    <word pos="TO" min="0" />
+    <word word="DIR" max="2" />
+  </pattern>
+
+  <!-- <pattern name="rel ssv spatial" class="spatial-rel" description="" weight="2"> 
+    <word type="SVS" max="2"/>
+    <word word="SVB" />
+    <word word="NOUN" max="2" />
+  </pattern> -->
+
+  <pattern name="svs lcs rel geo-entity" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - crossed the north side of the building
+      - in the edge of the field
+      - next to centre of town
+      - in the middle of the street
+      -->
+    <word word="SVB" min="0" max="2"/>
+    <word type="SVS" max="2"/>
+    <word pos="TO" min="0"/>
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+
+  <pattern name="svs lcs rel non-geo-entity" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - enters on the side of Bob
+      - living at the centre of Michaelsoft Binbows
+      - in the middle of the chaos
+      -->
+    <word word="SVB" min="0" max="2"/>
+    <word type="SVS" max="2"/>
+    <word pos="TO" min="0"/>
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="NOUN,PERSON,ORG,MISC" max="2" />
+  </pattern>
+
+
+  <pattern name="svs nn geonoun" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - sultanate of the western archipelago
+      - living at the centre of Michaelsoft Binbows
+      - in the middle of the chaos
+      -->
+    <word word="GNN,LOCATION,NOUN,MISC" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+
+  <pattern name="svs geonoun" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - near the house
+      - across from the northern hills
+      -->
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+
+  <pattern name="svs geonoun  dir" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - house to the north
+      - offices just across from the park
+      -->
+    <word word="GNN,LOCATION" max="2" />
+    <word type="SRQ" min="0" max="3"/>
+    <word type="SVS" max="3"/>
+    <word word="DIR" max="2"/>
+  </pattern>
+
+  <pattern name="svs noun noun" class="spatial-rel" description="" weight="2"> 
+    <!-- This pattern matches:
+      - sultanate of the western archipelago
+      - university in the town
+      - tree on the mountain
+      -->
+    <word pos="NOUN,MISC" max="2"/>
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="2"/>
+    <word word="NOUN,MISC" max="2" />
+  </pattern>
+
+<!-- 
+
+
+  <pattern name="gnn svb rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="GNN,LOCATION" max="2" />
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="noun svb rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="NOUN" max="2" />
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="svb noun rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2" />
+    <word word="NOUN" max="2" />
+    <word type="SVS" max="2"/>
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="verb dir rel" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word type="SVS" max="2" />
+  </pattern>
+  <pattern name="verb rel dir" class="spatial-verb" description="" weight="2"> 
+    <word word="SVB" max="2" />
+    <word type="SVS" max="2" />
+    <word word="DIR" max="1" />
+  </pattern>
+  <pattern name="gnn rel lcs rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="GNN,LOCATION" max="2" />
+    <word type="SVS" max="2" />
+    <word word="LCS" max="2" />
+    <word type="SVS" max="2" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="gnn rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="GNN,LOCATION" max="2" />
+    <word type="SVS" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="noun rel gnn" class="spatial-verb" description="" weight="2"> 
+    <word word="NOUN,PERSON" max="2" />
+    <word type="SVS" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern>
+  <pattern name="rel gnn ssv gnn" class="spatial-verb" description="" weight="2"> 
+    <word type="SVS" max="2" />
+    <word word="DIR" min="0" max="1" />
+    <word word="GNN,LOCATION" max="2" />
+    <word word="SSV" max="2" />
+    <word word="GNN,LOCATION" max="2" />
+  </pattern> -->
+
+  <!-- SINGLE PREPROCESSOR ELEMENTS -->
+  <pattern name="lcs" class="object" description="" weight="1"> 
+    <word word="LCS" min="1" max="1"/>
+  </pattern>
+  <pattern name="spatialverb" class="object" description="" weight="1"> 
+    <word word="SVB" min="1" max="1"/>
+  </pattern>
+  <pattern name="noun" class="object" description="" weight="1"> 
+    <word word="NOUN" min="1" max="1"/>
+  </pattern>
+  <pattern name="dir" class="object" description="" weight="1"> 
+    <word word="DIR" min="1" max="1"/>
+  </pattern>
+  <pattern name="qtf" class="object" description="" weight="1"> 
+    <word word="QTF" min="1" max="1"/>
+  </pattern>
+  <pattern name="person" class="object" description="" weight="1"> 
+    <word word="PERSON" min="1" max="1"/>
+  </pattern>
+  <pattern name="location" class="object" description="" weight="1"> 
+    <word word="LOCATION" min="1" max="1"/>
+  </pattern>
+  <pattern name="misc" class="object" description="" weight="1"> 
+    <word word="MISC" min="1" max="1"/>
+  </pattern>
+  <pattern name="org" class="object" description="" weight="1"> 
+    <word word="ORG" min="1" max="1"/>
+  </pattern>
+  <pattern name="gnn" class="object" description="" weight="1"> 
+    <word word="GNN" min="1" max="1"/>
+  </pattern>
+
+</patterngroup>

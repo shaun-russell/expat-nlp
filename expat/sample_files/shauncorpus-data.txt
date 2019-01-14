@@ -1,0 +1,500 @@
+﻿"Kyogre is the mascot for Pokémon Sapphire, and is located at the bottom of the Cave of Origin in Sootopolis City in that game.",1,1,1
+"Once you arrive at the bottom, Kyogre will be resting at the center of the floor.",1,1,1
+"When you speak with him, the scientist will inform that it is raining heavily on a certain route.",1,1,1
+"Luckily, Hydro Pump only has 5 PP, so Kyogre won't get too many chances to KO your Pokémon with it.",0,0,0
+"Fire Blast is the main issue, as the eternal sunlight from Drought will give its damage output a 50% boost, causing serious damage to your Pokémon.",0,0,0
+"In Ruby and Sapphire, you must take two steps to the right from where the Braille inscription is written, then two steps down and use Strength.",1,1,1
+"Curse is the main problem when facing Regirock.",0,0,0
+"In Emerald, your character must perform one clockwise lap around the cave and arrive back in front of the Braille inscription.",1,1,1
+"On Route 120 lies the Ancient Tomb, and inside rests the iron golem Registeel.",1,1,1
+"Registeel is at level 40 when you battle it.",0,0,0
+"Refresh will make paralysis useless against Latias, so use sleep status against it.",0,0,0
+"Timer Balls begin at 1 and increase every 10 turns, with a cap of 4.",0,0,0
+"Additionally, they can be won from the daily lottery held at the Lilycove Dept. Store.",1,0,0
+"Make sure you have a maximum of five Pokémon in your party whenever you are about to fight a legendary.",0,1,0
+"Go to the back room in the basement of Meteor Falls.",1,1,1
+"TM02 is located on the northern shore, lying on the ground.",1,1,1
+"The item is up the mountain path, to the left of a rock directly north of the path.",1,1,1
+"Go in the middle house in the top section of Fortree City.",1,1,1
+"To get to TM11, you'll need Surf.",0,1,0
+"Can be purchased for $3000 from the right hand cashier on the fourth floor.",1,1,1
+"Given to you by the man living on the left side of Sootopolis City, in the square house northwest of the PokeMart.",1,1,1
+"Defeat Petalburg City's Gym Leader, Norman.",1,0,0
+"Given to you as a present from Steven.",0,0,0
+"Trick House: Awarded at the completion of the seventh challenge.",0,0,0
+"New Mauville: held by wild Magnemite and wild Magneton.",0,0,0
+"Shoal Salts are found during low tide, Shoal Shells during high tide.",0,0,0
+"Daily gift from Kiri, Mossdeep City.",1,0,0
+"Given to you by Capt. Stern in exchange for the Scanner (may only choose one of the items).",0,0,0
+"Near Mossdeep City's entrance is a trainer who will be willing to teach your Pokemon the move DynamicPunch.",1,1,1
+"Each move tutor, except for the Battle Frontier move tutors, can only teach one of your Pokemon their respective move.",1,0,0
+"Caverns or caves are naturally formed cavities in the stone layer of a map.",0,1,0
+"Most caverns have tunnels branching off as catacombs and winding in all sorts of directions.",1,1,1
+"Caverns are not ravines but will often lead into them.",1,1,1
+"One should never go into a cavern without a good supply of any lighting and weapons.",1,1,1
+"Leave all your valuables back in a safe place on the surface.",1,1,1
+"Caverns can be and will be very dark.",0,0,0
+"Rather than bringing many stacks of torches, bring wood and coal to make more",0,0,0
+"Optionally, a bucket of milk can help remove any status effects inflicted on you, especially cave spider poison and witches.",0,0,0
+"It is surprisingly easy to get lost in caverns",0,0,0
+"It's a good idea to swim upwards and light the path of the flow.",0,1,0
+"Here are some general miscellaneous tips that can help you when exploring caverns.",0,0,0
+"Dyes are a set of 16 items used to change the color of wool, leather armor, terracotta, certain mobs, the patterns on banners, shulker boxes, glass, concrete powder and beds.",0,0,0
+"Most dyes are produced by crafting various flowers or other items, or by combining other dyes.",0,0,0
+"They can also be traded in amounts of 1–2 per emerald from cleric villagers.",0,0,0
+"A pod that is not fully grown will only yield one cocoa bean.",0,0,0
+"In Bedrock Edition ink sacs can be found in 40.0% of stronghold storeroom chests in stacks of 1–3.",0,1,0
+"Players can dye wool by placing white wool and a dye in a crafting grid.",0,1,0
+"The color of a dye item depends on its metadata.",0,0,0
+"Sheep will now have the ability to regrow their wool by eating grass",0,0,0
+"How many Good Taste Co. dips can you spot in our festive feast scenario? ",0,0,0
+"Give us your answer and you could be in to WIN a Good Taste Co. prize pack to help you with your holiday preparations.",0,0,0
+"Competition ends 10am Wed 19th December 2018.",0,0,0
+"Do you have an emergency kit or a first aid kit in your car?",0,1,0
+"Accumulate 3 cents per litre when you spend $30 or more in a single transaction on the AA Online Store",0,0,0
+"Plus, use the code FREESHIP at the online checkout to get free shipping off all retail orders over $75 between 10 December and 14 December 2018.",0,0,0
+"To enter, just tell us your favourite beach in New Zealand for a summer getaway in the comments below. Good luck!",1,1,1
+"Simply swipe your registered AA Smartfuel or AA Membership card and choose to accumulate or redeem your discounts instantly on up to 50 litres of fuel.",0,0,0
+"IT WAS A chastened Emmanuel Macron who addressed the French nation on December 10th in an attempt to defuse the first real political crisis of his presidency.",0,0,0
+"Whether this is enough to restore his authority depends as much on public opinion as on the protesters themselves.",0,0,0
+"Mr Macron’s 13-minute address, watched by a staggering 21m people, was the first time he had spoken publicly since violence engulfed parts of central Paris on December 1st, as part of the countrywide gilets jaunes (“yellow vests”) movement.",1,1,1
+"An increase in social charges on pensions would be cancelled for those on below €2,000 a month.",0,0,0
+"Without compensating cuts to spending, this will inevitably strain the budget deficit, which was already forecast to rise in 2019 to 2.8% of GDP, considerably higher than Italy’s, and only just inside the Maastricht limit of 3%.",1,0,0
+"Mr Macron also ruled out bringing back the wealth tax that he scrapped as one of his first actions in office.",0,0,0
+"Reversing that is a central demand of many of the gilets jaunes, whose original complaint against a rise in green taxes on diesel and petrol at the pump has since broadened to anger at what they consider to be unfair taxation.",0,0,0
+"A philosophy graduate and rationalist, Mr Macron does not do folksy politics, and 1 to style he opted for a conventional form of address, sitting at the gilt-edged desk in the Elysée palace, framed by the emblems of presidential power.",1,1,1
+"But many of those who have been protesting on roundabouts in rural parts of France for the past four weeks are as angry about what they feel to be the president’s lack of respect for them as they are about their own difficulties making ends meet.",1,1,1
+"He will now meet regularly with mayors, union leaders and others, Mr Macron said, in order to listen more. ",0,0,0
+"Their anger captures a sense of being left behind that has been rising for over a decade throughout Western democracies, not just in France.",1,0,0
+"Yet it is hard to see how the president can emerge from this drama with anything like the same reformist momentum.",0,0,0
+"But he has now shown that, despite his promise not to behave like his predecessors, he too will back down if put under pressure on the street.",0,0,0
+"The former ruling party, the Republicans, received under 5%, less than the minimum required to enter parliament.",0,0,0
+"Mr Pashinyan has referred to the election as the final stage of the velvet revolution that toppled Armenia’s previous government, and promised to use his new mandate to transform the country.",1,0,0
+"The trigger for the protests that brought down Armenia’s previous leader, Serzh Sargsyan, was his attempt to remain in power by rewriting the constitution and becoming prime minister after ten years as president. ",1,0,0
+"The underlying cause was widespread corruption and the damage it had wrought on Armenia’s politics and its economy for decades. ",1,0,0
+"Cabbies in Yerevan say traffic police are afraid to demand bribes. ",1,1,1
+"Property prices in Yerevan this year are up by 20%.",1,0,0
+"Senior officials say they will not go after ordinary people and small business owners who dispensed or took bribes but will hold corrupt high officials and oligarchs to account.",0,0,0
+"One of the biggest projects in years, a gold mine built by an American company, has been on hold for months after the government ordered a new environmental assessment.",1,0,0
+"Mr Pashinyan and his ministers might be tempted to pursue closer ties with Europe and America, but know they are in no position to challenge Armenia’s dependence on Russia",1,0,0
+"To one side is Turkey, whose forbears presided over the killing of about a million Ottoman Armenians in 1915.",1,1,1
+"To the other is Azerbajian, with which Armenia fought a war amid the collapse of the Soviet empire.",1,0,0
+"Borders with both countries are closed.",1,1,1
+"“Armenia showed this is not true” Zohrab Mnatsakanyan, the foreign minister, brings up the example of neighbouring Georgia, whose efforts to join NATO have been frustrated for over a decade.",1,1,1
+"The government’s struggle to get the deal through Parliament exposes a crack that Brexit has created at the heart of Britain’s democracy. ",1,0,0
+" As the people’s elected representatives, they have every right to block it. ",0,0,0
+"On the other hand, the referendum of 2016 gave them a clear instruction to leave. ",0,0,0
+"Although that vote carries no legal weight, it has taken on a moral force like little else.",0,0,0
+"The government has largely given up arguing that its deal will be good for the country, instead insisting that it is what democracy demands. ",0,0,0
+"The notion that a Brexiteer could simply hop on a train to Brussels and negotiate a better one is fatuous.",1,1,1
+"That entails leaving the single market, a big loss.",0,1,0
+"But she has otherwise kept about as close an economic relationship with the EU as possible, partly to avoid introducing new border checks in Northern Ireland.",1,1,1
+"The fallout could lead to further constitutional and territorial damage, including the rupture of the union with Northern Ireland and Scotland.",1,1,1
+"New barriers to trade will sever its dynamic services industry from its largest market and could damage Britain’s manufacturing supply chains.",1,0,0
+"Mrs May has spent the past fortnight on a virtual referendum campaign, trying to persuade the public of the deal’s merits, and in turn to persuade MPS that the deal has the public’s backing.",0,0,0
+"The path to a second referendum is treacherous.",0,0,0
+"The rejection of Mrs May’s deal would raise the risk of leaving with no deal at all, a disaster for Britain and bad news for its neighbours.",1,1,1
+"Still officially called the Royal Museum for Central Africa, but better known as the Africa Museum, it cannot help but ooze colonial triumphalism, despite recent protestations of egalitarian diversity.",1,0,0
+"Housed in a majestic purpose-built palace 20 minutes’ drive east of Brussels, it stands above a lake amid parkland. ",1,1,1
+"Immaculate gravel paths sweep around the site.",1,1,1
+"However radically the interior may have been refashioned to reflect new attitudes to Africa, the grandeur of King Leopold II’s design and the fervour of his desire to promote his imperial venture into the continent’s heart still overwhelm the visitor.",1,1,1
+"The monarch ruled Congo as a private estate nearly 80 times bigger than his European homeland from 1885 until a year before his death in 1909; his double-l motif is embossed on almost every wall and above many an alcove.",1,1,1
+"Short of knocking the entire edifice flat, the museum’s current regime, run since 2001 by Guido Gryseels, a 66-year-old agricultural expert, has spent the past five years behind closed doors seeking to put a modern imprint on an irredeemably archaic structure.",0,0,0
+"A glass oblong now encases a new entrance, restaurant, conference hall and auditorium a stone’s throw from the main building, to which it is connected by an underground tunnel-cum-gallery painted in bright white that hosts a huge dug-out canoe carved out of a single tree.",1,1,1
+"On the other side of the main palace, a separate pavilion, a century old, still houses a library holding the archive of Henry Morton Stanley, the Victorian explorer commissioned by Leopold to advance the king’s imperial interests ahead of his European rivals.",1,1,1
+"Late-19th-century maps of the Congo are encrusted on the walls, along with an honorific granite mural naming 1,600 Belgians who died on service for the king during his quarter-century of predation.",1,1,0
+"A central rotunda still contains four famously controversial statues depicting white men clad in gold-painted raiment in arrogantly paternalistic postures.",1,1,1
+"Just as controversially, a gallery devoted to natural resources asks, in Mr Gryseels’s words, “why, if Africa is so rich, is it still so poor?”",1,0,0
+"Belgium took longer than other European powers fully to acknowledge the dark legacy of colonialism. ",0,0,0
+"A third of white Belgians are thought to have family or business links to Congo or the other two former Belgian dependencies, Rwanda and Burundi.",1,1,1
+"In particular, it points out that since Congo became independent in 1960 it has suffered under almost unparalleled misrule and misery.",1,0,0
+"Representatives of the diaspora have advised the museum on the revamp.",0,0,0
+"Contemporary as well as ancient ethnic Congolese art is handsomely displayed.",0,0,0
+"Still, some diaspora voices say that they have been ignored",0,0,0
+"African activists calling for mass restitution tend to affirm that virtually all art brought from Africa in the colonial era was acquired immorally.",1,1,1
+"Nor is it clear to whom the artefacts should be returned. ",0,1,0
+"The long-held theory about Guinness is that it doesn't travel well.",0,0,0
+"It's a thing of incredible beauty in Dublin where it is brewed, but stick it on a boat to the New World and by the time it arrives, the structure has collapsed, the flavour has shifted and there is nothing to marvel at.",1,1,1
+"Still, it keeps being sent over and no matter its reputation, people will pay over the odds for it.",0,1,0
+"Which, in case anyone hasn't worked out where this is going, is a similar story to what happens with high profile All Blacks.",0,0,0
+"There has been a procession of world class All Blacks who have headed offshore in the last decade.",1,1,1
+"Clubs on the other side of the world have broken the bank to buy them, convinced that the pass and catch qualities they so effortlessly display in New Zealand, will bring victories and titles.",1,1,1
+"And yet here we are, 20-plus years into professionalism and there are few success stories of All Blacks being transforming agents at foreign clubs.",0,0,0
+"Plenty of clubs have forked out more than they could afford on players who, much like the Guinness, haven't traveled well.",0,0,0
+"And much like Guinness, there seems to be no prospect of demand shifting to reflect reality.",0,0,0
+"They won a coveted Top 14 title in Carter's second year and also made the European Cup final twice, although lost in both.",0,0,0
+"The fact they were nowhere near winning either competition prior to Carter's arrival suggests the investment was wise.",0,0,0
+"The Opposition says Auckland Transport's plan to reduce the speed limits in the city's CBD is an over-reaction and "anti-car zealotry".",0,1,0
+"The Automobile Association (AA) is also opposed to the plan, which would see the speed limit in Auckland's CBD dropped to 30km/h.",1,1,0
+"Auckland Transport (AT) yesterday approved the draft speed limits bylaw which would see speed limits reduced on 10 per cent of Auckland roads.",1,1,1
+"If the proposal is adopted, speed limits in the city centre, some town centres and approximately 770km of high-risk rural and urban roads around the region would be dropped.",1,1,1
+"He said the plan would mean a 40 per cent speed reduction in major Auckland roads, such as Hobson and Nelson street.",1,0,0
+"But Goldsmith said this argument is hard to understand, given cars have never been safer than they are now.",0,0,0
+"He said these include the enforcement of current rules around drink driving, red-light running, drivers distracted by cell-phones, not wearing seatbelts, driving under the influence of drugs and exceeding current speed limits",0,0,0
+"AT is now asking for public submissions on its speed reduction plan.",0,0,0
+"Any proposed speed limit changes would come into effect later in 2019 following consultation in February and March, and adoption of the bylaw.",0,0,0
+"Air New Zealand engineering staff have voted to strike for three days.",0,0,0
+"While mediation is ongoing, workers have decided to strike for three days from 21 December.",0,0,0
+"This period spans three of the busiest days in the airline annual calendar. ",0,0,0
+"On 21 December alone, Air New Zealand has close to 42,000 customers booked to travel domestically on its A320 jets and internationally faced potential flight cancellations.",1,1,1
+"The airline accused just under 1000 engineers of deliberately using Kiwi families' much anticipated Christmas holidays as a bargaining chip.",0,0,0
+"The airline detailed the average income of maintenance engineers, logistics and other staff to strike — $115,000 – angering unions who accused it of taking an unnecessarily aggressive approach.",0,0,0
+"At this stage, Air New Zealand has not yet announced any cancellations or postponements of flights.",0,0,0
+"Today engineers and Air New Zealand will enter a third day of mediation with the aim of resolving the issues at hand.",0,0,0
+"Thomas was originally concerned about the impact a single day of striking might have on the days that followed, and a full three-day strike now ups the ante.",0,0,0
+"Those affected included line and hangar engineers, but also store workers and aircraft cleaners, who were covered by the same document and ''who were struggling to get ahead", Savage said.",0,0,0
+"A French man's attempt to swim across the Pacific Ocean may be over for now, but his campaign to warn the world about the dangers of plastic pollution in the ocean continues.",1,1,1
+"Benoît "Ben" Lecomte stepped on a beach on Oahu, Hawaii, on Monday, a little more than six months after he first entered the water in Japan in his attempt to swim across the ocean to San Francisco.",1,1,1
+"Bad weather forced Lecomte and a support boat (a yacht called Discoverer, which has researchers and support crew on board) traveling with him to make the stop in the Aloha State.",1,1,1
+"Late last month Lecomte said he had abandoned his goal of becoming the first person to swim the Pacific Ocean, but reaching San Francisco still remains his ultimate goal, he told CNN affiliate KHON. ",1,1,1
+"That also means the main mission of Lecomte and his crew -- researching the effects of plastics in the ocean and raising awareness about it -- is still on track.",0,1,0
+"Lecomte, 51, and his support crew said they encountered a lot of plastic trash in the Pacific.",1,1,1
+"At times during his watery journey Lecomte told KHON he saw one piece of plastic about every three minutes. ",0,0,0
+"Lecomte, the associate director of sustainability services at a consulting firm, and the crew of Discoverer set off June 5 from Chōshi, Japan.",1,1,1
+"But Lecomte and the crew encountered a series of bad weather systems in November, forcing them to abandon the record swim attempt.",0,0,0
+"We had very bad weather along the way. ",0,1,0
+"Lecomte begins his swim across the Pacific from Choshi, Japan, surrounded by his children.",1,1,1
+"Researchers from 12 scientific institutions, including NASA and the Woods Hole Oceanographic Institution, have been conducting studies and gathering samples during Lecomte's journey",0,0,0
+" It will carry on with the same ideas, bringing as much awareness on ocean pollution, on plastic, to try to inspire people to change their habit," he said.",0,0,0
+"An ancient statue of the Roman deity Minerva was discovered in a margarine tub, where it had been languishing for years.",0,1,0
+"The Romano-British piece was brought to attention by amateur metal detectorist Len Jackman, 66, who was visiting a local farmer in rural Oxfordshire. ",1,1,1
+"When Jackman sought permission to detect on his land, the farmer told him he was not the first to do so.",0,1,0
+"He then produced this statue out of an old margarine box, saying it was found on his land.",0,1,0
+"As an experienced detectorist, Jackman guessed that the statue -- which shared the box with some gold coins -- was Roman.",0,0,0
+"I told him I would take what I'd found to be identified and dated at the Museum Resource Centre in Standlake and he said if I was going I should take the stuff from the margarine tub.",1,1,1
+" I said, 'I think you'll be getting a phone call!'",0,0,0
+"Fortunately, Jackman recognized the significance of the lead and copper alloy statuette and took it to be assessed -- together with the other items he had uncovered.",0,0,0
+"On Tuesday morning Jackman was invited to the British Museum in London, where the statue was introduced by arts minister Michael Ellis, as he presented the Portable Antiquities Annual report for 2017.",1,1,1
+"More than nine out of 10 of these items (93 per cent) were found by metal detectorists like Jackman.",0,0,0
+"Coins or items made of gold or silver which are more than 300 years old are defined as treasure. ",0,0,0
+"Often that means that they will travel to the Museum to be examined",1,1,1
+"The Arctic is experiencing a multi-year stretch of unparalleled warmth "that is unlike any period on record".",1,0,0
+"according to the 2018 Arctic Report Card, a peer-reviewed report released Tuesday morning from the National Oceanic and Atmospheric Administration, an agency within the United States Department of Commerce.",0,0,0
+"The report states that human-caused climate change is transforming the Arctic, both physically through the reduction of sea ice, and biologically through reductions in wildlife populations and introduction of marine toxins and algae.",1,0,0
+"Temperatures in the Arctic are warming more than twice as fast as the overall planet's average temperature, with temperatures this year in the highest latitudes (above 60 degrees north) coming in 1.7 degrees Celsius (3.1 degrees Fahrenheit) above the 1981-2010 average. ",1,0,0
+"These were the second warmest (behind 2016) air temperatures ever recorded during the Arctic year, which runs from October through September to avoid splitting the winter season.",0,0,0
+"The five years since 2014 have been warmer than any other years in the historical record, which goes back to 1900.",0,0,0
+"Although Arctic temperatures have been subject to wild swings back and forth through the decades due to natural variability, they have been consistently warmer than average since 2000 and at or near record since 2014, the report states.",0,0,0
+"Warmer temperatures lead to less ice and snow, which means less sunlight is reflected and more is absorbed by the darker oceans.",0,0,0
+"This warms the ocean further, which in turn decreases the sea ice even more.",0,0,0
+"The warming of the Arctic climate and the decline of sea ice have led to some drastic changes in the biodiversity of the region.",0,0,0
+"This map highlights the location and kind of toxins found in marine animal species from 2004 to 2013 in the Alaskan Arctic.",1,1,1
+"A Russian map company has inadvertently revealed secret foreign military bases — by blurring them out.",1,1,1
+"Yandex Maps, Russia's answer to Google Maps, obscured the locations of 300 sites – some of them top secret nuclear facilities – in Israel and Turkey.",1,1,1
+"But by doing so the company confirmed their locations, as well as their exact size and layout.",0,0,0
+"The buildings include airfields, ports, bunkers, storage sites, bases, barracks, nuclear facilities and random buildings.",1,1,1
+"Camp Glilot, north of Tel Aviv, the home of Unit 8200, the signal intelligence and code deciphering arm of the Israeli Defence Forces is also one of the sites revealed.",1,1,1
+"Yandex did not return a request for comment.",0,0,0
+"German freelance journalist Billy Six has circled the globe with a hand-held video camera asking people living through wars and strife to tell their stories.",1,1,1
+"But when he turned his lens to Venezuela, documenting the economic collapse and mass migration from the socialist country, he wounded up in jail on charges that his family says include spying — accusations they reject as 0.",1,1,1
+"He just was on the street.",1,1,1
+"He asked them questions and put that on the internet.",0,1,0
+"so far they have been unable to visit the 31-year-old in the infamous Helicoide prison in Caracas where he's being held alongside some of the government's most strident opponents.",1,1,1
+"While Maduro's government has little tolerance for critical coverage by local press, foreign journalists who cross officials are usually spared the same harsh treatment.",0,0,0
+"Six didn't have his passport on hand, so officers escorted him to his hotel for questioning, according to his father, who declined to say how he knows details of his son's plight.",1,1,1
+"The next day, a team of 15 officers — two in civilian clothes and others heavily armed in special forces gear — scooped him up from his hotel. ",1,1,1
+"The Venezuelan information ministry did not respond to a request for comment.",0,0,0
+"In Berlin, the German Foreign Ministry said Friday it cannot give any details about the case, citing privacy laws. ",1,1,1
+"Resident of a Berlin suburb, Six has travelled the globe as an independent journalist for 12 years, publishing his reports in right-wing outlets. ",1,1,1
+"This isn't Six's first arrest amid turmoil.",0,0,0
+"Six turned his attention to Venezuela over a year ago.",1,0,0
+"His father said he entered the country legally but was unable to secure journalist credentials required by Venezuela to work as a reporter.",1,1,1
+"Associated Press writer David Rising contributed to this report from Berlin.",1,0,0
+"Burial workers from the Sierra Leone Ministry of Health perform an oral swab test for Ebola on the Kabia family's deceased day-old daughter as a precaution, even though she is unlikely to have died from the disease.",1,0,0
+"A Muslim cleric walks between the members of the burial team, who put the baby in their truck and collected others before heading to the cemetery.",1,1,1
+"Abdul Kabia (at center, in blue fatigues) watches grave diggers cover the body of his day-old daughter in Freetown's King Tom cemetery. ",1,0,0
+"At the peak of the Ebola outbreak in December, the cemetery saw about 50 burials a day. ",0,0,0
+"If they are ignored, the dead are thought to wander the Earth eternally and plague the community. ",1,1,1
+"The people he lived with did not believe he died from Ebola because he did not exhibit the typical symptoms.",0,1,0
+"Friends and family pray over the body of the 27-year-old man after a safe burial team removed the potential Ebola victim from his residence.",1,1,1
+"A man weeps as he follows the body of the man, a close friend.",1,1,1
+"Workers lower a body into a grave at King Tom cemetery in Freetown.",1,1,1
+"Fishermen used a mosquito net to catch juvenile catfish in the shallows of Lake Victoria in Kenya.",1,1,1
+"Mosquito nets wind up having other uses, too, like this soccer goal in Lagosa, Tanzania. ",1,1,1
+"Mosquito nets have replaced reed baskets for fishing in places like the Bangweulu wetlands of Zambia. ",1,1,1
+"The fine mesh in the nets traps much more than the baskets do, and could help wipe out fish populations.",0,0,0
+"Under a net at a medical center in Tanzania, where a woman’s children were being treated for malaria.",1,1,1
+"Mosquito nets packed at a Red Cross warehouse in Kisumu, Kenya. ",1,1,1
+"A nurse gave a net to a woman at a maternity clinic in Kisumu, Kenya. ",1,1,1
+"It is one of the cheapest and simplest ways to stop the disease that kills at least half a million Africans a year.",0,0,0
+"Fishing in the Bangweulu wetlands.",1,1,1
+"David Abongo Owich, who doesn’t have a boat, used a mosquito net to fish in shallow water on Lake Victoria.",1,1,1
+"A fish stand at a market in Katumbi, Tanzania. ",1,1,1
+"One of the most common insecticides applied to mosquito nets is permethrin, which the United States Environmental Protection Agency says is “likely to be carcinogenic to humans” when consumed orally and is toxic to fish.",0,0,0
+"The leading mosquito-net manufacturers say the insecticide dosages are so low that their products are not dangerous, especially when diluted in a large body of water.",0,0,0
+"Still, many nets are labeled: “Do not wash in a lake or a river.”",0,0,0
+"a server pours boiling water from a height to extract maximum flavour from the jasmine green tea",0,1,0
+"a local in front of an old propaganda poster",0,1,0
+"Outside, the sun is rising over the buckled terracotta rooftops of Horse Market Street.",1,1,1
+"An old lady shuffles into town in her slippers, her tiny frame laden with foraged roots and leaves.",1,1,1
+"She stops to exchange pleasantries with a vendor setting up a stall of the Chinese delicacy pidan (preserved egg), before heading off in search of customers of her own down the town’s main thoroughfare, Forever Harvest Street.",1,1,1
+"No matter what we think of what went before, we like to cherish it.",0,0,0
+"You don’t learn the history of emperors here, instead the stories of ordinary people.",0,0,0
+"I’m introduced to the local doctor, Qingyuan Xu, a man with a captivating, toothless grin and fingers disconcertingly wrapped in yellowing bandages, the result of an accidental knife wound.",0,0,0
+""I recently cured my wife of leukaemia,” he says, as if to reassure me of his credentials, “using a tincture made from the hoods of cobra snakes”.",0,0,0
+"Restored to good health, Mrs Xu joins us and promptly lights up a celebratory cigarette.",0,0,0
+"“All lives, even humble ones, are touched by the greatest milestones of history”, he says.",0,0,0
+"Old men sit in lonely silence, staring into the distance as if mesmerised by the puffs of Thermos steam and cigarette smoke sailing up into the rafters.",0,1,0
+"The Guardian receives millions of images each year from news agencies.",0,0,0
+"Here are some of the photographers whose body of work over the course of the year has stood out to the picture desk.",0,0,0
+"I’m quite new to photojournalism and I thought it would be a good place to test myself, learn and manage myself emotionally",0,0,0
+"It’s a great opportunity to come to a place that’s not saturated with coverage, though I often find the responsibility of that quite daunting",0,0,0
+"In Russia’s Arctic wilderness, the remnants of one of the Soviet Union’s most notorious gulag projects lie largely forgotten",1,1,1
+"The railroad would have connected Russia’s Arctic waters with its western railway network.",1,1,1
+"But the biggest threat to survival, according to another former prisoner, came from the brutal winters, which frequently dropped below -40C (-40F).",0,0,0
+"It is nearly impossible to say how many forced labourers died in the effort.",0,0,0
+"Three years ago we set out to make The Guardian sustainable by deepening our relationship with our readers.",0,0,0
+"We decided to seek an approach that would allow us to keep our journalism open and accessible to everyone, regardless of where they live or what they can afford.",0,0,0
+"More than one million readers have now supported our independent, investigative journalism through contributions, membership or subscriptions, which has played such an important part in helping The Guardian overcome a perilous financial situation globally. ",0,0,0
+"We want to thank you for all of your support.",0,0,0
+"But we have to maintain and build on that support for every year to come.",0,0,0
+"If everyone who reads our reporting, who likes it, helps to support it, our future would be much more secure.",0,0,0
+"A man flies a kite in Greenwich Park, London, on 25 July.",1,1,1
+"A man uses a torch to walk through a park during cold fog at night in Athboy, Ireland, October.",1,1,1
+"Jeremy Corbyn speaking at an event at Newcastle University on 17 March.",1,1,1
+"Road between Pine Trees",1,1,1
+"Top view of valley near body of water",1,1,1
+"seaport during daytime",1,0,0
+"Gray bridge and trees",0,0,0
+"Body of water and rocks",0,0,0
+"Scenic view of beach",0,0,0
+"Person on a bridge near a lake",1,1,1
+"Close up of a leaf",0,0,0
+"Green hill near forest",1,1,1
+"Flock of birds",0,0,0
+"Mirror lake reflecting Wooden House in Middle of Lake Overlooking Mountain Range",1,1,1
+"Sunlight through trees beside pathway",0,0,0
+"Grey asphalt road surrounded by tall trees",1,1,1
+"Desert",0,0,0
+"Selective Color Photography of Golden Gate Bridge, California",1,0,0
+"CN Tower in Toronto Canada at Midnight",1,1,1
+"Photo of a person's hand holding a maple leaf",0,0,0
+"4 birds flying in mid-air with flag of canada behind during day-time",0,1,0
+"Man in suit jacket holding phone",0,0,0
+"Close-up photo of person wearing white-and-red maple leaf-printed lace-up sneakers",0,0,0
+"St. Peter Basilica, Russia under clouded sky",1,0,0
+"People walking on concrete pathway beside white concrete building during daytime",1,1,1
+"Woman taking selfie",0,0,0
+"Woman holding fence",0,0,0
+"1 elephant beside on baby elephant",0,1,0
+"Silhouette photography of 2 giraffe and 1 rhinoceros during golden hour",0,0,0
+"White duck with 22 ducklings",0,1,0
+"Black brown and white kittens in purple towel",0,1,0
+"snake on floor is actually a crocodile",1,1,1
+"Here’s a good place to start.",0,0,0
+"Can I pay by credit card/debit card?",0,0,0
+"Where can I exchange money?",0,0,0
+"How much for a first class/second class/economy ticket to Boston?",1,0,0
+"What time does the bus/train/plane/ferry from Omaha, NE arrive?",1,1,1
+"Could you recommend a good restaurant?",0,0,0
+"Where is the closest bank/post office/exchange office?",0,0,0
+"Compared to the more common phrases above, you’ll probably use these far less.",0,0,0
+"Could I see the room?",0,0,0
+"Is there pharmacy nearby?",1,1,1
+"DISCLAIMER: Treksplorer is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com and its affiliated international sites.",0,0,0
+"Nebraska was admitted as the 37th state of the United States in 1867.",1,0,0
+"It is the only state in the United States whose legislature is unicameral and officially nonpartisan.",1,0,0
+"The state is crossed by many historic trails and was explored by the Lewis and Clark Expedition.",1,1,1
+"Nebraska is composed of two major land regions: the Dissected Till Plains and the Great Plains. ",1,1,1
+"The state has wide variations between winter and summer temperatures, decreasing south through the state. ",1,1,1
+"Chinook winds tend to warm the state significantly in the winter and early spring.",0,0,0
+"Nebraska is located in Tornado Alley.",1,1,1
+"Thunderstorms are common during both the spring and the summer.",0,0,0
+"Violent thunderstorms and tornadoes happen primarily during those two seasons, although they also can occur occasionally during the autumn.",0,0,0
+"Average temperatures are fairly uniform across Nebraska, with hot summers and generally cold winters.",1,0,0
+"The table below shows the racial composition of Nebraska's population as of 2016.",1,0,0
+"In addition to the state tax, some Nebraska cities assess a city sales and use tax, in 0.5% increments, up to a maximum of 1.5%.",1,0,0
+"Since 1992, only depreciable personal property is subject to tax and all other personal property is exempt from tax",0,0,0
+"Nebraska's government operates under the framework of the Nebraska Constitution, adopted in 1875, and is divided into three branches: executive, legislative, and judicial.",1,0,0
+"Although this house is officially known simply as the "Legislature", and more commonly called the "Unicameral", its members call themselves "senators".",0,0,0
+"The Nebraska Legislature can also override the governor's veto with a three-fifths majority, in contrast to the two-thirds majority required in some other states.",1,0,0
+"Nebraska's U.S. senators are Deb Fischer and Ben Sasse, both Republicans; Fischer, elected in 2012, is the senior.",1,0,0
+"It came to me on my birthday, my precious.",0,0,0
+"Perhaps even the master who ruled them could not have said.",0,0,0
+"But at any rate Gollum did not at once attack him.",0,0,0
+"He sat still, shivering and whispering.",0,0,0
+"At last Bilbo could wait no longer.",0,0,0
+"He tried to sound bold and cheerful, but he did not feel at all sure how the game was going to end, whether Gollum guessed right or not.",0,0,0
+"“May the wind under your wings bear you where the sun sails and the moon walks”, answered Gandalf, who knew the correct reply.",0,0,0
+"But as that comes in at the end of this tale we will say no more about it just now.",0,0,0
+"When they had dried in the sun, which was now strong and warm, they were refreshed, if still sore and a little hungry.",0,0,0
+"Straight through the forest is your way now.",1,1,1
+"But you wouldn't get a safe path even then.",0,0,0
+"Now began the most dangerous part of all the journey.",0,0,0
+"“Good-bye then, and really good-bye” said Gandalf, and he turned his horse and rode down into the West.",1,1,1
+"They walked in single file.",0,0,0
+"The path itself was narrow and wound in and out among the trunks.",1,1,1
+"There were black squirrels in the wood.",1,1,1
+"It then became pitch dark - not what you call pitch dark, but really pitch: so black that you really could see nothing.",0,0,0
+"Although it was not yet very cold, they tried lighting watch-fires at night, but they soon gave that up.",0,0,0
+"They could not stand that, nor the huge bats, black as a top-hat, either; so they gave up fires and sat at night and dozed in the enormous uncanny darkness.",0,0,0
+"The great bunch seemed very heavy to his arms, and his heart was often in his mouth, in spite of his ring, for he could not prevent the keys from making every now and then a loud clink and clank, which put him all in a tremble.",0,0,0
+"All of us must escape or none, and this is our last chance.",0,0,0
+"Bilbo struggled but he could not move it.",0,0,0
+"Soren Sorenson was the next to jump from the diving board.",0,0,0
+"Soren Sorenson thought the old house was next to the river, but not near the lake.",1,1,1
+"Soren Sorenson said the next thing that came to mind was the diving board.",0,0,0
+"Ivan Ivanovich's tale begins with "The next best meal is bought from the Burger Town".",1,0,0
+"Ramirez, secure the Burger Town!",1,0,0
+"Our boys have got knocked about a lot lately.",0,0,0
+"We have some tough fighting in front of us yet here.",0,0,0
+"Lots of tanks passing us for the front.",1,1,1
+"The heads have plans for giving us intense training, what for, we don't know.",0,0,0
+"Big mail in but none for me.",0,0,0
+"People from Sora followed us to this place, as we fed them away back, & they have no food.",1,1,1
+"Shifted up a few more miles towards Faenza.",1,1,1
+"Big barrage going on all night, could not get to sleep for the noise.",0,0,0
+"Went north through the big town of Forli.",1,1,1
+"Things look brighter all the time, if the weather keeps right we might do it before Christmas, but it will be touch and go.",0,0,0
+"Missed truck back to rest camp and stayed overnight in the big city.",1,1,1
+"This was all the information Oliver could obtain about the picture at the time.",0,0,0
+"After tea she began to teach Oliver cribbage: which he learned as quickly as she could teach.",0,0,0
+"Thus encouraged, Oliver tapped at the study door.",0,0,0
+"They were sad rags, to tell the truth; and Oliver had never had a new suit before.",0,0,0
+"That was lost on Sikes, who was stooping at the moment to tie the boot-lace which the dog had torn.",0,0,0
+"He retired; and presently returned, ushering in Nancy; who was decorated with the bonnet, apron, basket, and street door key, complete.",0,0,0
+"Having disposed of these evil-minded persons for the night, Mr. Bumble set himself down in the house at which the coach stopped; and took a temperate dinner of steaks, oyster sauce, and Porter.",1,1,1
+"By the time they had turned into the Bethnal Green Road, the day had fairly begun to break.",1,1,1
+"He nodded, twice or thrice, to a passing friend.",0,1,0
+"‘Why, that would not be an extraordinary thing, under the circumstances,’ replied the doctor; ‘though I don't think he is. Have you seen this thief?‘",0,0,0
+"Why, what evil wind has blowed you here?",0,0,0
+"The man ran up the stairs.",1,1,1
+"Thus, they had toiled along the dusty road, taking little heed of any object within sight, except when they stepped aside to allow a wider passage for the mail-coaches which were whirling out of town until they passed through Highgate archway; when the foremost traveler stopped and called impatiently to his companion.",1,1,1
+"It was Sunday night, and the bell of the nearest church struck the hour.",1,1,1
+"‘Well, you needn't be so cross’, said his companion.",0,0,0
+"It's very easy for the bedroom to become a clutter zone.",0,0,0
+"These days, everyone is flat out and on the go.",0,0,0
+"The last thing you want to do at the end of the day is clean the house.",0,0,0
+"It's for people who want a clean house but are time-poor.",0,0,0
+"The best news is that with some organisation and 15 minutes a day, you can transform your cleaning routine!",0,0,0
+"Many people have assisted in the creation of this book.",0,0,0
+"Thanks to James Valentine from 702 ABC Sydney for allowing it to begin.",0,0,0
+"That's all the time it will take to speedclean a room in a house.",0,1,0
+"Well, there may be some initial changes you'll have to make before you reach top speed, but once you do, you too could become a lean, mean, speedcleaning machine!",0,0,0
+"The best way to work out where to keep things is to start with some graph paper, a tape measure, a pencil, scissors, and plain paper.",0,0,0
+"No matter what the item is, everything - from sticky tape to DVDs - needs to have a designated spot.",0,0,0
+"When your work out your floor plan, take into account the breezeways in each room.",0,1,0
+"They will be different for each house and each room.",0,0,0
+"To determine a breezeway, light a candle and see in which direction the flame blows.",0,0,0
+"Just focus on the areas that your guests will see.",0,0,0
+"Linen cupboards can be located in various spots in a house.",0,1,0
+"The linen cupboard should be sorted by having items most used at eye level, those least used at higher levels, and items for children, such as towels, on lower levels.",0,1,0
+"Then dust the walls with a broom covered in an old t-shirt.",0,0,0
+"Dining areas are incredibly diverse, ranging from the formal to the chaotic.",0,0,0
+"Try not to use water near French polish because it will whiten the surface.",0,1,0
+"Wedge a metal comb underneath the wax and put a paper towel on top of the wax, then use a hair-dryer over it.",0,1,0
+"Clean them with a damp cloth.",0,0,0
+"Every home should have a study or an office, even if it's just a chair and a cupboard.",0,0,0
+"I've developed a method for cleaning the bathroom that is super speedy, but slightly unusual.",0,0,0
+"Remove anything that doesn't belong in your bathroom with your clutter bucket.",0,0,0
+"Any scrap of food, whether you see it or not, will attract bugs.",0,0,0
+"Check the inside of the microwave.",0,1,0
+"It's also a sporting field, construction site, a playground for children, a chill-out zone.",0,0,0
+"Most obviously, it's an area that is vulnerable to changes in the weather",0,0,0
+"A yard always looks tidier if the grass is clipped.",0,0,0
+"If your children are able to hold their own food, they're old enough to wait until the end of the journey before eating.",0,0,0
+"They can see a film.",0,0,0
+"Work out what the stain is made of.",0,0,0
+"Never spot clean stains on your carpet withing four weeks of it being steam cleaned.",0,1,0
+"Use the recommended washing temperature.",0,0,0
+"Remake the bed with nice fresh sheets, which is like a full stop for the room.",0,0,0
+"My mother is a fish.",0,0,0
+"It is looking out at the road now, because it can wait.",0,0,0
+"They were setting in the wagon at the end of the levee.",1,1,1
+"He was looking at it like he had believed all the time that folks had been lying to him about it being gone, but like he was hoping all the time it really was.",0,0,0
+"The river itself is not a hundred yards across, and pa and Vernon and Vardaman and Dewey Dell are the only things in sight not of that single monotony of desolation leaning with that terrific quality a little from right to left, as though we had reached the place where the motion of the wasted world accelerates just before the final precipice.",1,0,0
+"Cash turns back into the wagon.",0,1,0
+"At last the trees open; against the open river Jewel sits the horse, half turned, it belly-deep now.",0,0,0
+"The log suddenly appears between two hills, as if it had rocketed suddenly from the bottom of the river.",1,1,1
+"I happened to look up, saw her outside the window, looking in.",0,0,0
+"Darl and Jewel and Dewey Dell and I are walking up the hill behind the wagon.",1,1,1
+"He waded out across the drifted fields.",1,1,1
+"The drainpipe ran down the corner of the porch.",0,1,0
+"He'd thought to find some place in the road where the snow had melted off completely but then he thought that since their tracks would not reappear on the far side it would be no help.",1,1,1
+"The site they picked was simply the highest ground they came to and it gave views north along the road and overlooked their backtrack.",1,1,1
+"Within the hour two men came down the road almost at a lope.",1,1,1
+"They had no food and little sleep in five days and in this condition on the outskirts of a small town they came upon a once grand house sited on a rise above the road.",1,1,1
+"The snow was largely melted on the macadam and in the southfacing fields and woods.",1,1,1
+"A gravel drive that curved up through a field of dead grass.",1,1,1
+"They approached slowly up the drive.",1,1,1
+"They tore through the house to the front door and down the steps.",1,1,1
+"Half way down the drive he dragged the boy into the field.",1,1,1
+"He looked back.",0,0,0
+"At the bottom of the field they crashed through a stand of dead cane and out into the road and crossed into the woods on the far side.",1,1,1
+"He started down the rough wooden steps.",1,1,1
+"Coming across the field toward the house were four bearded men and two women.",1,1,1
+"He pushed the boy up the stairs.",1,1,1
+"He grabbed the boy by the hand",0,0,0
+"In the floor of this room was a door or hatch and it was locked with a large padlock made of stacked steel plates.",0,1,0
+"The boy pulled at his hand.",0,0,0
+"It swung slowly in on its great brass hinges.",0,0,0
+"They stood listening.",0,0,0
+"He squatted on his heels and picked one up and smelled it and put it back.",0,0,0
+"He followed the man back and forth across the lawn while he carried the plastic jugs of water to the bathroom at the rear of the house.",1,1,1
+"It took a long time but he wanted it to be good and warm.",0,0,0
+"They sat on the cot with a checkerboard between them, wearing new sweaters and socks and swaddled in the new blankets.",0,1,0
+"He shaped the ends with a knife and sanded them smooth with salt and stained them with soot until they were the color of lead.",0,0,0
+"There was a market at the end of the street and in one of the aisles piled with empty boxes were three metal grocery carts.",1,1,1
+"We could take two of them, the boy said.",0,0,0
+"Ham and green beans and mashed potatoes with biscuits and gravy.",0,0,0
+"It made him dizzy before he'd even finished it and he drank no more.",0,0,0
+"They ate peaches and cream over biscuits for dessert and drank coffee.",0,0,0
+"Then they played checkers and then he put the boy to bed.",0,0,0
+"Then he woke again and he thought the rain had stopped.",0,0,0
+"The Army site at Chatham had been intercepting most of the Enigma traffic, including both the Red and Green cyphers.",1,1,1
+"It was not clear when the first breaks occurred in early 1940 that the Red, rather than the Green, would become the most important of the keys.",0,0,0
+"The intercept operators had several additional weapons in their armoury that would assist in the identification of stations and therefore in building up the intelligence picture.",0,0,0
+"So if they changed frequency and we lost them, we would go looking for them and we would listen first of all for the sound of the transmitter and then we would tune in to that transmitter and listen for the operator and the minute we found him, that was him, there was no question of 'We think we have him'.",0,0,0
+"Since the end of 1938, the Red Enigma traffic had been the Army's main priority.",0,0,0
+"It wasn't easy by any means to give the Enigma messages the appearance of credible agent reports.",0,0,0
+"The first task of the Hut 3 watch, from the very beginning, was to produce out of these corruptions, gaps, abbreviations, and technical terms, a reliable and intelligible text, and to put that text into English.",1,0,0
+"Gradually as the two sides got to know each other, a level of mutual respect replaced the suspicion and relationships between the two sides became very much closer.",0,0,0
+"No stern lectures or anything of that sort, just quietly saying how important it was to not let a bit of this come out.",0,0,0
+"It gave a comprehensive account of every building in the fortifications and every installation, detailing everything from the heaviest artillery battery to the smallest collection of flame-throwers.",1,1,1
+"The body was floated ashore near the southern Spanish town of Huelva from a submarine.",1,1,1
+"In particular from the Abwehr Enigma traffic between Madrid and Berlin.",1,1,1
+"Bletchley Park did not win the war.",1,0,0
+"But Bletchley Park's contribution to the allied victory was enormous.",1,0,0
+"The Royal Navy victory over the Italian fleet at Matapan in March 1941 was just one of a number of individual incidents where Bletchley played a direct result in the allied victory.",1,1,1
+"According to oral and written literature from Java, the walis founded new states along Java's coast in Demak, Cirebon, Banten, and Gresik.",1,1,1
+"They made converts of the Javanese through acts of magic or of war.",0,0,0
+"In Javanese histories ports were the sites of miracles worked by walis.",1,0,0
+"They are knit into local and regional histories, appearing with different names and life stories in oral and written traditions.",0,0,0
+"Some are understood as having come from Egypt, while others are men of Pasai.",1,1,1
+"In Javanese literature they are leaders of men as heads of their own kingdoms, or were relatives, teachers, and employees of Java's kings.",1,0,0
+"After Pasai and Melaka, the right mix of conditions for the emergence of Islamic states occurred at good harbors aong Java's north coast in the second half of the fifteenth century and in the sixteenth.",1,1,1
+"There were well-established settlements of Chinese traders and artisans in the market for Indonesian products and providing port services.",0,0,0
+"Port residents most in contact with Muslims converted: wives, their extended families, children, and people who perceived Islam as denoting prosperity, divorce from manual labour, and urban status.",0,0,0
+"The authorities considered children born in families of Chinese and port women to be Chinese.",0,0,0
+"Chinese skills made Indonesian ports and export industries work.",0,0,0
+"Of crucial importance to Indonesian histories, the Chinese exposed Indonesian societies to Muslim knowledge, rather than to Chinese knowledge.",0,0,0
+"Confucian scholars did not travel to teach.",0,0,0
+"In Chinese civilization the merchant was accorded the lowest rung in the social hierarchy.",0,0,0
+"Chinese emigrants were outcasts.",0,0,0
+"That network included men of learning as well as merchants, because Islam valued both study and commerce.",0,0,0
+"Chinese people fitted into the category of kafir, alongside the Portuguese, to be pitied or scorned because they were not Muslim.",0,0,0
+"The Portuguese who shopped at Banten used Chinese services.",1,1,1
+"But Chinese and Javanese bands turned against the king of Java, too.",0,0,0
+"Javanese military commanders led unexpected strikes against the Dutch from hideouts in the forested hills.",1,1,1
+"Because they looked different from Javanese men, Chinese militias could not hide among the civilian population.",0,0,0
+"The sultanate of Sambas was another Malay river-delta sultanate of the western archipelago.",1,1,1
+"Its capital was on the Sambas Kecil River where it enters the coast of west Kalimantan, just below the present-day border of the Malaysian state of Sarawak.",1,1,1
+"They propagated the idea that they were the natural leaders of the Javanese, that sacred ties bound them to the people, and that only through them could the Dutch rule.",0,0,0
+"Princes, European landleasers, and contractors toasted their mutually rewarding relationship in freemason lodges and clubs in Yogyakarta and Surakarta, which sank to the status of small principalities within the Dutch colony.",1,1,1
+"Farming families had meager resources to tide them through hard times when fields could not be planted, were ravaged by pests, dried up in drought, or were destroyed by soldiers.",0,0,0
+"The burden of taxes could no longer be evaded by flight from the home village.",0,1,0
+"Empty land and territory without functioning government ceased to exist in nineteenth-century Java.",1,0,0
+"The lives of ordinary Javanese became more bound up in a cash economy and dependent on world markets.",0,0,0
+"People living in the western and eastern ends of the archipelago felt the impact of the changes in Java that followed from the Diponegoro War later.",1,1,1
+"Victory nurtured in the Dutch the habit of command.",0,0,0
+"Two camps on the Boven Digul River in the thickly forested interior of West New Guinea occupy a special place in Indonesian histories of colonial rule.",1,1,1
+"By mid-1935 death from jungle diseases or release had reduced the number of political prisoners to 442.",0,0,0
+"In January 1942 Japanese troops landed in Ambon.",1,1,1
+"In March the Japanese 25th Army invaded Sumatra, the 16th Army fought its way into Java.",1,1,1
+"Dutch civilians were forced into camps in all the major cities.",1,1,1
+"Dutch and Eurasians were eliminated from view; Christian Indonesians were harassed as spies; Chinese were persecuted.",0,0,0
+"In Aceh the New Order applied its special combination of incorporation and violence.",1,0,0
+"All parties with "Aceh First" platforms were banned.",0,0,0
+"Added to the old grievance of not being autonomous and Islamic enough were new objections against the relationship with Jakarta.",1,0,0
+"Instead, it created more jobs for Javanese immigrants than for Acehnese.",0,0,0
+"Many features of modern Indonesia seemed to flow together in East Timor.",1,0,0
