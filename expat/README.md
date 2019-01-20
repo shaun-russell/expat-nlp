@@ -1,6 +1,6 @@
 # EXPAT (used as 'expat <command> <etc>')
 
-Expat is an NLP command-line application that uses word patterns to identify important elements in sentences.
+Expat is an NLP command-line application that uses word patterns to identify important elements in sentences. [Here's a short video that covers the workflow from annotation to classification](https://www.youtube.com/watch?v=dSHcRopVwKs).
 
 ## Introduction to Concepts
 Word patterns are XML objects that specify a sequence of words or word attributes.
